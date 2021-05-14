@@ -8,9 +8,13 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Users\dexinkeji\代码\demo\WebApi\WebApi\WebApi.xml</DocumentationFile>
+    <DocumentationFile></DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="Utils.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.2.0" />
@@ -27,6 +31,7 @@
     <ProjectReference Include="..\Repository\Repository.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
     <ProjectReference Include="..\SqlSugarAndEntity\SqlSugarAndEntity.csproj" />
+    <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>
 
   <ItemGroup>
