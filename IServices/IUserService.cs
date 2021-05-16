@@ -1,11 +1,16 @@
-﻿using System;
+﻿using IServices.ResModel;
+using SqlSugarAndEntity;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace IServices
 {
-    public interface IUserService
+    public interface IUserService:IBaseService<userinfo>
     {
-        object GetUserList();
+        ResponseModel ImportUserinfo(Stream s);
+        ResponseModel ExportUserinfo(Expression<Func<userinfo,bool>> WhereCondition);
     }
 }

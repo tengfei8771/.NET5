@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 
+using Utils;
 namespace SqlSugarAndEntity
 {
     ///<summary>
@@ -9,9 +10,10 @@ namespace SqlSugarAndEntity
     ///</summary>
     public partial class rolemapmenu
     {
-           public rolemapmenu(){
-
-
+           public rolemapmenu()
+           {
+                this.ID = SnowflakeHelper.GetId();
+                
            }
            /// <summary>
            /// Desc:ID

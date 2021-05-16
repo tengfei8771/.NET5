@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 
+using Utils;
 namespace SqlSugarAndEntity
 {
     ///<summary>
@@ -9,9 +10,10 @@ namespace SqlSugarAndEntity
     ///</summary>
     public partial class menuinfo
     {
-           public menuinfo(){
-
-
+           public menuinfo()
+           {
+                this.ID = SnowflakeHelper.GetId();
+                
            }
            /// <summary>
            /// Desc:菜单ID

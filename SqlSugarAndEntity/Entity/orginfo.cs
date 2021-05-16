@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 
+using Utils;
 namespace SqlSugarAndEntity
 {
     ///<summary>
@@ -9,9 +10,10 @@ namespace SqlSugarAndEntity
     ///</summary>
     public partial class orginfo
     {
-           public orginfo(){
-
-
+           public orginfo()
+           {
+                this.ID = SnowflakeHelper.GetId();
+                
            }
            /// <summary>
            /// Desc:组织机构ID
