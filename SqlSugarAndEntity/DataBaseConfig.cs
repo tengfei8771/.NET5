@@ -54,8 +54,7 @@ namespace SqlSugarAndEntity
             {
                 OnLogExecuting = (sql, p) =>
                 {
-                    Console.WriteLine(sql);
-                    Console.WriteLine(string.Join(",", p?.Select(it => it.ParameterName + ":" + it.Value)));
+                    Console.WriteLine(SqlSguarExtensionMethod.LookSQL(sql, p));
                 }
             };
 
