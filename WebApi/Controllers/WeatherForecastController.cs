@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Utils;
 
 namespace WebApi.Controllers
 {
@@ -41,6 +42,8 @@ namespace WebApi.Controllers
         [HttpGet("Test")]
         public IActionResult Test()
         {
+            string Aes = AESHelper.AesEncrypt("AES加密", "12345678901234567890");
+            string DeAes = AESHelper.AesDecrypt(Aes, "12345678901234567890");
             var list = userRepository.GetInfo(p=>true);
             return Ok(list);
         }
