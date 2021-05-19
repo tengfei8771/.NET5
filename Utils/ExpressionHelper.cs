@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
@@ -357,7 +358,43 @@ namespace Utils
             ConstantExpression constant = Expression.Constant(propertyValue, typeof(string));
             return Expression.Lambda<Func<T, bool>>(Expression.Not(Expression.Call(member, method, constant)), parameter);
         }
-
+        public static void MapperColumn<T, T1>(T Entity, Func<T1, bool> ExpWhereCondition, List<T1> MapperList, Dictionary<string, string> PropMapper, params Expression<Func<T, object>>[] selectors)
+        {
+            T1 SelectItem = MapperList.Where(ExpWhereCondition).FirstOrDefault();
+            //如果字典类里面没有数据,直接结束本方法
+            if (SelectItem == null) return;
+            ParameterExpression parameter = Expression.Parameter(typeof(T1), "t");//构造参数T
+            foreach (Expression<Func<T, object>> selector in selectors)
+            {
+                //获取属性
+                string PropName = GetPropertyName(selector);
+                //映射属性值
+                string MapperName = string.Empty;
+                if (!PropMapper.TryGetValue(PropName, out MapperName))
+                {
+                    MapperName = PropName;
+                }
+                //实体对应属性
+                var EntityProp = typeof(T).GetProperty(PropName);
+                //需要把NewSelector.Compile()的东西缓存下来,提升效率
+                if (!Cache.TryGetValue($"{MapperName}setter", out object value))
+                {
+                    //根据T1构造的新selector
+                    var NewSelector = Expression.Lambda<Func<T1, object>>(Expression.Property(parameter, MapperName), parameter);
+                    Func<T1, object> func = NewSelector.Compile();
+                    //赋值
+                    GetSetter<T>(EntityProp)(Entity, func.Invoke(SelectItem));
+                    //加入缓存
+                    Cache.Add($"{MapperName}setter", func);
+                }
+                else
+                {
+                    var func = value as Func<T1, object>;
+                    //给entity赋值
+                    GetSetter<T>(EntityProp)(Entity, func.Invoke(SelectItem));
+                }
+            }
+        }
         /// <summary>
         /// 获取标注的属性名
         /// </summary>
@@ -380,6 +417,7 @@ namespace Utils
             }
         }
 
+       
         private static bool IsDBNull(object t)
         {
             return t is DBNull;
