@@ -26,6 +26,11 @@ namespace Repository
             return _appDBContext.SaveChanges()>0;
         }
 
+        public bool Delete(Expression<Func<T, bool>> WhereExp)
+        {
+            throw new NotImplementedException();
+        }
+
         public void DeleteAll(List<T> list)
         {
             _appDBContext.BulkDelete(list);
@@ -97,7 +102,37 @@ namespace Repository
             throw new NotImplementedException();
         }
 
+        public bool Update(T entity, Expression<Func<T, object>> WhereExp)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Update(Expression<Func<T, T>> SetColumns, Expression<Func<T, object>> WhereExp)
+        {
+            throw new NotImplementedException();
+        }
+
         public void UpdateAll(List<T> list)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UpdateAll(List<T> list, Expression<Func<T, object>> WhereExp)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UpdateAppiontColumns(T entity, Expression<Func<T, object>> WhereExp, Expression<Func<T, object>> UpdateExpress)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UpdateIgnoreColumns(T entity, Expression<Func<T, object>> WhereExp, Expression<Func<T, object>> IgnoreExpress)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IBaseRepository<T>.UpdateAll(List<T> list)
         {
             throw new NotImplementedException();
         }

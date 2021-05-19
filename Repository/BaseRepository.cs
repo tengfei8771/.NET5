@@ -21,7 +21,10 @@ namespace Repository
         {
             return _baseMethod.Db().Deleteable(entity).ExecuteCommand() > 0;
         }
-
+        public bool Delete(Expression<Func<T, bool>> WhereExp)
+        {
+            return _baseMethod.Db().Deleteable<T>().Where(WhereExp).ExecuteCommand()>0;
+        }
         public void DeleteAll(List<T> list)
         {
             _baseMethod.Db().Deleteable(list).ExecuteCommand();
@@ -60,16 +63,10 @@ namespace Repository
         {
             return _baseMethod.Db().Queryable<T>().Where(predicate).ToDataTable();
         }
-
-
-
         public DataTable GetInfoToDataTableByPage(Expression<Func<T, bool>> predicate, int page, int limit, ref int total)
         {
             return _baseMethod.Db().Queryable<T>().Where(predicate).ToDataTablePage(page,limit,ref total);
         }
-
-        
-
         public bool Insert(T entity)
         {
             return _baseMethod.Db().Insertable(entity).ExecuteCommand()>0;
@@ -118,10 +115,32 @@ namespace Repository
         {
             return _baseMethod.Db().Updateable(entity).ExecuteCommand() > 0;
         }
-
-        public void UpdateAll(List<T> list)
+        public bool Update(T entity,Expression<Func<T,object>> WhereExp)
         {
-            _baseMethod.Db().Updateable(list).ExecuteCommand();
+            return _baseMethod.Db().Updateable(entity).WhereColumns(WhereExp).ExecuteCommand() > 0;
         }
+        public bool Update(Expression<Func<T, T>> SetColumns, Expression<Func<T, object>> WhereExp)
+        {
+            return _baseMethod.Db().Updateable(SetColumns).WhereColumns(WhereExp).ExecuteCommand() > 0;
+        }
+        public bool UpdateIgnoreColumns(T entity, Expression<Func<T, object>> WhereExp,Expression<Func<T,object>>IgnoreExpress)
+        {
+            return _baseMethod.Db().Updateable(entity).IgnoreColumns(IgnoreExpress).WhereColumns(WhereExp).ExecuteCommand() > 0;
+        }
+        public bool UpdateAppiontColumns(T entity, Expression<Func<T, object>> WhereExp, Expression<Func<T, object>> UpdateExpress)
+        {
+            return _baseMethod.Db().Updateable(entity).UpdateColumns(UpdateExpress).WhereColumns(WhereExp).ExecuteCommand() > 0;
+        }
+
+        public bool UpdateAll(List<T> list)
+        {
+            return _baseMethod.Db().Updateable(list).ExecuteCommand()>0;
+        }
+        public bool UpdateAll(List<T> list, Expression<Func<T, object>> WhereExp)
+        {
+            return _baseMethod.Db().Updateable(list).WhereColumns(WhereExp).ExecuteCommand()>0;
+        }
+
+
     }
 }

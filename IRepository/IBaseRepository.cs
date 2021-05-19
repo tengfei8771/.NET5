@@ -20,11 +20,47 @@ namespace IRepository
         /// <returns></returns>
         bool Update(T entity);
         /// <summary>
+        /// 通过t=>new {t.ID}的形式指定where条件更新
+        /// </summary>
+        /// <param name="entity">实体</param>
+        /// <param name="WhereExp">形似t=>new {t.ID}</param>
+        /// <returns></returns>
+        bool Update(T entity, Expression<Func<T, object>> WhereExp);
+        /// <summary>
+        /// 根据表达式更新实体
+        /// </summary>
+        /// <param name="SetColumns">需要更新的字段 形似 t=>new T(){UpdateColumn=1}</param>
+        /// <param name="WhereExp">where表达式 形似t=>new {t.ID}</param>
+        /// <returns></returns>
+        bool Update(Expression<Func<T,T>> SetColumns, Expression<Func<T, object>> WhereExp);
+        /// <summary>
+        /// 通过t=>t.new T(){Field="1"}的形式指定where条件和忽略更新的字段
+        /// </summary>
+        /// <param name="entity">实体</param>
+        /// <param name="WhereExp">形似t=>new {t.ID}</param>
+        /// <param name="IgnoreExpress">形似t=>new {t.IgnoreColumn}</param>
+        /// <returns></returns>
+        bool UpdateIgnoreColumns(T entity, Expression<Func<T, object>> WhereExp, Expression<Func<T, object>> IgnoreExpress);
+        /// <summary>
+        /// 通过t=>t.new T(){Field="1"}的形式指定where条件和只更新的字段
+        /// </summary>
+        /// <param name="entity">实体</param>
+        /// <param name="WhereExp">形似t=>new {t.ID}</param>
+        /// <param name="UpdateExpress">形似t=>new {t.UpdateColumn}</param>
+        /// <returns></returns>
+        bool UpdateAppiontColumns(T entity, Expression<Func<T, object>> WhereExp, Expression<Func<T, object>> UpdateExpress);
+        /// <summary>
         /// 删除实体
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
         bool Delete(T entity);
+        /// <summary>
+        /// 根据表达式删除数据
+        /// </summary>
+        /// <param name="WhereExp"></param>
+        /// <returns></returns>
+        bool Delete(Expression<Func<T, bool>> WhereExp);
         /// <summary>
         /// 根据表达式获取全部的数据
         /// </summary>
@@ -82,7 +118,14 @@ namespace IRepository
         /// 批量更新
         /// </summary>
         /// <param name="list"></param>
-        void UpdateAll(List<T> list);
+        bool UpdateAll(List<T> list);
+        /// <summary>
+        /// 批量更新 指定更新条件
+        /// </summary>
+        /// <param name="list">list</param>
+        /// <param name="WhereExp">形似t=>new {t.ID}</param>
+        /// <returns></returns>
+        bool UpdateAll(List<T> list, Expression<Func<T, object>> WhereExp);
         /// <summary>
         /// 批量插入一个实体和另一个实体list
         /// </summary>

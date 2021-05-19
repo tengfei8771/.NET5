@@ -358,6 +358,16 @@ namespace Utils
             ConstantExpression constant = Expression.Constant(propertyValue, typeof(string));
             return Expression.Lambda<Func<T, bool>>(Expression.Not(Expression.Call(member, method, constant)), parameter);
         }
+        /// <summary>
+        /// 从字典list映射值到T中
+        /// </summary>
+        /// <typeparam name="T">需要进行转换值的实体的类型</typeparam>
+        /// <typeparam name="T1">字典实体的类型</typeparam>
+        /// <param name="Entity">被转换值的实体</param>
+        /// <param name="ExpWhereCondition">根据何条件对字典类进行筛选</param>
+        /// <param name="MapperList">字典类list</param>
+        /// <param name="PropMapper">被转换字段和字典实体字段的映射名称(没有默认相同)</param>
+        /// <param name="selectors">被转换实体的字段</param>
         public static void MapperColumn<T, T1>(T Entity, Func<T1, bool> ExpWhereCondition, List<T1> MapperList, Dictionary<string, string> PropMapper, params Expression<Func<T, object>>[] selectors)
         {
             T1 SelectItem = MapperList.Where(ExpWhereCondition).FirstOrDefault();

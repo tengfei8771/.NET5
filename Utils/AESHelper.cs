@@ -24,7 +24,7 @@ namespace Utils
             Aes a = GetAesTool(key);
             ICryptoTransform cTransform = a.CreateDecryptor();
             byte[] Result = cTransform.TransformFinalBlock(StrBytes, 0, StrBytes.Length);
-            return Convert.ToBase64String(Result);
+            return Encoding.UTF8.GetString(Result);
         }
         private static Aes GetAesTool(string key)
         {
@@ -39,25 +39,18 @@ namespace Utils
         {
             byte[] KeyByte = Encoding.UTF8.GetBytes(Key);
             byte[] newArray = new byte[16];
-            if (KeyByte.Length < 16)
+            for(int i=0;i< newArray.Length; i++)
             {
-                for (int i = 0; i < newArray.Length; i++)
+                if(i> KeyByte.Length)
                 {
-                    if (i > KeyByte.Length - 1)
-                    {
-                        newArray[i] = 0;
-                    }
-                    else
-                    {
-                        newArray[i] = KeyByte[i];
-                    }
+                    newArray[i] = 0;
                 }
-                return newArray;
+                else
+                {
+                    newArray[i] = KeyByte[i];
+                }
             }
-            else
-            {
-                return KeyByte;
-            }
+            return newArray;
         }
     }
 }
