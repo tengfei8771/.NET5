@@ -20,7 +20,7 @@ namespace Utils
 
         public static string AesDecrypt(string str,string key)
         {
-            byte[] StrBytes = Encoding.UTF8.GetBytes(str);
+            byte[] StrBytes = Convert.FromBase64String(str);
             Aes a = GetAesTool(key);
             ICryptoTransform cTransform = a.CreateDecryptor();
             byte[] Result = cTransform.TransformFinalBlock(StrBytes, 0, StrBytes.Length);
