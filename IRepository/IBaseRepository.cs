@@ -154,6 +154,6 @@ namespace IRepository
         /// <param name="limit">每页条数</param>
         /// <param name="total">总页数</param>
         /// <returns></returns>
-        DataTable GetInfoToDataTableByPage(Expression<Func<T, bool>> predicate, int page, int limit, ref int total);
+        DataTable GetInfoToDataTableByPage(Expression<Func<T, bool>> predicate, int page, int limit,ref int total);
     }
 }

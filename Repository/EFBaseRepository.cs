@@ -52,7 +52,7 @@ namespace Repository
             return _appDBContext.Set<T>().Where(predicate).ToList();
         }
 
-        public List<T> GetInfoByPage(Expression<Func<T, bool>> predicate, int page, int limit, ref int total)
+        public List<T> GetInfoByPage(Expression<Func<T, bool>> predicate, int page, int limit,ref int total)
         {
             throw new NotImplementedException();
         }
@@ -61,7 +61,7 @@ namespace Repository
         {
             throw new NotImplementedException();
         }
-        public DataTable GetInfoToDataTableByPage(Expression<Func<T, bool>> predicate, int page, int limit, ref int total)
+        public DataTable GetInfoToDataTableByPage(Expression<Func<T, bool>> predicate, int page, int limit,ref int total)
         {
             throw new NotImplementedException();
         }
@@ -71,7 +71,7 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public List<T> GetOrderbyInfoByPage(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderBy, int page, int limit, ref int total)
+        public List<T> GetOrderbyInfoByPage(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderBy, int page, int limit,ref int total)
         {
             throw new NotImplementedException();
         }

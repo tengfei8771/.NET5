@@ -41,11 +41,12 @@ namespace Services
         {
             return CreateResponseModel(baseRepository.GetInfo, predicate);
         }
-        
+
         public ResponseModel GetInfoByPage(Expression<Func<T, bool>> predicate, int page, int limit)
         {
             int total = 0;
-            return CreateResponseModel(baseRepository.GetInfoByPage, predicate, page, limit, total);
+            var model = CreateResponseModelByPage(baseRepository.GetInfoByPage, predicate, page, limit, ref total);
+            return model;
         }
 
         public ResponseModel GetInfoToDataTable(Expression<Func<T, bool>> predicate)
@@ -56,7 +57,7 @@ namespace Services
         public ResponseModel GetInfoToDataTableByPage(Expression<Func<T, bool>> predicate, int page, int limit)
         {
             int total = 0;
-            return CreateResponseModel(baseRepository.GetInfoToDataTableByPage, predicate, page, limit, total);
+            return CreateResponseModelByPage(baseRepository.GetInfoToDataTableByPage, predicate, page, limit,ref total);
         }
 
         public ResponseModel GetOrderbyInfo(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderBy)
@@ -67,7 +68,7 @@ namespace Services
         public ResponseModel GetOrderbyInfoByPage(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderBy, int page, int limit)
         {
             int total = 0;
-            return CreateResponseModel(baseRepository.GetOrderbyInfoByPage, predicate, orderBy,page, limit, ref total);
+            return CreateResponseModelByPage(baseRepository.GetOrderbyInfoByPage, predicate, orderBy, page, limit,ref total);
         }
 
         public ResponseModel Insert(T entity)
@@ -99,7 +100,7 @@ namespace Services
         {
             return CreateResponseModel(baseRepository.UpdateAll, list);
         }
-
+        #region 新增，修改，删除执行委托操作通用方法
         protected ResponseModel CreateResponseModel<P>(Action<P> func, P p)
         {
             ResponseModel res = new ResponseModel();
@@ -116,13 +117,13 @@ namespace Services
             }
             return res;
         }
-
-        protected ResponseModel CreateResponseModel<P,P1>(Action<P,P1> func, P p,P1 p1)
+        
+        protected ResponseModel CreateResponseModel<P, P1>(Action<P, P1> func, P p, P1 p1)
         {
             ResponseModel res = new ResponseModel();
             try
             {
-                func.Invoke(p,p1);
+                func.Invoke(p, p1);
                 res.Code = 2000;
                 res.Message = "成功";
             }
@@ -158,8 +159,9 @@ namespace Services
             }
             return res;
         }
-
-        protected ResponseModel CreateResponseModel<P, PResult>(Func<P,PResult> func, P p)
+        #endregion
+        #region 不进行分页的的查询的委托通用方法
+        protected ResponseModel CreateResponseModel<P, PResult>(Func<P, PResult> func, P p)
         {
             ResponseModel res = new ResponseModel();
             try
@@ -169,6 +171,126 @@ namespace Services
                 res.Message = "成功";
                 res.Items = obj;
             }
+            catch (Exception e)
+            {
+                res.Code = -1;
+                res.Message = e.Message;
+            }
+            return res;
+        }
+
+        protected ResponseModel CreateResponseModel<P, P1, PResult>(Func<P, P1, PResult> func, P p, P1 p1)
+        {
+            ResponseModel res = new ResponseModel();
+            try
+            {
+                PResult obj = func.Invoke(p, p1);
+                res.Code = 2000;
+                res.Message = "成功";
+                res.Items = obj;
+            }
+            catch (Exception e)
+            {
+                res.Code = -1;
+                res.Message = e.Message;
+            }
+            return res;
+        }
+
+
+        protected ResponseModel CreateResponseModel<P, P1, P2, PResult>(Func<P, P1, P2, PResult> func, P p, P1 p1, P2 p2)
+        {
+            ResponseModel res = new ResponseModel();
+            try
+            {
+                PResult obj = func.Invoke(p, p1, p2);
+                res.Code = 2000;
+                res.Message = "成功";
+                res.Items = obj;
+                res.Total = p2 as int?;
+            }
+            catch (Exception e)
+            {
+                res.Code = -1;
+                res.Message = e.Message;
+            }
+            return res;
+        }
+
+
+        protected ResponseModel CreateResponseModel<P, P1, P2, P3, PResult>(Func<P, P1, P2, P3, PResult> func, P p, P1 p1, P2 p2, P3 p3)
+        {
+            ResponseModel res = new ResponseModel();
+            try
+            {
+                PResult obj = func.Invoke(p, p1, p2, p3);
+                res.Code = 2000;
+                res.Message = "成功";
+                res.Items = obj;
+                
+            }
+            catch (Exception e)
+            {
+                res.Code = -1;
+                res.Message = e.Message;
+            }
+            return res;
+        }
+        protected ResponseModel CreateResponseModel<P, P1, P2, P3, P4, PResult>(Func<P, P1, P2, P3, P4, PResult> func, P p, P1 p1, P2 p2, P3 p3, P4 p4)
+        {
+            ResponseModel res = new ResponseModel();
+            try
+            {
+                PResult obj = func.Invoke(p, p1, p2, p3, p4);
+                res.Code = 2000;
+                res.Message = "成功";
+                res.Items = obj;
+                
+            }
+            catch (Exception e)
+            {
+                res.Code = -1;
+                res.Message = e.Message;
+            }
+            return res;
+        }
+        #endregion
+        #region 声明最后一个参数是ref的委托
+        protected delegate PResult LastPamaraRefDelegate<PResult, P, P1, P2>(P p, P1 p1, ref P2 p2);
+        protected delegate PResult LastPamaraRefDelegate<PResult, P, P1, P2, P3>(P p, P1 p1, P2 p2, ref P3 p3);
+        protected delegate PResult LastPamaraRefDelegate<PResult, P, P1, P2, P3, P4>(P p, P1 p1, P2 p2, P3 p3, ref P4 p4);
+        #endregion
+        protected ResponseModel CreateResponseModelByPage<PResult, P, P1, P2>
+            (LastPamaraRefDelegate<PResult, P, P1, P2> func, P p, P1 p1,ref P2 p2)
+            where P2 : struct
+        {
+            ResponseModel res = new ResponseModel();
+            try
+            {
+                PResult pResult = func.Invoke(p, p1,ref p2);
+                res.Code = 2000;
+                res.Message = "成功";
+                res.Total = p2 as int?;
+            }
+            catch (Exception e)
+            {
+                res.Code = -1;
+                res.Message = e.Message;
+            }
+            return res;
+        }
+        protected ResponseModel CreateResponseModelByPage<PResult, P, P1, P2, P3>
+            (LastPamaraRefDelegate<PResult, P, P1, P2, P3> func,P p,P1 p1,P2 p2,ref P3 p3) 
+            where P3 :struct
+        {
+            ResponseModel res = new ResponseModel();
+            try
+            {
+                PResult pResult = func.Invoke(p, p1, p2, ref p3);
+                res.Code = 2000;
+                res.Message = "成功";
+                res.Total = p3 as int?;
+            }
             catch(Exception e)
             {
                 res.Code = -1;
@@ -177,15 +299,17 @@ namespace Services
             return res;
         }
 
-        protected ResponseModel CreateResponseModel<P,P1, PResult>(Func<P,P1, PResult> func,P p,P1 p1)
+        protected ResponseModel CreateResponseModelByPage<PResult, P, P1, P2, P3,P4>
+            (LastPamaraRefDelegate<PResult, P, P1, P2, P3,P4> func, P p, P1 p1, P2 p2, P3 p3,ref P4 p4)
+            where P3 : struct
         {
             ResponseModel res = new ResponseModel();
             try
             {
-                PResult obj = func.Invoke(p,p1);
+                PResult pResult = func.Invoke(p, p1, p2, p3,ref p4);
                 res.Code = 2000;
                 res.Message = "成功";
-                res.Items = obj;
+                res.Total = p4 as int?;
             }
             catch (Exception e)
             {
@@ -194,85 +318,5 @@ namespace Services
             }
             return res;
         }
-
-        protected ResponseModel CreateResponseModel<P, P1, P2, PResult>(Func<P, P1, P2, PResult> func, P p, P1 p1, P2 p2)
-        {
-            ResponseModel res = new ResponseModel();
-            try
-            {
-                PResult obj = func.Invoke(p,p1,p2);
-                res.Code = 2000;
-                res.Message = "成功";
-                res.Items = obj;
-            }
-            catch (Exception e)
-            {
-                res.Code = -1;
-                res.Message = e.Message;
-            }
-            return res;
-        }
-        
-        
-        protected ResponseModel CreateResponseModel<P, P1, P2, P3, PResult>(Func<P, P1, P2, P3, PResult> func, P p, P1 p1, P2 p2, P3 p3)
-        {
-            ResponseModel res = new ResponseModel();
-            try
-            {
-                PResult obj = func.Invoke(p, p1, p2,p3);
-                res.Code = 2000;
-                res.Message = "成功";
-                res.Items = obj;
-            }
-            catch (Exception e)
-            {
-                res.Code = -1;
-                res.Message = e.Message;
-            }
-            return res;
-        }
-        protected delegate PResult LastPamaraRefDelegate<PResult, P, P1, P2, P3>(P p, P1 p1, P2 p2, ref P3 p3);
-        
-        protected ResponseModel CreateResponseModel<PResult, P, P1, P2, P3>
-            (LastPamaraRefDelegate<PResult, P, P1, P2, P3> Func, P p, P1 p1, P2 p2, P3 p3)
-        {
-            ResponseModel res = new ResponseModel();
-            try
-            {
-                PResult obj = Func.Invoke(p, p1, p2, ref p3);
-                res.Code = 2000;
-                res.Message = "成功";
-                res.Items = obj;
-                res.Total = Convert.ToInt32(p3);
-            }
-            catch (Exception e)
-            {
-                res.Code = -1;
-                res.Message = e.Message;
-            }
-            return res;
-        }
-        protected delegate PResult LastPamaraRefDelegate<PResult, P, P1, P2, P3, P4>(P p, P1 p1, P2 p2, P3 p3, ref P4 p4);
-        protected ResponseModel CreateResponseModel<PResult, P, P1, P2, P3,P4>
-            (LastPamaraRefDelegate<PResult, P, P1, P2, P3, P4> Func, P p, P1 p1, P2 p2, P3 p3,ref P4 p4)
-        {
-            ResponseModel res = new ResponseModel();
-            try
-            {
-                PResult obj = Func.Invoke(p, p1, p2,p3,ref p4);
-                res.Code = 2000;
-                res.Message = "成功";
-                res.Items = obj;
-                res.Total = Convert.ToInt32(p4);
-            }
-            catch (Exception e)
-            {
-                res.Code = -1;
-                res.Message = e.Message;
-            }
-            return res;
-        }
-
-
     }
 }

@@ -45,7 +45,7 @@ namespace Repository
             return _baseMethod.Db().Queryable<T>().Where(predicate).ToList();
         }
 
-        public List<T> GetInfoByPage(Expression<Func<T, bool>> predicate, int page, int limit, ref int total)
+        public List<T> GetInfoByPage(Expression<Func<T, bool>> predicate, int page, int limit,ref int total)
         {
             return _baseMethod.Db().Queryable<T>().Where(predicate).ToPageList(page,limit,ref total);
         }
@@ -54,7 +54,7 @@ namespace Repository
             return _baseMethod.Db().Queryable<T>().Where(predicate).OrderBy(orderBy).ToList();
         }
 
-        public List<T> GetOrderbyInfoByPage(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderBy, int page, int limit, ref int total)
+        public List<T> GetOrderbyInfoByPage(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderBy, int page, int limit,ref int total)
         {
             return _baseMethod.Db().Queryable<T>().Where(predicate).PartitionBy(orderBy).ToPageList(page, limit, ref total);
         }
@@ -63,7 +63,7 @@ namespace Repository
         {
             return _baseMethod.Db().Queryable<T>().Where(predicate).ToDataTable();
         }
-        public DataTable GetInfoToDataTableByPage(Expression<Func<T, bool>> predicate, int page, int limit, ref int total)
+        public DataTable GetInfoToDataTableByPage(Expression<Func<T, bool>> predicate, int page, int limit,ref int total)
         {
             return _baseMethod.Db().Queryable<T>().Where(predicate).ToDataTablePage(page,limit,ref total);
         }

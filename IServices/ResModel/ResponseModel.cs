@@ -11,7 +11,7 @@ namespace IServices.ResModel
         public int Code { get; set; }
         public string Message { get; set; }
         public object Items { get; set; }
-        public int Total { get; set; }
+        public int? Total { get; set; }
         public string Path  { get; set; }
     }
 }

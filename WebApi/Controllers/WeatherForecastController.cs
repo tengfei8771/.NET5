@@ -1,4 +1,5 @@
 ﻿using IRepository;
+using IServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,7 +14,7 @@ namespace WebApi.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private IUserRepository userRepository;
+        private IUserService userService;
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -21,10 +22,10 @@ namespace WebApi.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, IUserRepository userRepository)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IUserService userService)
         {
             _logger = logger;
-            this.userRepository = userRepository;
+            this.userService = userService;
         }
 
         [HttpGet]
@@ -44,7 +45,7 @@ namespace WebApi.Controllers
         {
             string Aes = AESHelper.AesEncrypt("AES加密", "abcsdeeakdhkjsdhkasjdkasdad");
             string DeAes = AESHelper.AesDecrypt(Aes, "abcsdeeakdhkjsdhkasjdkasdad");
-            var list = userRepository.GetInfo(p=>true);
+            var list = userService.GetInfoByPage(p=>true,1,1000);
             return Ok(list);
         }
     }

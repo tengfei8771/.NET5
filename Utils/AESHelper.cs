@@ -9,6 +9,12 @@ namespace Utils
 {
     public class AESHelper
     {
+        /// <summary>
+        /// AES加密
+        /// </summary>
+        /// <param name="str">被加密的字符串</param>
+        /// <param name="key">加密key</param>
+        /// <returns></returns>
         public static string AesEncrypt(string str,string key)
         {
             byte[] StrBytes = Encoding.UTF8.GetBytes(str);
@@ -17,7 +23,12 @@ namespace Utils
             byte[] Result = cTransform.TransformFinalBlock(StrBytes, 0, StrBytes.Length);
             return Convert.ToBase64String(Result);
         }
-
+        /// <summary>
+        /// AES解密
+        /// </summary>
+        /// <param name="str">被解密的字符串</param>
+        /// <param name="key">解密key</param>
+        /// <returns></returns>
         public static string AesDecrypt(string str,string key)
         {
             byte[] StrBytes = Convert.FromBase64String(str);
