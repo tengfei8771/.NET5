@@ -1,8 +1,10 @@
-﻿using Entity.Models;
+﻿using System;
 using IRepository;
 using SqlSugarAndEntity;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using SqlSugar;
 
 namespace Repository
 {
@@ -22,6 +24,17 @@ namespace Repository
         {
             _baseMethod = baseMethod;
         }
-        
+
+        public List<userinfo> GetUserByRole(decimal RoleID)
+        {
+            var list = _baseMethod.Db()
+                .Queryable<userinfo, usermaprole>((a, b)
+                 => new JoinQueryInfos(
+                     JoinType.Inner, a.ID == b.UserID
+                     ))
+                .Where((a, b) => b.RoleID == RoleID)
+                .ToList();
+            return list;
+        }
     }
 }

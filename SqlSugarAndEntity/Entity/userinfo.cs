@@ -3,6 +3,8 @@ using System.Linq;
 using System.Text;
 
 using Utils;
+using System.Collections.Generic;
+using SqlSugar;
 namespace SqlSugarAndEntity
 {
     ///<summary>

@@ -1,6 +1,7 @@
 ﻿using SqlSugar;
 using System;
 using System.IO;
+using System.Linq.Expressions;
 
 namespace SqlSugarAndEntity
 {
@@ -12,6 +13,8 @@ namespace SqlSugarAndEntity
             {
                 string ClassTemplate = @"{using}
 using Utils;
+using System.Collections.Generic;
+using SqlSugar;
 namespace {Namespace}
 {
 {ClassDescription}{SugarTable}
@@ -25,11 +28,34 @@ namespace {Namespace}
 {PropertyName}
     }
 }";
+                string ChildrenTemp= @"{using}
+using Utils;
+using System.Collections.Generic;
+using SqlSugar;
+namespace {Namespace}
+{
+{ClassDescription}{SugarTable}
+    public partial class {ClassName}
+    {
+        public {ClassName}()
+        {
+           this.ID = SnowflakeHelper.GetId();
+          {Constructor}
+        }
+{PropertyName}
+           [SugarColumn(IsIgnore =true)]
+           public bool hasChildren { get; set; }
+           [SugarColumn(IsIgnore =true)]
+           public List<{ClassName}> children { get; set; }
+    }
+}";
+                Expression<Func<string, bool>> exp1 = t => !t.Contains('.');
+                Expression<Func<string, bool>> exp2 = t => t != "menuinfo" && t != "dictionary" && t != "orginfo";
                 Console.WriteLine("开始生成类库文件...");
                 SqlSugarClient db = new SqlSugarClient(DataBaseConfig._config);
                 var TotalPath = Directory.GetCurrentDirectory();
                 string[] PathArr = TotalPath.Replace("\\", "/").Split(new string[] { "/bin/" }, StringSplitOptions.None);
-                db.DbFirst.Where(t=>!t.Contains('.'))
+                db.DbFirst.Where(t => !t.Contains('.') && t != "menuinfo" && t != "dictionary" && t != "orginfo")
                     .SettingClassTemplate(old =>
                     {
                         return ClassTemplate;
@@ -42,11 +68,17 @@ namespace {Namespace}
                     {
                         return old;
                     })//属性
-                    .SettingConstructorTemplate(old => 
-                    { 
-                        return old; 
+                    .SettingConstructorTemplate(old =>
+                    {
+                        return old;
                     })//构造函数
                     .CreateClassFile($"{PathArr[0]}/Entity", "SqlSugarAndEntity");
+
+                db.DbFirst.Where(t => !t.Contains('.') && (t == "menuinfo"|| t == "dictionary"|| t == "orginfo"))
+                    .SettingClassTemplate(old =>
+                    {
+                        return ChildrenTemp;
+                    }).CreateClassFile($"{PathArr[0]}/Entity", "SqlSugarAndEntity");
                 Console.WriteLine("生成成功!");
             }
             catch(Exception e)

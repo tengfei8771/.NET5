@@ -43,7 +43,15 @@ namespace Repository
                     OrgCreateTime = t.OrgCreateTime,
                     OrgCreateBy = t.OrgCreateBy,
                     hasChildren = SqlFunc.Subqueryable<orginfo>().Where(a => a.ParentOrgID == t.ID).Any(),
-                }).ToPageList(page, limit, ref total);
+                })
+                .Mapper(it =>
+                {
+                    if (it.hasChildren)
+                    {
+                        it.children = new List<orginfo>();
+                    }
+                })
+                .ToPageList(page, limit, ref total);
             return OrgList;
                 
         }

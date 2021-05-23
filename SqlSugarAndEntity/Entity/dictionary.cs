@@ -10,40 +10,44 @@ namespace SqlSugarAndEntity
     ///<summary>
     ///
     ///</summary>
-    public partial class roleinfo
+    public partial class dictionary
     {
-           public roleinfo()
-           {
-                this.ID = SnowflakeHelper.GetId();
-                
-           }
+        public dictionary()
+        {
+           this.ID = SnowflakeHelper.GetId();
+          
+        }
            /// <summary>
-           /// Desc:角色ID
+           /// Desc:主键
            /// Default:
            /// Nullable:False
            /// </summary>           
            public decimal ID {get;set;}
 
            /// <summary>
-           /// Desc:角色名称
+           /// Desc:名称
            /// Default:
            /// Nullable:True
            /// </summary>           
-           public string RoleName {get;set;}
+           public string Name {get;set;}
 
            /// <summary>
-           /// Desc:创建时间
+           /// Desc:父节点的ID
            /// Default:
            /// Nullable:True
            /// </summary>           
-           public DateTime? RoleCreateTime {get;set;}
+           public decimal? ParentID {get;set;}
 
            /// <summary>
-           /// Desc:创建人ID
+           /// Desc:排列顺序
            /// Default:
            /// Nullable:True
            /// </summary>           
-           public decimal? RoleCreateBy {get;set;}
+           public int? SortNO {get;set;}
 
+           [SugarColumn(IsIgnore =true)]
+           public bool hasChildren { get; set; }
+           [SugarColumn(IsIgnore =true)]
+           public List<dictionary> children { get; set; }
     }
 }

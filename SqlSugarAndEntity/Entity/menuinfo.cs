@@ -3,6 +3,8 @@ using System.Linq;
 using System.Text;
 
 using Utils;
+using System.Collections.Generic;
+using SqlSugar;
 namespace SqlSugarAndEntity
 {
     ///<summary>
@@ -10,11 +12,11 @@ namespace SqlSugarAndEntity
     ///</summary>
     public partial class menuinfo
     {
-           public menuinfo()
-           {
-                this.ID = SnowflakeHelper.GetId();
-                
-           }
+        public menuinfo()
+        {
+           this.ID = SnowflakeHelper.GetId();
+          
+        }
            /// <summary>
            /// Desc:菜单ID
            /// Default:
@@ -85,5 +87,9 @@ namespace SqlSugarAndEntity
            /// </summary>           
            public decimal? MenuCreateBy {get;set;}
 
+           [SugarColumn(IsIgnore =true)]
+           public bool hasChildren { get; set; }
+           [SugarColumn(IsIgnore =true)]
+           public List<menuinfo> children { get; set; }
     }
 }

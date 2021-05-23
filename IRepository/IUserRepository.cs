@@ -8,5 +8,6 @@ namespace IRepository
 {
     public interface IUserRepository:IBaseRepository<userinfo> 
     {
+        List<userinfo> GetUserByRole(decimal RoleID);
     }
 }
