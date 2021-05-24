@@ -111,8 +111,10 @@ namespace Utils
                     }
                     if (dr.Table.Columns.Contains(MapperName) && !IsDBNull(dr[MapperName]))
                     {
+                        //安全赋值
+                        SetSafeValue(item, prop, dr[MapperName]);
                         //反射赋值
-                        prop.SetValue(item, Convert.ChangeType(dr[MapperName], prop.PropertyType));
+                        //prop.SetValue(item, Convert.ChangeType(dr[MapperName], prop.PropertyType));
                         //表达树赋值
                         //ExpressionHelper.GetSetter<T>(prop)(item, dr[MapperName]);
                     }
@@ -165,7 +167,9 @@ namespace Utils
                 {
                     if (dr.Table.Columns.Contains(prop.Name.ToUpper()) && !IsDBNull(dr[prop.Name.ToUpper()]))
                     {
-                        prop.SetValue(item, Convert.ChangeType(dr[prop.Name.ToUpper()], prop.PropertyType));
+                        //安全赋值
+                        SetSafeValue(item, prop, dr[prop.Name.ToUpper()]);
+                        //prop.SetValue(item, Convert.ChangeType(dr[prop.Name.ToUpper()], prop.PropertyType));
                     }
                     if (prop.PropertyType == typeof(List<T>))
                     {
@@ -190,7 +194,8 @@ namespace Utils
                 {
                     if (dr.Table.Columns.Contains(ChildrenProp.Name.ToUpper()) && !IsDBNull(dr[ChildrenProp.Name.ToUpper()]))
                     {
-                        ChildrenProp.SetValue(ChildrenItem, Convert.ChangeType(dr[ChildrenProp.Name.ToUpper()], ChildrenProp.PropertyType));
+                        SetSafeValue(ChildrenItem, ChildrenProp, dr[ChildrenProp.Name.ToUpper()]);
+                        //ChildrenProp.SetValue(ChildrenItem, Convert.ChangeType(dr[ChildrenProp.Name.ToUpper()], ChildrenProp.PropertyType));
                     }
                     if (ChildrenProp.PropertyType == typeof(List<T>))
                     {
@@ -359,6 +364,19 @@ namespace Utils
                 newdt.ImportRow((DataRow)dr[i]);
             }
             return newdt;//返回的查询结果
+        }
+        /// <summary>
+        /// 对可空类型的安全赋值
+        /// </summary>
+        /// <typeparam name="T">被赋值的类的类型</typeparam>
+        /// <param name="entity">被赋值的实体</param>
+        /// <param name="prop">被赋值的属性</param>
+        /// <param name="value">被赋值的值</param>
+        private static void SetSafeValue<T>(T entity, PropertyInfo prop, object value)
+        {
+            Type t = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+            object SafeValue = (value == null) ? null : Convert.ChangeType(value, t);
+            prop.SetValue(entity, SafeValue, null);
         }
 
         private static bool IsDBNull(object t)
