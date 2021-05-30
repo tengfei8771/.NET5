@@ -7,11 +7,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Utils;
+using WebApi.Common;
 
 namespace WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [JwtVerification]
     public class WeatherForecastController : ControllerBase
     {
         private IUserService userService;
@@ -40,6 +42,7 @@ namespace WebApi.Controllers
             })
             .ToArray();
         }
+        [AllowAnyJwtVerification]
         [HttpGet("Test")]
         public IActionResult Test()
         {

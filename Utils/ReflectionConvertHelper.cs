@@ -379,6 +379,22 @@ namespace Utils
             prop.SetValue(entity, SafeValue, null);
         }
 
+        public static Dictionary<string,object> ConvertObjectToDictionary<T>(T entity) where T:class
+        {
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            Type t = typeof(T);
+            foreach(var prop in t.GetProperties())
+            {
+                string MapperName = GetMapperName(prop);
+                if (string.IsNullOrEmpty(MapperName))
+                {
+                    MapperName = prop.Name;
+                }
+                dic.Add(MapperName, prop.GetValue(entity));
+            }
+            return dic;
+        }
+
         private static bool IsDBNull(object t)
         {
             return t is DBNull;

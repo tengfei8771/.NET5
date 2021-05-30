@@ -10,6 +10,6 @@ namespace IRepository
 {
     public interface ILoginRepository:IBaseRepository<userinfo>
     {
-        List<userinfo> GetLoginUserInfo(string account);
+        //List<userinfo> GetLoginUserInfo(string account);
     }
 }

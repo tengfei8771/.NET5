@@ -13,18 +13,25 @@ using System.Threading.Tasks;
 
 namespace Utils
 {
-    public class JwtHelper
+    public static class JwtHelper
     {
-        private IConfiguration Configuration { get; set; }
-        private string Key;
-        public JwtHelper()
+        private static IConfiguration Configuration { get; set; }
+        private static string Key;
+        static JwtHelper()
         {
             GetConfiguration();
         }
 
         public static long ToUnixEpochDate(DateTime date) =>
             (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
-        public string CreateToken(Dictionary<string, object> payLoad = null, int expiresMinute = 2, Dictionary<string, object> header = null)
+        /// <summary>
+        /// 生成jwt令牌
+        /// </summary>
+        /// <param name="payLoad">载荷</param>
+        /// <param name="expiresMinute">过期时间</param>
+        /// <param name="header">JWT的header一般不填</param>
+        /// <returns></returns>
+        public static string CreateToken(Dictionary<string, object> payLoad = null, int expiresMinute = 2, Dictionary<string, object> header = null)
         {
             if (header == null)
             {
@@ -48,8 +55,13 @@ namespace Utils
             var encodedJwt = string.Concat(encodedHeader, ".", encodedPayload, ".", encodedSignature);
             return encodedJwt;
         }
-
-        public bool ValidateJwt(string str,out string Msg)
+        /// <summary>
+        /// 验证jwt令牌
+        /// </summary>
+        /// <param name="str">验证的字符串</param>
+        /// <param name="Msg">验证信息</param>
+        /// <returns></returns>
+        public static bool ValidateJwt(string str,out string Msg)
         {
             try
             {
@@ -106,7 +118,7 @@ namespace Utils
             
         }
 
-        private void GetConfiguration()
+        private static void GetConfiguration()
         {
             var builder = new ConfigurationBuilder()
                         .SetBasePath(Directory.GetCurrentDirectory())

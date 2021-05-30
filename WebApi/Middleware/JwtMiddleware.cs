@@ -27,7 +27,7 @@ namespace PublicWebApi.Common.Validator
 
         public Task Invoke(HttpContext httpContext)
         { 
-            if (GetNeedOrNeedNotFlag.GetFlag(httpContext))
+            if (Verification.GetFlag(httpContext))
             {
                 HttpRequest request = httpContext.Request;
                 if (!request.Headers.TryGetValue("X-Token", out var apiKeyHeaderValues))

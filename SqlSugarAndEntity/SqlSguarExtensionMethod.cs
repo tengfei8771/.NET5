@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace SqlSugarAndEntity
 {
-    public class SqlSguarExtensionMethod
+    public static class SqlSguarExtensionMethod
     {
         /// <summary>
         /// 查看赋值后的sql
@@ -25,8 +26,12 @@ namespace SqlSugarAndEntity
             {
                 sb_sql.Replace(tempOrderPars[index].ParameterName, "'" + tempOrderPars[index].Value.ToString() + "'");
             }
-
             return sb_sql.ToString();
+        }
+
+        public static string GroupConcat<T>(T t)
+        {
+            throw new NotSupportedException("Can only be used in expressions");
         }
     }
 }

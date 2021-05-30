@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using PublicWebApi.Common.Validator;
 using SqlSugarAndEntity;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,6 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddCors(options =>
             {
                 options.AddPolicy("any", builder =>
@@ -119,15 +119,17 @@ namespace WebApi
             //app.UseConsul();
             //QuartzServices.StartJobs<StandardsJob>();
             app.UseHttpsRedirection();
-
+            
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
+            app.UseMiddleware<JwtMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+            
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

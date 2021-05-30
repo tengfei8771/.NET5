@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace WebApi.Common
 {
-    public class NeedNotValidateAttribute:Attribute
+    public class AllowAnyJwtVerificationAttribute:Attribute
     {
         public bool NeedNotValidate = true;
-        public NeedNotValidateAttribute(bool NeedNotValidate=true)
+        public AllowAnyJwtVerificationAttribute(bool NeedNotValidate=true)
         {
             this.NeedNotValidate = NeedNotValidate;
         }
