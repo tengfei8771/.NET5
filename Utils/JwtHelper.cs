@@ -16,7 +16,7 @@ namespace Utils
     public static class JwtHelper
     {
         private static IConfiguration Configuration { get; set; }
-        private static string Key;
+        private static string Key=null;
         static JwtHelper()
         {
             GetConfiguration();
@@ -33,6 +33,10 @@ namespace Utils
         /// <returns></returns>
         public static string CreateToken(Dictionary<string, object> payLoad = null, int expiresMinute = 2, Dictionary<string, object> header = null)
         {
+            if (Key == null)
+            {
+                GetConfiguration();
+            }
             if (header == null)
             {
                 header = new Dictionary<string, object>()
@@ -124,6 +128,7 @@ namespace Utils
                         .SetBasePath(Directory.GetCurrentDirectory())
                         .AddJsonFile("appsettings.json",optional: true, reloadOnChange: true);
             Configuration = builder.Build();
+            Key = Configuration.GetSection("SecurityKey").Value.Trim();
         }
     }
 }

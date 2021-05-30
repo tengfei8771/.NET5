@@ -73,7 +73,7 @@ namespace Repository
             var list = _baseMethod.Db()
                 .Queryable<userinfo, usermaporg, orginfo>((a, b, c)
                    => new JoinQueryInfos(
-                       JoinType.Inner, a.ID == b.UserID,
+                       JoinType.Left, a.ID == b.UserID,
                        JoinType.Left, b.OrgID == c.ID
                        ))
                 .Where(WhereExp)
@@ -82,7 +82,7 @@ namespace Repository
                     a.ID,
                     a.UserName,
                     a.UserAccount,
-                    //a.UserPassWord,
+                    a.UserPassWord,
                     a.UserSex,
                     a.UserPhone,
                     a.UserRole,
@@ -94,8 +94,8 @@ namespace Repository
                 {
                     ID = a.ID,
                     UserName = a.UserName,
-                    //a.UserAccount,
-                    //a.UserPassWord,
+                    UserAccount=a.UserAccount,
+                    UserPassWord=a.UserPassWord,
                     UserSex = a.UserSex,
                     UserPhone = a.UserPhone,
                     UserRole = SqlFunc.IF(a.UserRole == "0").Return("管理员").ElseIF(a.UserRole == "1").Return("普通用户").End("未知"),

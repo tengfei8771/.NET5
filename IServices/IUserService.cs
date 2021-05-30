@@ -12,5 +12,6 @@ namespace IServices
     {
         ResponseModel ImportUserinfo(Stream s);
         ResponseModel ExportUserinfo(Expression<Func<userinfo,bool>> WhereCondition);
+        ResponseModel Login(string account, string password);
     }
 }

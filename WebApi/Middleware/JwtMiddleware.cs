@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using UIDP.UTILITY.JWTHelper;
 using Utils;
 using WebApi.Common;
 
@@ -45,9 +44,8 @@ namespace PublicWebApi.Common.Validator
                 }
                 else
                 {
-                    JwtHelper helper = new JwtHelper();
                     request.EnableBuffering();//可以多次多次读取http内包含的数据
-                    if (!helper.ValidateJwt(apiKeyHeaderValues.ToString(), out string Msg))
+                    if (!JwtHelper.ValidateJwt(apiKeyHeaderValues.ToString(), out string Msg))
                     {
                         httpContext.Response.ContentType = "application/json";
                         httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;

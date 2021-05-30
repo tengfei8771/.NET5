@@ -50,9 +50,9 @@ namespace Utils
         {
             byte[] KeyByte = Encoding.UTF8.GetBytes(Key);
             byte[] newArray = new byte[16];
-            for(int i=0;i< newArray.Length; i++)
+            for(int i=0;i< newArray.Length-1; i++)
             {
-                if(i> KeyByte.Length)
+                if(i> KeyByte.Length-1)
                 {
                     newArray[i] = 0;
                 }
