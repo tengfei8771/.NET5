@@ -39,8 +39,8 @@ namespace Services
             var userlist = userRepository.GetUserInfo((a, b, c) => a.UserAccount == account);
             if (userlist.Count == 0)
             {
-                res.Code = 50007;
-                res.Message = "账号不存在!";
+                res.code = 50007;
+                res.message = "账号不存在!";
             }
             else
             {
@@ -48,15 +48,15 @@ namespace Services
                 var userinfo = userlist.Where(t => t.UserPassWord == AESPwd).FirstOrDefault();
                 if (userinfo != null)
                 {
-                    res.Code = 50000;
-                    res.Message = "登录成功";
+                    res.code = 50000;
+                    res.message = "登录成功";
                     var userinfodic = ReflectionConvertHelper.ConvertObjectToDictionary(userinfo);
-                    res.Items = JwtHelper.CreateToken(userinfodic, 30);
+                    res.items = JwtHelper.CreateToken(userinfodic, 30);
                 }
                 else
                 {
-                    res.Code = 50008;
-                    res.Message = "密码错误!";
+                    res.code = 50008;
+                    res.message = "密码错误!";
                 }
             }
             return res;

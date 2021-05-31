@@ -8,10 +8,10 @@ namespace IServices.ResModel
 {
     public class ResponseModel
     {
-        public int Code { get; set; }
-        public string Message { get; set; }
-        public object Items { get; set; }
-        public int? Total { get; set; }
-        public string Path  { get; set; }
+        public int code { get; set; }
+        public string message { get; set; }
+        public object items { get; set; }
+        public int? total { get; set; }
+        public string path  { get; set; }
     }
 }

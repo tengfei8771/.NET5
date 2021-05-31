@@ -107,13 +107,13 @@ namespace Services
             try
             {
                 func.Invoke(p);
-                res.Code = 2000;
-                res.Message = "成功";
+                res.code = 2000;
+                res.message = "成功";
             }
             catch (Exception e)
             {
-                res.Code = -1;
-                res.Message = e.Message;
+                res.code = -1;
+                res.message = e.Message;
             }
             return res;
         }
@@ -124,13 +124,13 @@ namespace Services
             try
             {
                 func.Invoke(p, p1);
-                res.Code = 2000;
-                res.Message = "成功";
+                res.code = 2000;
+                res.message = "成功";
             }
             catch (Exception e)
             {
-                res.Code = -1;
-                res.Message = e.Message;
+                res.code = -1;
+                res.message = e.Message;
             }
             return res;
         }
@@ -143,19 +143,19 @@ namespace Services
                 bool Success = func.Invoke(p);
                 if (Success)
                 {
-                    res.Code = 2000;
-                    res.Message = "成功";
+                    res.code = 2000;
+                    res.message = "成功";
                 }
                 else
                 {
-                    res.Code = -1;
-                    res.Message = "失败";
+                    res.code = -1;
+                    res.message = "失败";
                 }
             }
             catch (Exception e)
             {
-                res.Code = -1;
-                res.Message = e.Message;
+                res.code = -1;
+                res.message = e.Message;
             }
             return res;
         }
@@ -167,14 +167,14 @@ namespace Services
             try
             {
                 PResult obj = func.Invoke(p);
-                res.Code = 2000;
-                res.Message = "成功";
-                res.Items = obj;
+                res.code = 2000;
+                res.message = "成功";
+                res.items = obj;
             }
             catch (Exception e)
             {
-                res.Code = -1;
-                res.Message = e.Message;
+                res.code = -1;
+                res.message = e.Message;
             }
             return res;
         }
@@ -185,14 +185,14 @@ namespace Services
             try
             {
                 PResult obj = func.Invoke(p, p1);
-                res.Code = 2000;
-                res.Message = "成功";
-                res.Items = obj;
+                res.code = 2000;
+                res.message = "成功";
+                res.items = obj;
             }
             catch (Exception e)
             {
-                res.Code = -1;
-                res.Message = e.Message;
+                res.code = -1;
+                res.message = e.Message;
             }
             return res;
         }
@@ -204,15 +204,15 @@ namespace Services
             try
             {
                 PResult obj = func.Invoke(p, p1, p2);
-                res.Code = 2000;
-                res.Message = "成功";
-                res.Items = obj;
-                res.Total = p2 as int?;
+                res.code = 2000;
+                res.message = "成功";
+                res.items = obj;
+                res.total = p2 as int?;
             }
             catch (Exception e)
             {
-                res.Code = -1;
-                res.Message = e.Message;
+                res.code = -1;
+                res.message = e.Message;
             }
             return res;
         }
@@ -224,15 +224,15 @@ namespace Services
             try
             {
                 PResult obj = func.Invoke(p, p1, p2, p3);
-                res.Code = 2000;
-                res.Message = "成功";
-                res.Items = obj;
+                res.code = 2000;
+                res.message = "成功";
+                res.items = obj;
                 
             }
             catch (Exception e)
             {
-                res.Code = -1;
-                res.Message = e.Message;
+                res.code = -1;
+                res.message = e.Message;
             }
             return res;
         }
@@ -242,15 +242,15 @@ namespace Services
             try
             {
                 PResult obj = func.Invoke(p, p1, p2, p3, p4);
-                res.Code = 2000;
-                res.Message = "成功";
-                res.Items = obj;
+                res.code = 2000;
+                res.message = "成功";
+                res.items = obj;
                 
             }
             catch (Exception e)
             {
-                res.Code = -1;
-                res.Message = e.Message;
+                res.code = -1;
+                res.message = e.Message;
             }
             return res;
         }
@@ -268,14 +268,14 @@ namespace Services
             try
             {
                 PResult pResult = func.Invoke(p, p1,ref p2);
-                res.Code = 2000;
-                res.Message = "成功";
-                res.Total = p2 as int?;
+                res.code = 2000;
+                res.message = "成功";
+                res.total = p2 as int?;
             }
             catch (Exception e)
             {
-                res.Code = -1;
-                res.Message = e.Message;
+                res.code = -1;
+                res.message = e.Message;
             }
             return res;
         }
@@ -287,14 +287,14 @@ namespace Services
             try
             {
                 PResult pResult = func.Invoke(p, p1, p2, ref p3);
-                res.Code = 2000;
-                res.Message = "成功";
-                res.Total = p3 as int?;
+                res.code = 2000;
+                res.message = "成功";
+                res.total = p3 as int?;
             }
             catch(Exception e)
             {
-                res.Code = -1;
-                res.Message = e.Message;
+                res.code = -1;
+                res.message = e.Message;
             }
             return res;
         }
@@ -307,14 +307,14 @@ namespace Services
             try
             {
                 PResult pResult = func.Invoke(p, p1, p2, p3,ref p4);
-                res.Code = 2000;
-                res.Message = "成功";
-                res.Total = p4 as int?;
+                res.code = 2000;
+                res.message = "成功";
+                res.total = p4 as int?;
             }
             catch (Exception e)
             {
-                res.Code = -1;
-                res.Message = e.Message;
+                res.code = -1;
+                res.message = e.Message;
             }
             return res;
         }
