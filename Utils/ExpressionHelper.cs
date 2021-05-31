@@ -406,6 +406,56 @@ namespace Utils
             }
         }
         /// <summary>
+        /// 逻辑与方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="OrginExp">源表达式</param>
+        /// <param name="AndExp">拼接的表达式</param>
+        /// <returns></returns>
+        public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> OrginExp, Expression<Func<T, bool>> AndExp)
+        {
+            InvocationExpression invoke = Expression.Invoke(AndExp, OrginExp.Parameters.Cast<Expression>());
+            return Expression.Lambda<Func<T, bool>>(Expression.And(OrginExp.Body, invoke), OrginExp.Parameters);
+        }
+        /// <summary>
+        /// 最短路径与方法(当表达式中某段表达式可以决定表达式的最终结果就放弃接下来的所有操作)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="OrExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> OrginExp, Expression<Func<T, bool>> OrExp)
+        {
+            InvocationExpression invoke = Expression.Invoke(OrExp, OrginExp.Parameters.Cast<Expression>());
+            return Expression.Lambda<Func<T, bool>>(Expression.Or(OrginExp.Body, invoke), OrginExp.Parameters);
+        }
+        /// <summary>
+        /// 逻辑或方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndExp"></param>
+        /// <returns></returns>
+
+        public static Expression<Func<T, bool>> AndAlso<T>(this Expression<Func<T, bool>> OrginExp, Expression<Func<T, bool>> AndExp)
+        {
+            InvocationExpression invoke = Expression.Invoke(AndExp, OrginExp.Parameters.Cast<Expression>());
+            return Expression.Lambda<Func<T, bool>>(Expression.AndAlso(OrginExp.Body, invoke), OrginExp.Parameters);
+        }
+
+        /// <summary>
+        /// 最短路径或方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="OrExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, bool>> OrElse<T>(this Expression<Func<T, bool>> OrginExp, Expression<Func<T, bool>> OrExp)
+        {
+            InvocationExpression invoke = Expression.Invoke(OrExp, OrginExp.Parameters.Cast<Expression>());
+            return Expression.Lambda<Func<T, bool>>(Expression.OrElse(OrginExp.Body, invoke), OrginExp.Parameters);
+        }
+        /// <summary>
         /// 获取标注的属性名
         /// </summary>
         /// <param name="prop">属性</param>
