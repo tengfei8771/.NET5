@@ -455,6 +455,8 @@ namespace Utils
             InvocationExpression invoke = Expression.Invoke(OrExp, OrginExp.Parameters.Cast<Expression>());
             return Expression.Lambda<Func<T, bool>>(Expression.OrElse(OrginExp.Body, invoke), OrginExp.Parameters);
         }
+
+        
         /// <summary>
         /// 获取标注的属性名
         /// </summary>
@@ -481,6 +483,38 @@ namespace Utils
         private static bool IsDBNull(object t)
         {
             return t is DBNull;
+        }
+    }
+
+    public class ExpressionGenericMapper<TIn, TOut>//Mapper`2
+    {
+        private static Func<TIn, TOut> _FUNC = null;
+        static ExpressionGenericMapper()
+        {
+            ParameterExpression parameterExpression = Expression.Parameter(typeof(TIn), "p");
+            List<MemberBinding> memberBindingList = new List<MemberBinding>();
+            foreach (var item in typeof(TOut).GetProperties())
+            {
+                MemberExpression property = Expression.Property(parameterExpression, typeof(TIn).GetProperty(item.Name));
+                MemberBinding memberBinding = Expression.Bind(item, property);
+                memberBindingList.Add(memberBinding);
+            }
+            foreach (var item in typeof(TOut).GetFields())
+            {
+                MemberExpression property = Expression.Field(parameterExpression, typeof(TIn).GetField(item.Name));
+                MemberBinding memberBinding = Expression.Bind(item, property);
+                memberBindingList.Add(memberBinding);
+            }
+            MemberInitExpression memberInitExpression = Expression.MemberInit(Expression.New(typeof(TOut)), memberBindingList.ToArray());
+            Expression<Func<TIn, TOut>> lambda = Expression.Lambda<Func<TIn, TOut>>(memberInitExpression, new ParameterExpression[]
+            {
+                     parameterExpression
+            });
+            _FUNC = lambda.Compile();//拼装是一次性的
+        }
+        public static TOut Trans(TIn t)
+        {
+            return _FUNC(t);
         }
     }
 }
