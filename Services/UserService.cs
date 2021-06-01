@@ -48,7 +48,7 @@ namespace Services
                 var userinfo = userlist.Where(t => t.UserPassWord == AESPwd).FirstOrDefault();
                 if (userinfo != null)
                 {
-                    res.code = 50000;
+                    res.code = 2000;
                     res.message = "登录成功";
                     var userinfodic = ReflectionConvertHelper.ConvertObjectToDictionary(userinfo);
                     res.items = JwtHelper.CreateToken(userinfodic, 30);

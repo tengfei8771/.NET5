@@ -74,11 +74,11 @@ namespace WebApi
                 options.AddSecurityDefinition("X-Token", new OpenApiSecurityScheme()
                 {
                     Description = "在下框中输入请求头中需要添加Jwt授权Token(不需要输入前缀)",
-                    Name = "X-Token",
+                    Name = "Bear",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
                     BearerFormat = "JWT",
-                    Scheme = "X-Token"
+                    Scheme = "Bear"
                 });
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
                     {
@@ -86,7 +86,7 @@ namespace WebApi
                             new OpenApiSecurityScheme{
                                 Reference = new OpenApiReference {
                                             Type = ReferenceType.SecurityScheme,
-                                            Id = "X-Token"}
+                                            Id = "Bear"}
                            },new string[] { }
                         }
                     });
