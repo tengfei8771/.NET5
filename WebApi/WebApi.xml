@@ -4,5 +4,24 @@
         <name>WebApi</name>
     </assembly>
     <members>
+        <member name="T:WebApi.Common.Verification">
+            <summary>
+            验证类,判断控制器权限是否需要jwt验证
+            </summary>
+        </member>
+        <member name="M:WebApi.Common.Verification.GetFlag(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            获取判断标志位
+            </summary>
+            <param name="context">http上下文</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.MenuController.GetMenubyRole(System.Decimal)">
+            <summary>
+            根据用户ID获取允许用户获得的菜单
+            </summary>
+            <param name="userId">用户id</param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

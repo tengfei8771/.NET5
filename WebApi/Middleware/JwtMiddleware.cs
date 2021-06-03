@@ -29,7 +29,7 @@ namespace PublicWebApi.Common.Validator
             if (Verification.GetFlag(httpContext))
             {
                 HttpRequest request = httpContext.Request;
-                if (!request.Headers.TryGetValue("X-Token", out var apiKeyHeaderValues))
+                if (!request.Headers.TryGetValue("Bear", out var apiKeyHeaderValues))
                 {
                     httpContext.Response.ContentType = "application/json";
                     httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;

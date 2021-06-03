@@ -71,7 +71,7 @@ namespace WebApi
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 // 添加控制器层注释，true表示显示控制器注释
                 options.IncludeXmlComments(xmlPath, true);
-                options.AddSecurityDefinition("X-Token", new OpenApiSecurityScheme()
+                options.AddSecurityDefinition("Bear", new OpenApiSecurityScheme()
                 {
                     Description = "在下框中输入请求头中需要添加Jwt授权Token(不需要输入前缀)",
                     Name = "Bear",
