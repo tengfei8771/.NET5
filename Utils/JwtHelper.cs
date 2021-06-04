@@ -62,64 +62,84 @@ namespace Utils
         /// <summary>
         /// 验证jwt令牌
         /// </summary>
-        /// <param name="str">验证的字符串</param>
-        /// <param name="Msg">验证信息</param>
-        /// <returns></returns>
-        public static bool ValidateJwt(string str,out string Msg)
+        /// <param name="str">token令牌</param>
+        /// <param name="Msg"></param>
+        /// <returns>
+        /// <para>
+        /// 是否验证成功
+        /// </para>
+        /// <para>
+        /// 验证的结果code
+        /// </para>
+        /// </returns>
+        public static Tuple<bool,int> ValidateJwt(string str)
         {
             try
             {
-                bool flag = true;  
-                string[] StrArr = str.Split('.');
-                string First = Base64UrlEncoder.Decode(StrArr[0]);
-                JObject JFirst = JObject.Parse(First);
+                bool flag = true;
+                var JwtData = GetJwtInfo(str);
+                JObject JFirst = JObject.Parse(Base64UrlEncoder.Decode(JwtData.Item1));
                 string Type = JFirst.Value<string>("alg");
-                string Second = Base64UrlEncoder.Decode(StrArr[1]);
+                string Second = Base64UrlEncoder.Decode(JwtData.Item2);
+                //用户信息段
                 JObject JSecond= JObject.Parse(Second);
                 if (Key == null)
                 {
-                    //Key = Base64UrlEncoder.Encode(Configuration.GetValue<string>("SecurityKey").Trim());
-                    //Key = Convert.ToBase64String(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("SecurityKey").Trim()));
-                    //Key = Configuration.GetValue<string>("SecurityKey").Trim();
                     Key = Configuration.GetSection("SecurityKey").Value.Trim();
                 }
                 if (Type.ToUpper() == "HS256")
                 {
                     var hs256 = new HMACSHA256(Encoding.ASCII.GetBytes(Key));
-                    var encodedSignature = Base64UrlEncoder.Encode(hs256.ComputeHash(Encoding.UTF8.GetBytes(string.Concat(StrArr[0], ".", StrArr[1]))));
+                    var encodedSignature = Base64UrlEncoder.Encode(hs256.ComputeHash(Encoding.UTF8.GetBytes(string.Concat(JwtData.Item1, ".", JwtData.Item2))));
                     //var encodedSignature1 = Convert.ToBase64String(hs256.ComputeHash(Encoding.UTF8.GetBytes(string.Concat(First, ",", Second))));
-                    flag = flag && (StrArr[2] == encodedSignature);
+                    flag = flag && (JwtData.Item3 == encodedSignature);
                     if (flag)//自定义验证全部写在这里
                     {
                         var now = ToUnixEpochDate(DateTime.UtcNow);
                         long exp = JSecond.Value<long>("exp");
                         if (flag && (now > exp))
                         {
-                            Msg = "签名已经过期!";
-                            return false;
-                        }            
+                            if(now-exp<= 10 * 60 * 1000)
+                            {
+                                return Tuple.Create(flag, (int)ValidateType.WillOverdue);
+                            }
+                            
+                        }
+                        return Tuple.Create(flag, (int)ValidateType.Success);
                     }
                     else
                     {
-                        Msg = "签名验证失败！";
-                        return false;
+                        return Tuple.Create(flag, (int)ValidateType.IllegalToken);
                     }
-                    Msg = "验证成功！";
-                    return true;
-
                 }
                 else
                 {
-                    Msg = "未定义的加密类型!";
-                    return false;
+                    return Tuple.Create(false, (int)ValidateType.UnkonwType);
                 }
+                
             }
             catch(Exception e)
             {
-                Msg = e.Message;
-                return false;
+                throw new Exception(e.Message);
             }
-            
+        }
+
+        /// <summary>
+        /// 把JWT数据拆成三段返回
+        /// </summary>
+        /// <param name="Jwt">JWT令牌</param>
+        /// <returns></returns>
+        private static Tuple<string,string,string> GetJwtInfo(string Jwt)
+        {
+            try
+            {
+                string[] StrArr = Jwt.Split('.');
+                return Tuple.Create(StrArr[0], StrArr[1], StrArr[2]);
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         private static void GetConfiguration()
@@ -129,6 +149,19 @@ namespace Utils
                         .AddJsonFile("appsettings.json",optional: true, reloadOnChange: true);
             Configuration = builder.Build();
             Key = Configuration.GetSection("SecurityKey").Value.Trim();
+        }
+        public enum ValidateType
+        {
+            //非法令牌
+            IllegalToken,
+            //成功
+            Success,
+            //成功但即将过期
+            WillOverdue,
+            //已经过期
+            Overdue,
+            //未定义的验证类型
+            UnkonwType
         }
     }
 }
