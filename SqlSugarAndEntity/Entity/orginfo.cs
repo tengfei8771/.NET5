@@ -60,18 +60,11 @@ namespace SqlSugarAndEntity
            public string Remark {get;set;}
 
            /// <summary>
-           /// Desc:创建时间
-           /// Default:
-           /// Nullable:True
-           /// </summary>           
-           public DateTime? OrgCreateTime {get;set;}
-
-           /// <summary>
            /// Desc:创建人ID
            /// Default:
            /// Nullable:True
            /// </summary>           
-           public decimal? OrgCreateBy {get;set;}
+           public decimal? CreateBy {get;set;}
 
            [SugarColumn(IsIgnore =true)]
            public bool hasChildren { get; set; }

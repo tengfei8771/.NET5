@@ -29,6 +29,12 @@ namespace IServices
         /// <returns></returns>
         ResponseModel Delete(T entity);
         /// <summary>
+        /// 根据表达式删除数据
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        ResponseModel Delete(Expression<Func<T,bool>> expression);
+        /// <summary>
         /// 根据查询条件获取全部数据
         /// </summary>
         /// <param name="predicate">查询表达式</param>

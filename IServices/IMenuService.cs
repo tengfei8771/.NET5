@@ -12,6 +12,6 @@ namespace IServices
     {
         ResponseModel GetMenubyRole(decimal userId);
 
-        ResponseModel GetLazyMenuTreeNode(decimal? ParentMenuID);
+        ResponseModel GetLazyMenuTreeNode(decimal? ParentMenuID, int page, int limit);
     }
 }

@@ -67,20 +67,12 @@ namespace SqlSugarAndEntity
         /// Nullable:True
         /// </summary>           
         public int? MenuSortNo { get; set; }
-
-        /// <summary>
-        /// Desc:创建时间
-        /// Default:
-        /// Nullable:True
-        /// </summary>           
-        public DateTime? MenuCreateTime { get; set; }
-
         /// <summary>
         /// Desc:创建人ID
         /// Default:
         /// Nullable:True
         /// </summary>           
-        public decimal? MenuCreateBy { get; set; }
+        public decimal? CreateBy { get; set; }
 
         /// <summary>
         /// Desc:是否启用 0是1否

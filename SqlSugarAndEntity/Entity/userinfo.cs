@@ -74,18 +74,11 @@ namespace SqlSugarAndEntity
            public string IdNumber {get;set;}
 
            /// <summary>
-           /// Desc:创建时间
-           /// Default:
-           /// Nullable:True
-           /// </summary>           
-           public DateTime? UserCreateTime {get;set;}
-
-           /// <summary>
            /// Desc:创建人ID
            /// Default:
            /// Nullable:True
            /// </summary>           
-           public decimal? UserCreateBy {get;set;}
+           public decimal? CreateBy {get;set;}
 
     }
 }

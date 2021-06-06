@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using IServices.ResModel;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +10,6 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Utils;
 using WebApi.Common;
 using static Utils.JwtHelper;
@@ -29,63 +26,47 @@ namespace PublicWebApi.Common.Validator
             _next = next;
         }
 
-        public Task Invoke(HttpContext httpContext)
+        public  Task Invoke(HttpContext httpContext)
         { 
             if (Verification.GetFlag(httpContext))
             {
-                string key = GetRequestKey();
                 ResponseModel responseModel = new ResponseModel();
                 HttpRequest request = httpContext.Request;
-                #region 拦截需要验证的请求
                 if (!request.Headers.TryGetValue("Bear", out var apiKeyHeaderValues))
                 {
                     httpContext.Response.ContentType = "application/json";
                     httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    responseModel.code = (int)ResponseType.NoToken;
-                    responseModel.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.NoToken);
+                    responseModel.code = 50014;
+                    responseModel.message = "此请求未包含请求令牌,禁止访问!";
                     httpContext.Response.WriteAsync(JsonConvert.SerializeObject(responseModel));
                     return Task.FromResult(0);
                 }
                 else
                 {
                     request.EnableBuffering();//可以多次多次读取http内包含的数据
-                    var JwtValidateData = ValidateJwt(key,apiKeyHeaderValues.ToString());
+                    var JwtValidateData = ValidateJwt(apiKeyHeaderValues.ToString());
                     if (!JwtValidateData.Item1)
                     {
                         httpContext.Response.ContentType = "application/json";
                         httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                        responseModel.code =(int)JwtValidateData.Item2;
-                        responseModel.message = ReflectionConvertHelper.GetEnumDescription(JwtValidateData.Item2);
+                        if (JwtValidateData.Item2 == (int)ResponseType.IllegalToken)
+                        {
+                            responseModel.code = 50015;
+                            responseModel.message = "非法令牌!,禁止访问！";
+                        }
+                        else
+                        {
+                            responseModel.code = 50016;
+                            responseModel.message = "令牌已过期,请重新登录";
+                        }
                         httpContext.Response.WriteAsync(JsonConvert.SerializeObject(responseModel));
                         return Task.FromResult(0);
-                        //return;
                     }
                 }
-                #endregion
-                
+                // _next(httpContext);
+                //var res = HttpContextHelper.GetHttpResponse(httpContext.Response);
             }
-            return  _next(httpContext);
-            #region 拦截返回结果,记录日志
-            //var originalBodyStream = httpContext.Response.Body;
-            //JObject obj = new JObject();
-            //using (var responseBody = new MemoryStream())
-            //{
-            //    httpContext.Response.Body = responseBody;
-            //    await _next(httpContext);
-            //    obj = await HttpContextHelper.GetResponse(httpContext.Response);
-            //    await responseBody.CopyToAsync(originalBodyStream);
-            //    string res = JsonConvert.SerializeObject(obj);
-            //    httpContext.Response.Body = originalBodyStream;
-            //    httpContext.Response.ContentLength = res.Length;
-            //    await httpContext.Response.WriteAsync(res);
-            //}
-            //await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(obj));
-
-            #endregion
-            //httpContext.Response.OnCompleted(() =>
-            //{
-            //    return Task.CompletedTask;
-            //});
+             return _next(httpContext);
         }
 
     }

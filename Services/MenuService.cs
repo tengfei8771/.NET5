@@ -18,9 +18,10 @@ namespace Services
             this.menuRepository = menuRepository;
         }
 
-        public ResponseModel GetLazyMenuTreeNode(decimal? ParentMenuID)
+        public ResponseModel GetLazyMenuTreeNode(decimal? ParentMenuID,int page,int limit)
         {
-            return CreateResponseModel(menuRepository.GetLazyMenuTreeNode, ParentMenuID);
+            int total = 0;
+            return CreateResponseModelByPage(menuRepository.GetLazyMenuTreeNode, ParentMenuID,page,limit,ref total);
         }
 
         public ResponseModel GetMenubyRole(decimal userId)

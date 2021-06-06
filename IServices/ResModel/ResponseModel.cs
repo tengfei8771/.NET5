@@ -14,4 +14,5 @@ namespace IServices.ResModel
         public int? total { get; set; }
         public string path  { get; set; }
     }
+
 }

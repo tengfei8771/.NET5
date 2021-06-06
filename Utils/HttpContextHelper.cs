@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Utils
 {
@@ -38,5 +41,18 @@ namespace Utils
             }
             return EndPoint.Metadata.GetMetadata<T>();
         }
+        /// <summary>
+        /// 获取http的返回值并返回一个Jobject的弱类型的实体
+        /// </summary>
+        /// <param name="httpResponse"></param>
+        /// <returns></returns>
+        public static async Task<JObject> GetResponse(HttpResponse httpResponse)
+        {
+            httpResponse.Body.Seek(0, SeekOrigin.Begin);
+            var text = await new StreamReader(httpResponse.Body).ReadToEndAsync();
+            httpResponse.Body.Seek(0, SeekOrigin.Begin);
+            return JObject.Parse(text);
+        }
+
     }
 }

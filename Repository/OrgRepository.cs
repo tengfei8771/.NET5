@@ -40,8 +40,7 @@ namespace Repository
                     ParentOrgID = t.ParentOrgID,
                     ShortName = t.ShortName,
                     Remark = t.Remark,
-                    OrgCreateTime = t.OrgCreateTime,
-                    OrgCreateBy = t.OrgCreateBy,
+                    CreateBy = t.CreateBy,
                     hasChildren = SqlFunc.Subqueryable<orginfo>().Where(a => a.ParentOrgID == t.ID).Any(),
                 })
                 .Mapper(it =>
@@ -68,8 +67,7 @@ namespace Repository
                     ParentOrgID = t.ParentOrgID,
                     ShortName = t.ShortName,
                     Remark = t.Remark,
-                    OrgCreateTime = t.OrgCreateTime,
-                    OrgCreateBy = t.OrgCreateBy,
+                    CreateBy = t.CreateBy,
                     hasChildren = SqlFunc.Subqueryable<orginfo>().Where(a => a.ParentOrgID == t.ID).Any(),
                 })
                 .ToDataTable();

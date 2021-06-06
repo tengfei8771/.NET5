@@ -47,8 +47,7 @@ namespace Repository
                     a.UserPhone,
                     a.UserRole,
                     a.IdNumber,
-                    a.UserCreateTime,
-                    a.UserCreateBy
+                    a.CreateBy
                 })
                 .Select((a, b, c, d) => new UserinfoBusinessModel
                 {
@@ -60,8 +59,7 @@ namespace Repository
                     UserPhone = a.UserPhone,
                     UserRole=SqlFunc.IF(a.UserRole=="0").Return("管理员").ElseIF(a.UserRole=="1").Return("普通用户").End("未知"),
                     IdNumber = a.IdNumber,
-                    UserCreateTime = a.UserCreateTime,
-                    UserCreateBy = a.UserCreateBy,
+                    UserCreateBy = a.CreateBy,
                     OrgName = SqlSguarExtensionMethod.GroupConcat(d.OrgName)
                 })
                 .ToList();
@@ -87,8 +85,7 @@ namespace Repository
                     a.UserPhone,
                     a.UserRole,
                     a.IdNumber,
-                    a.UserCreateTime,
-                    a.UserCreateBy
+                    a.CreateBy
                 })
                 .Select((a, b, c) => new UserinfoBusinessModel
                 {
@@ -100,9 +97,8 @@ namespace Repository
                     UserPhone = a.UserPhone,
                     UserRole = SqlFunc.IF(a.UserRole == "0").Return("管理员").ElseIF(a.UserRole == "1").Return("普通用户").End("未知"),
                     IdNumber = a.IdNumber,
-                    UserCreateTime = a.UserCreateTime,
-                    UserCreateBy = a.UserCreateBy,
-                    OrgName = SqlSguarExtensionMethod.GroupConcat(c.OrgName)
+                    UserCreateBy = a.CreateBy,
+                    OrgName = SqlSguarExtensionMethod.GroupConcat(c.OrgName),
                 })
                 .Mapper((it,cache)=> 
                 {

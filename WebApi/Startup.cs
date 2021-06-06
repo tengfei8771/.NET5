@@ -123,7 +123,7 @@ namespace WebApi
             app.UseRouting();
 
             //app.UseAuthorization();
-
+            //app.UseMiddleware<RequestResponseLoggingMiddleware>();
             app.UseMiddleware<JwtMiddleware>();
             app.UseEndpoints(endpoints =>
             {

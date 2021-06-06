@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
@@ -349,6 +350,24 @@ namespace Utils
             }
         }
         /// <summary>
+        /// 获取枚举值上的Description特性的说明
+        /// </summary>
+        /// <typeparam name="T">枚举类型</typeparam>
+        /// <param name="obj">枚举值</param>
+        /// <returns>特性的说明</returns>
+        public static string GetEnumDescription<T>(T obj)
+        {
+            var type = obj.GetType();
+            FieldInfo field = type.GetField(Enum.GetName(type, obj));
+            DescriptionAttribute descAttr = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
+            if (descAttr == null)
+            {
+                return string.Empty;
+            }
+
+            return descAttr.Description;
+        }
+        /// <summary>
         /// 将dt select的结果从dr[] 变成dt
         /// </summary>
         /// <param name="dt">数据源</param>
@@ -393,6 +412,16 @@ namespace Utils
                 dic.Add(MapperName, prop.GetValue(entity));
             }
             return dic;
+        }
+        /// <summary>
+        /// 判断是否实现Ienu接口
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public static bool IsAssignableIEnu<T>(T t)
+        {
+            return typeof(T).GetInterface("IEnumerable")!=null;
         }
 
         private static bool IsDBNull(object t)

@@ -23,5 +23,49 @@
             <param name="userId">用户id</param>
             <returns></returns>
         </member>
+        <member name="M:WebApi.Controllers.MenuController.GetMenu(System.Nullable{System.Decimal},System.Int32,System.Int32)">
+            <summary>
+            获取懒加载的菜单树
+            </summary>
+            <param name="ParentMenuID">父节点ID</param>
+            <param name="page">页码</param>
+            <param name="limit">每页条数</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.MenuController.CreateMenu(SqlSugarAndEntity.menuinfo)">
+            <summary>
+            插入菜单
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.MenuController.UpdateMenu(SqlSugarAndEntity.menuinfo)">
+            <summary>
+            修改菜单
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.MenuController.DeleteMenu(System.Decimal)">
+            <summary>
+            删除菜单
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.Login(System.String,System.String)">
+            <summary>
+            用户登录
+            </summary>
+            <param name="Account"></param>
+            <param name="pwd"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.RefreshToken(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            刷新token
+            </summary>
+            <returns></returns>
+        </member>
     </members>
 </doc>

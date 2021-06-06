@@ -18,7 +18,7 @@ namespace Repository
             this.baseMethod = baseMethod;
         }
 
-        public List<menuinfo> GetLazyMenuTreeNode(decimal? ParentMenuID)
+        public List<menuinfo> GetLazyMenuTreeNode(decimal? ParentMenuID,int page,int limit,ref int total)
         {
             Expression<Func<menuinfo, bool>> exp;
             if (ParentMenuID != null)
@@ -27,7 +27,7 @@ namespace Repository
             }
             else
             {
-                exp = t => t.MenuParentID == null;
+                exp = t => t.MenuParentID == null|| t.MenuParentID==0;
             }
             var list = baseMethod.Db().Queryable<menuinfo>()
                 .Where(exp)
@@ -41,8 +41,7 @@ namespace Repository
                     MenuPath = t.MenuPath,
                     MenuIcon = t.MenuIcon,
                     MenuSortNo = t.MenuSortNo,
-                    MenuCreateTime = t.MenuCreateTime,
-                    MenuCreateBy = t.MenuCreateBy,
+                    CreateBy = t.CreateBy,
                     hasChildren = SqlFunc.Subqueryable<menuinfo>().Where(a => a.MenuParentID == t.ID).Any()
                 })
                 .Mapper(it =>
@@ -52,7 +51,7 @@ namespace Repository
                         it.children = new List<menuinfo>();
                     }
                 })
-                .ToList();
+                .ToPageList(page,limit,ref total);
             return list;     
         }
 

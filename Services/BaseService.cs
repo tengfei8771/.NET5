@@ -7,6 +7,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Utils;
+using static Utils.JwtHelper;
 
 namespace Services
 {
@@ -21,7 +23,10 @@ namespace Services
         {
             return CreateResponseModel(baseRepository.Delete, entity);
         }
-
+        public ResponseModel Delete(Expression<Func<T,bool>> Exp)
+        {
+            return CreateResponseModel(baseRepository.Delete, Exp);
+        }
         public ResponseModel DeleteAll(List<T> list)
         {
             return CreateResponseModel(baseRepository.DeleteAll, list);
@@ -101,40 +106,61 @@ namespace Services
             return CreateResponseModel(baseRepository.UpdateAll, list);
         }
         #region 新增，修改，删除执行委托操作通用方法
+        /// <summary>
+        /// 一个参数的无返回值模型包装方法,一般用于事务批量，返回的code是操作成功类
+        /// </summary>
+        /// <typeparam name="P">实体</typeparam>
+        /// <param name="func">委托执行的方法</param>
+        /// <param name="p">参数p</param>
+        /// <returns></returns>
         protected ResponseModel CreateResponseModel<P>(Action<P> func, P p)
         {
             ResponseModel res = new ResponseModel();
             try
             {
                 func.Invoke(p);
-                res.code = 2000;
-                res.message = "成功";
+                res.code = (int)ResponseType.OperationSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.OperationSucess);
             }
             catch (Exception e)
             {
-                res.code = -1;
+                res.code = (int)ResponseType.Exception;
                 res.message = e.Message;
             }
             return res;
         }
-        
+        /// <summary>
+        /// 一个参数的无返回值模型包装方法,一般用于事务批量，返回的code是操作成功类
+        /// </summary>
+        /// <typeparam name="P">实体1</typeparam>
+        /// <typeparam name="P1">实体2</typeparam>
+        /// <param name="func">委托执行的方法</param>
+        /// <param name="p">实体1的实参</param>
+        /// <param name="p1">实体2的实参</param>
+        /// <returns></returns>
         protected ResponseModel CreateResponseModel<P, P1>(Action<P, P1> func, P p, P1 p1)
         {
             ResponseModel res = new ResponseModel();
             try
             {
                 func.Invoke(p, p1);
-                res.code = 2000;
-                res.message = "成功";
+                res.code = (int)ResponseType.OperationSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.OperationSucess);
             }
             catch (Exception e)
             {
-                res.code = -1;
+                res.code = (int)ResponseType.Exception;
                 res.message = e.Message;
             }
             return res;
         }
-
+        /// <summary>
+        /// 返回bool类型的返回模型包装方法,一般用于操作数据库数据的方法
+        /// </summary>
+        /// <typeparam name="P">实体1</typeparam>
+        /// <param name="func">委托执行的方法</param>
+        /// <param name="p">实参1</param>
+        /// <returns></returns>
         protected ResponseModel CreateResponseModel<P>(Func<P, bool> func, P p)
         {
             ResponseModel res = new ResponseModel();
@@ -143,37 +169,45 @@ namespace Services
                 bool Success = func.Invoke(p);
                 if (Success)
                 {
-                    res.code = 2000;
-                    res.message = "成功";
+                    res.code = (int)ResponseType.OperationSucess;
+                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.OperationSucess);
                 }
                 else
                 {
-                    res.code = -1;
-                    res.message = "失败";
+                    res.code = (int)ResponseType.Exception;
+                    res.message = "失败,受影响的数据条数为0！";
                 }
             }
             catch (Exception e)
             {
-                res.code = -1;
+                res.code = (int)ResponseType.Exception;
                 res.message = e.Message;
             }
             return res;
         }
         #endregion
         #region 不进行分页的的查询的委托通用方法
+        /// <summary>
+        /// 一个参数的包装模型返回方法
+        /// </summary>
+        /// <typeparam name="P">实体</typeparam>
+        /// <typeparam name="PResult">返回结果</typeparam>
+        /// <param name="func">执行的委托</param>
+        /// <param name="p">实参</param>
+        /// <returns></returns>
         protected ResponseModel CreateResponseModel<P, PResult>(Func<P, PResult> func, P p)
         {
             ResponseModel res = new ResponseModel();
             try
             {
                 PResult obj = func.Invoke(p);
-                res.code = 2000;
-                res.message = "成功";
+                res.code = (int)ResponseType.GetInfoSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
                 res.items = obj;
             }
             catch (Exception e)
             {
-                res.code = -1;
+                res.code = (int)ResponseType.Exception;
                 res.message = e.Message;
             }
             return res;
@@ -185,33 +219,43 @@ namespace Services
             try
             {
                 PResult obj = func.Invoke(p, p1);
-                res.code = 2000;
-                res.message = "成功";
+                res.code = (int)ResponseType.GetInfoSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
                 res.items = obj;
             }
             catch (Exception e)
             {
-                res.code = -1;
+                res.code =(int)ResponseType.Exception;
                 res.message = e.Message;
             }
             return res;
         }
 
-
+        /// <summary>
+        /// 执行三个参数的查询方法并将返回结果包装
+        /// </summary>
+        /// <typeparam name="P">参数1的类型</typeparam>
+        /// <typeparam name="P1">参数2的类型</typeparam>
+        /// <typeparam name="P2">参数3的类型</typeparam>
+        /// <typeparam name="PResult">返回值类型</typeparam>
+        /// <param name="func">委托执行的方法</param>
+        /// <param name="p">实参1</param>
+        /// <param name="p1">实参2</param>
+        /// <param name="p2">实参3</param>
+        /// <returns></returns>
         protected ResponseModel CreateResponseModel<P, P1, P2, PResult>(Func<P, P1, P2, PResult> func, P p, P1 p1, P2 p2)
         {
             ResponseModel res = new ResponseModel();
             try
             {
                 PResult obj = func.Invoke(p, p1, p2);
-                res.code = 2000;
-                res.message = "成功";
+                res.code = (int)ResponseType.GetInfoSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
                 res.items = obj;
-                res.total = p2 as int?;
             }
             catch (Exception e)
             {
-                res.code = -1;
+                res.code = (int)ResponseType.Exception;
                 res.message = e.Message;
             }
             return res;
@@ -224,14 +268,14 @@ namespace Services
             try
             {
                 PResult obj = func.Invoke(p, p1, p2, p3);
-                res.code = 2000;
-                res.message = "成功";
+                res.code = (int)ResponseType.GetInfoSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
                 res.items = obj;
                 
             }
             catch (Exception e)
             {
-                res.code = -1;
+                res.code = (int)ResponseType.Exception;
                 res.message = e.Message;
             }
             return res;
@@ -242,14 +286,14 @@ namespace Services
             try
             {
                 PResult obj = func.Invoke(p, p1, p2, p3, p4);
-                res.code = 2000;
-                res.message = "成功";
+                res.code = (int)ResponseType.GetInfoSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
                 res.items = obj;
                 
             }
             catch (Exception e)
             {
-                res.code = -1;
+                res.code = (int)ResponseType.Exception;
                 res.message = e.Message;
             }
             return res;
@@ -268,13 +312,14 @@ namespace Services
             try
             {
                 PResult pResult = func.Invoke(p, p1,ref p2);
-                res.code = 2000;
-                res.message = "成功";
+                res.items = pResult;
+                res.code = (int)ResponseType.GetInfoSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
                 res.total = p2 as int?;
             }
             catch (Exception e)
             {
-                res.code = -1;
+                res.code = (int)ResponseType.Exception;
                 res.message = e.Message;
             }
             return res;
@@ -287,13 +332,14 @@ namespace Services
             try
             {
                 PResult pResult = func.Invoke(p, p1, p2, ref p3);
-                res.code = 2000;
-                res.message = "成功";
+                res.items = pResult;
+                res.code = (int)ResponseType.GetInfoSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
                 res.total = p3 as int?;
             }
             catch(Exception e)
             {
-                res.code = -1;
+                res.code = (int)ResponseType.Exception;
                 res.message = e.Message;
             }
             return res;
@@ -307,13 +353,14 @@ namespace Services
             try
             {
                 PResult pResult = func.Invoke(p, p1, p2, p3,ref p4);
-                res.code = 2000;
-                res.message = "成功";
+                res.items = pResult;
+                res.code = (int)ResponseType.GetInfoSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
                 res.total = p4 as int?;
             }
             catch (Exception e)
             {
-                res.code = -1;
+                res.code = (int)ResponseType.Exception;
                 res.message = e.Message;
             }
             return res;

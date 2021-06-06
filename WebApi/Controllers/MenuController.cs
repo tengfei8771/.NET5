@@ -1,6 +1,8 @@
-﻿using IServices;
+﻿
+using IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SqlSugarAndEntity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,5 +29,40 @@ namespace WebApi.Controllers
         [HttpGet("GetMenubyRole")]
         public IActionResult GetMenubyRole(decimal userId)
             => Ok(menuService.GetMenubyRole(userId));
+        /// <summary>
+        /// 获取懒加载的菜单树
+        /// </summary>
+        /// <param name="ParentMenuID">父节点ID</param>
+        /// <param name="page">页码</param>
+        /// <param name="limit">每页条数</param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult GetMenu(decimal? ParentMenuID,int page,int limit)
+            => Ok(menuService.GetLazyMenuTreeNode(ParentMenuID,page,limit));
+        /// <summary>
+        /// 插入菜单
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult CreateMenu([FromBody] menuinfo entity)
+            => Ok(menuService.Insert(entity));
+        /// <summary>
+        /// 修改菜单
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public IActionResult UpdateMenu([FromBody] menuinfo entity)
+            => Ok(menuService.Update(entity));
+        /// <summary>
+        /// 删除菜单
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        [HttpDelete("{ID}")]
+        public IActionResult DeleteMenu(decimal ID)
+            => Ok(menuService.Delete(t => t.ID == ID));
+
     }
 }
