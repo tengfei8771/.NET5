@@ -23,32 +23,32 @@ namespace IRepository
         /// 通过t=>new {t.ID}的形式指定where条件更新
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="WhereExp">形似t=>new {t.ID}</param>
+        /// <param name="WhereSelect">形似t=>new {t.ID}</param>
         /// <returns></returns>
-        bool Update(T entity, Expression<Func<T, object>> WhereExp);
+        bool Update(T entity, Expression<Func<T, object>> WhereSelect);
         /// <summary>
         /// 根据表达式更新实体
         /// </summary>
         /// <param name="SetColumns">需要更新的字段 形似 t=>new T(){UpdateColumn=1}</param>
-        /// <param name="WhereExp">where表达式 形似t=>new {t.ID}</param>
+        /// <param name="WhereSelect">where表达式 形似t=>new {t.ID}</param>
         /// <returns></returns>
-        bool Update(Expression<Func<T,T>> SetColumns, Expression<Func<T, object>> WhereExp);
+        bool Update(Expression<Func<T,T>> SetColumns, Expression<Func<T, object>> WhereSelect);
         /// <summary>
         /// 通过t=>t.new T(){Field="1"}的形式指定where条件和忽略更新的字段
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="WhereExp">形似t=>new {t.ID}</param>
+        /// <param name="WhereSelect">形似t=>new {t.ID}</param>
         /// <param name="IgnoreExpress">形似t=>new {t.IgnoreColumn}</param>
         /// <returns></returns>
-        bool UpdateIgnoreColumns(T entity, Expression<Func<T, object>> WhereExp, Expression<Func<T, object>> IgnoreExpress);
+        bool UpdateIgnoreColumns(T entity, Expression<Func<T, object>> WhereSelect, Expression<Func<T, object>> IgnoreExpress);
         /// <summary>
         /// 通过t=>t.new T(){Field="1"}的形式指定where条件和只更新的字段
         /// </summary>
         /// <param name="entity">实体</param>
-        /// <param name="WhereExp">形似t=>new {t.ID}</param>
+        /// <param name="WhereSelect">形似t=>new {t.ID}</param>
         /// <param name="UpdateExpress">形似t=>new {t.UpdateColumn}</param>
         /// <returns></returns>
-        bool UpdateAppiontColumns(T entity, Expression<Func<T, object>> WhereExp, Expression<Func<T, object>> UpdateExpress);
+        bool UpdateAppiontColumns(T entity, Expression<Func<T, object>> WhereSelect, Expression<Func<T, object>> UpdateExpress);
         /// <summary>
         /// 删除实体
         /// </summary>

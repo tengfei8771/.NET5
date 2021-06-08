@@ -54,7 +54,7 @@ namespace WebApi.Controllers
         /// <returns></returns>
         [HttpPut]
         public IActionResult UpdateMenu([FromBody] menuinfo entity)
-            => Ok(menuService.Update(entity));
+            => Ok(menuService.UpdateIgnoreColumns(entity,t=>new { t.ID},t=>new { t.MenuParentID,t.CreateBy}));
         /// <summary>
         /// 删除菜单
         /// </summary>

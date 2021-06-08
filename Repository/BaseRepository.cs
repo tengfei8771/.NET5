@@ -115,21 +115,21 @@ namespace Repository
         {
             return _baseMethod.Db().Updateable(entity).ExecuteCommand() > 0;
         }
-        public bool Update(T entity,Expression<Func<T,object>> WhereExp)
+        public bool Update(T entity,Expression<Func<T,object>> WhereSelect)
         {
-            return _baseMethod.Db().Updateable(entity).WhereColumns(WhereExp).ExecuteCommand() > 0;
+            return _baseMethod.Db().Updateable(entity).WhereColumns(WhereSelect).ExecuteCommand() > 0;
         }
-        public bool Update(Expression<Func<T, T>> SetColumns, Expression<Func<T, object>> WhereExp)
+        public bool Update(Expression<Func<T, T>> SetColumns, Expression<Func<T, object>> WhereSelect)
         {
-            return _baseMethod.Db().Updateable(SetColumns).WhereColumns(WhereExp).ExecuteCommand() > 0;
+            return _baseMethod.Db().Updateable(SetColumns).WhereColumns(WhereSelect).ExecuteCommand() > 0;
         }
-        public bool UpdateIgnoreColumns(T entity, Expression<Func<T, object>> WhereExp,Expression<Func<T,object>>IgnoreExpress)
+        public bool UpdateIgnoreColumns(T entity, Expression<Func<T, object>> WhereSelect, Expression<Func<T,object>>IgnoreExpress)
         {
-            return _baseMethod.Db().Updateable(entity).IgnoreColumns(IgnoreExpress).WhereColumns(WhereExp).ExecuteCommand() > 0;
+            return _baseMethod.Db().Updateable(entity).IgnoreColumns(IgnoreExpress).WhereColumns(WhereSelect).ExecuteCommand() > 0;
         }
-        public bool UpdateAppiontColumns(T entity, Expression<Func<T, object>> WhereExp, Expression<Func<T, object>> UpdateExpress)
+        public bool UpdateAppiontColumns(T entity, Expression<Func<T, object>> WhereSelect, Expression<Func<T, object>> UpdateExpress)
         {
-            return _baseMethod.Db().Updateable(entity).UpdateColumns(UpdateExpress).WhereColumns(WhereExp).ExecuteCommand() > 0;
+            return _baseMethod.Db().Updateable(entity).UpdateColumns(UpdateExpress).WhereColumns(WhereSelect).ExecuteCommand() > 0;
         }
 
         public bool UpdateAll(List<T> list)

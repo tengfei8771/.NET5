@@ -100,6 +100,25 @@ namespace Services
         {
             return CreateResponseModel(baseRepository.Update, entity);
         }
+        public ResponseModel Update(T entity, Expression<Func<T, object>> WhereExp)
+        {
+            return CreateResponseModel(baseRepository.Update, entity,WhereExp);
+        }
+
+        public ResponseModel Update(Expression<Func<T, T>> SetColumns, Expression<Func<T, object>> WhereExp)
+        {
+            return CreateResponseModel(baseRepository.Update, SetColumns, WhereExp);
+        }
+
+        public ResponseModel UpdateIgnoreColumns(T entity, Expression<Func<T, object>> WhereExp, Expression<Func<T, object>> IgnoreExpress)
+        {
+            return CreateResponseModel(baseRepository.UpdateIgnoreColumns, entity, WhereExp, IgnoreExpress);
+        }
+
+        public ResponseModel UpdateAppiontColumns(T entity, Expression<Func<T, object>> WhereExp, Expression<Func<T, object>> UpdateExpress)
+        {
+            return CreateResponseModel(baseRepository.UpdateAppiontColumns, entity, WhereExp, UpdateExpress);
+        }
 
         public ResponseModel UpdateAll(List<T> list)
         {
@@ -177,6 +196,55 @@ namespace Services
                     res.code = (int)ResponseType.Exception;
                     res.message = "失败,受影响的数据条数为0！";
                 }
+            }
+            catch (Exception e)
+            {
+                res.code = (int)ResponseType.Exception;
+                res.message = e.Message;
+            }
+            return res;
+        }
+        /// <summary>
+        /// 构造一个执行委托返回值为bool的包装模型,一般用于操作数据库
+        /// </summary>
+        /// <typeparam name="P">参数1类型</typeparam>
+        /// <typeparam name="P1">参数2类型</typeparam>
+        /// <param name="func">执行的委托方法</param>
+        /// <param name="p">实参1</param>
+        /// <param name="p1">实参2</param>
+        /// <returns></returns>
+        protected ResponseModel CreateResponseModel<P,P1>(Func<P,P1, bool> func, P p,P1 p1)
+        {
+            ResponseModel res = new ResponseModel();
+            try
+            {
+                bool Success = func.Invoke(p,p1);
+                if (Success)
+                {
+                    res.code = (int)ResponseType.OperationSucess;
+                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.OperationSucess);
+                }
+                else
+                {
+                    res.code = (int)ResponseType.Exception;
+                    res.message = "失败,受影响的数据条数为0！";
+                }
+            }
+            catch (Exception e)
+            {
+                res.code = (int)ResponseType.Exception;
+                res.message = e.Message;
+            }
+            return res;
+        }
+        protected ResponseModel CreateResponseModel<P, P1, P2>(Func<P, P1, P2, bool> func, P p, P1 p1, P2 p2)
+        {
+            ResponseModel res = new ResponseModel();
+            try
+            {
+                bool flag = func.Invoke(p, p1, p2);
+                res.code = (int)ResponseType.OperationSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
             }
             catch (Exception e)
             {
@@ -365,5 +433,7 @@ namespace Services
             }
             return res;
         }
+
+        
     }
 }

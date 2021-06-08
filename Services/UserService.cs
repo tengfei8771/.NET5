@@ -57,7 +57,7 @@ namespace Services
                     res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.LoginSucess);
                     var userinfodic = ReflectionConvertHelper.ConvertObjectToDictionary(userinfo);
                     //生成请求token 测试用1分钟
-                    string RequestToken = CreateToken(RequestKey, userinfodic,1);
+                    string RequestToken = CreateToken(RequestKey, userinfodic,10);
                     //生成RefreshToken
                     //RefreshToken的有效期，这里放置了一天,需要改几天就乘几
                     int LimitTime = 24 * 60;
@@ -105,7 +105,7 @@ namespace Services
                     string RequestToken = CreateEncodedSignature(RequestKey, JwtData.Item1, JwtData.Item2);
                     res.code = (int)ResponseType.TokenSucess;
                     res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.TokenSucess);
-                    res.items = CreateNewToken(RequestKey, JwtData, 1);
+                    res.items = CreateNewToken(RequestKey, JwtData, 10);
                 }               
             }
             catch(Exception e)

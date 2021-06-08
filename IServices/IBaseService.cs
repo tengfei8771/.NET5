@@ -17,11 +17,41 @@ namespace IServices
         /// <returns></returns>
         ResponseModel Insert(T entity);
         /// <summary>
-        /// 更新实体
+        /// 更新实体(实体设置主键)
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
         ResponseModel Update(T entity);
+        /// <summary>
+        /// 更新实体(根据where表达式出来的对象的属性)
+        /// </summary>
+        /// <param name="entity">更新后的实体</param>
+        /// <param name="WhereSelect">更新条件</param>
+        /// <returns></returns>
+        ResponseModel Update(T entity, Expression<Func<T, object>> WhereSelect);
+        /// <summary>
+        /// 根据表达式SetColumns表达式更新指定字段以及根据where条件更新字段
+        /// </summary>
+        /// <param name="SetColumns">需要更新的字段的表达式形似t=>new T{}</param>
+        /// <param name="WhereSelect">需要更新的数据的条件</param>
+        /// <returns></returns>
+        ResponseModel Update(Expression<Func<T, T>> SetColumns, Expression<Func<T, object>> WhereSelect);
+        /// <summary>
+        /// 根据表达式忽略实体内部分字段并根据where条件进行更新
+        /// </summary>
+        /// <param name="entity">需要更新的实体</param>
+        /// <param name="WhereSelect">更新条件</param>
+        /// <param name="IgnoreExpress">被忽略的字段</param>
+        /// <returns></returns>
+        ResponseModel UpdateIgnoreColumns(T entity, Expression<Func<T, object>> WhereSelect, Expression<Func<T, object>> IgnoreExpress);
+        /// <summary>
+        /// 更新指定字段
+        /// </summary>
+        /// <param name="entity">被更新的实体</param>
+        /// <param name="WhereExp">where条件</param>
+        /// <param name="UpdateExpress">被更新的字段</param>
+        /// <returns></returns>
+        ResponseModel UpdateAppiontColumns(T entity, Expression<Func<T, object>> WhereExp, Expression<Func<T, object>> UpdateExpress);
         /// <summary>
         /// 删除实体
         /// </summary>
