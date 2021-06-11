@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-
 using Utils;
 using System.Collections.Generic;
 using SqlSugar;
+using Newtonsoft.Json;
+
 namespace SqlSugarAndEntity
 {
     ///<summary>
@@ -21,7 +22,8 @@ namespace SqlSugarAndEntity
         /// Desc:菜单ID
         /// Default:
         /// Nullable:False
-        /// </summary>           
+        /// </summary>
+        [JsonConverter(typeof(ConvertLongToString))]
         public decimal ID { get; set; }
 
         /// <summary>
@@ -35,7 +37,8 @@ namespace SqlSugarAndEntity
         /// Desc:上级菜单ID
         /// Default:
         /// Nullable:True
-        /// </summary>           
+        /// </summary>         
+        [JsonConverter(typeof(ConvertLongToString))]
         public decimal? MenuParentID { get; set; }
 
 

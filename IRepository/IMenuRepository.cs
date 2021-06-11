@@ -2,6 +2,7 @@
 using SqlSugarAndEntity;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,5 +13,7 @@ namespace IRepository
     {
         List<menuinfo> GetMenubyRole(decimal userId);
         List<menuinfo> GetLazyMenuTreeNode(decimal? ParentMenuID,int page,int limit,ref int total);
+
+        DataTable GetMenuTree();
     }
 }

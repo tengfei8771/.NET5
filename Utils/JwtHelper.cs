@@ -197,6 +197,8 @@ namespace Utils
             GetInfoSucess = 2000,
             [Description("操作成功")]
             OperationSucess = 2001,
+            [Description("操作失败")]
+            OperationFail = 2002,
             [Description("出现异常!")]
             Exception = -1,
             [Description("令牌验证通过")]

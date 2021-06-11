@@ -30,6 +30,12 @@ namespace WebApi.Controllers
         public IActionResult GetMenubyRole(decimal userId)
             => Ok(menuService.GetMenubyRole(userId));
         /// <summary>
+        /// 获取完整的菜单树
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetMenuTree")]
+        public IActionResult GetMenuTree() => Ok(menuService.GetMenuTree());
+        /// <summary>
         /// 获取懒加载的菜单树
         /// </summary>
         /// <param name="ParentMenuID">父节点ID</param>
@@ -54,7 +60,7 @@ namespace WebApi.Controllers
         /// <returns></returns>
         [HttpPut]
         public IActionResult UpdateMenu([FromBody] menuinfo entity)
-            => Ok(menuService.UpdateIgnoreColumns(entity,t=>new { t.ID},t=>new { t.MenuParentID,t.CreateBy}));
+            => Ok(menuService.UpdateIgnoreColumns(entity,t=>new { t.ID},t=>new { t.CreateBy}));
         /// <summary>
         /// 删除菜单
         /// </summary>

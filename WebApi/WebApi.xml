@@ -23,6 +23,12 @@
             <param name="userId">用户id</param>
             <returns></returns>
         </member>
+        <member name="M:WebApi.Controllers.MenuController.GetMenuTree">
+            <summary>
+            获取完整的菜单树
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:WebApi.Controllers.MenuController.GetMenu(System.Nullable{System.Decimal},System.Int32,System.Int32)">
             <summary>
             获取懒加载的菜单树

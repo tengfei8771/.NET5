@@ -3,6 +3,7 @@ using SqlSugar;
 using SqlSugarAndEntity;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -68,6 +69,12 @@ namespace Repository
                 .Select((a, b, c, d) => d)
                 .ToList();
             return list;
+        }
+
+        public DataTable GetMenuTree()
+        {
+            DataTable dt = baseMethod.Db().Queryable<menuinfo>().ToDataTable();
+            return dt;
         }
     }
 }

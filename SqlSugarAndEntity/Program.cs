@@ -1,5 +1,6 @@
 ﻿using SqlSugar;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
 
@@ -49,13 +50,21 @@ namespace {Namespace}
            public List<{ClassName}> children { get; set; }
     }
 }";
-                Expression<Func<string, bool>> exp1 = t => !t.Contains('.');
-                Expression<Func<string, bool>> exp2 = t => t != "menuinfo" && t != "dictionary" && t != "orginfo";
+                List<string> ignoreTable = new List<string>()
+                {
+                    {"menuinfo" },
+                    {"dictionary" },
+                    {"orginfo" }
+                };
+                //排除不生成的表的表达式
+                Expression<Func<string, bool>> exp1 = t => t.Contains('.')&&!ignoreTable.Contains(t);
+                //不生成的表
+                Expression<Func<string, bool>> exp2 = t => t.Contains('.')&&ignoreTable.Contains(t);
                 Console.WriteLine("开始生成类库文件...");
                 SqlSugarClient db = new SqlSugarClient(DataBaseConfig._config);
                 var TotalPath = Directory.GetCurrentDirectory();
                 string[] PathArr = TotalPath.Replace("\\", "/").Split(new string[] { "/bin/" }, StringSplitOptions.None);
-                db.DbFirst.Where(t => !t.Contains('.') && t != "menuinfo" && t != "dictionary" && t != "orginfo")
+                db.DbFirst.Where(exp1.Compile())
                     .SettingClassTemplate(old =>
                     {
                         return ClassTemplate;
@@ -74,7 +83,7 @@ namespace {Namespace}
                     })//构造函数
                     .CreateClassFile($"{PathArr[0]}/Entity", "SqlSugarAndEntity");
 
-                db.DbFirst.Where(t => !t.Contains('.') && (t == "menuinfo"|| t == "dictionary"|| t == "orginfo"))
+                db.DbFirst.Where(t => !t.Contains('.') && (t == "menuinfo" || t == "dictionary" || t == "orginfo"))
                     .SettingClassTemplate(old =>
                     {
                         return ChildrenTemp;

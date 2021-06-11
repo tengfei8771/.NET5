@@ -5,6 +5,8 @@ using System.Text;
 using Utils;
 using System.Collections.Generic;
 using SqlSugar;
+using Newtonsoft.Json;
+
 namespace SqlSugarAndEntity
 {
     ///<summary>
@@ -12,31 +14,34 @@ namespace SqlSugarAndEntity
     ///</summary>
     public partial class usermaporg
     {
-           public usermaporg()
-           {
-                this.ID = SnowflakeHelper.GetId();
-                
-           }
-           /// <summary>
-           /// Desc:主键
-           /// Default:
-           /// Nullable:False
-           /// </summary>           
-           public decimal ID {get;set;}
+        public usermaporg()
+        {
+            this.ID = SnowflakeHelper.GetId();
 
-           /// <summary>
-           /// Desc:用户ID
-           /// Default:
-           /// Nullable:False
-           /// </summary>           
-           public decimal UserID {get;set;}
+        }
+        /// <summary>
+        /// Desc:主键
+        /// Default:
+        /// Nullable:False
+        /// </summary>           
+        [JsonConverter(typeof(ConvertLongToString))]
+        public decimal ID {get;set;}
 
-           /// <summary>
-           /// Desc:组织机构ID
-           /// Default:
-           /// Nullable:False
-           /// </summary>           
-           public decimal OrgID {get;set;}
+        /// <summary>
+        /// Desc:用户ID
+        /// Default:
+        /// Nullable:False
+        /// </summary>           
+        [JsonConverter(typeof(ConvertLongToString))]
+        public decimal UserID {get;set;}
+
+        /// <summary>
+        /// Desc:组织机构ID
+        /// Default:
+        /// Nullable:False
+        /// </summary>           
+        [JsonConverter(typeof(string))]
+        public decimal OrgID {get;set;}
 
     }
 }

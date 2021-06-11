@@ -5,6 +5,8 @@ using System.Text;
 using Utils;
 using System.Collections.Generic;
 using SqlSugar;
+using Newtonsoft.Json;
+
 namespace SqlSugarAndEntity
 {
     ///<summary>
@@ -17,12 +19,13 @@ namespace SqlSugarAndEntity
                 this.ID = SnowflakeHelper.GetId();
                 
            }
-           /// <summary>
-           /// Desc:主键
-           /// Default:
-           /// Nullable:False
-           /// </summary>           
-           public decimal ID {get;set;}
+        /// <summary>
+        /// Desc:主键
+        /// Default:
+        /// Nullable:False
+        /// </summary>           
+        [JsonConverter(typeof(ConvertLongToString))]
+        public decimal ID {get;set;}
 
            /// <summary>
            /// Desc:用户姓名

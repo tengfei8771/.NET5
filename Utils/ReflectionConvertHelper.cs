@@ -161,7 +161,17 @@ namespace Utils
         {
             List<T> list = new List<T>();
             Type t = typeof(T);
-            foreach (DataRow dr in Source.Select($"{CombineRelationName} IS NULL OR {CombineRelationName}=''"))
+            //string SelectContidtion = string.Empty;
+            //var RelationProp = t.GetProperty(CombineRelationName);
+            //if (RelationProp.PropertyType == typeof(string))
+            //{
+            //    SelectContidtion = $"{CombineRelationName} IS NULL OR {CombineRelationName}=''";
+            //}
+            //else
+            //{
+            //    SelectContidtion = $"{CombineRelationName} IS NULL OR {CombineRelationName}=0";
+            //}
+            foreach (DataRow dr in Source.Select(CreateGetParentNodeCondition<T>(CombineRelationName)))
             {
                 T item = new T();
                 foreach (var prop in t.GetProperties())
@@ -187,7 +197,17 @@ namespace Utils
             List<T> ChildrenList = new List<T>();
             Type t = item.GetType();
             var prop = t.GetProperty(MainName);
-            foreach (DataRow dr in Source.Select($"{CombineRelationName}='{prop.GetValue(item)}'"))
+            //string SelectContidtion = string.Empty;
+            //var RelationProp = t.GetProperty(CombineRelationName);
+            //if (RelationProp.PropertyType == typeof(string))
+            //{
+            //    SelectContidtion = $"{CombineRelationName}='{prop.GetValue(item)}'";
+            //}
+            //else
+            //{
+            //    SelectContidtion = $"{CombineRelationName}={prop.GetValue(item)}";
+            //}
+            foreach (DataRow dr in Source.Select(CreateGetChildrenNodeCondition(item,MainName,CombineRelationName)))
             {
                 T ChildrenItem = new T();
                 Type ChildrenType = ChildrenItem.GetType();
@@ -427,6 +447,37 @@ namespace Utils
         private static bool IsDBNull(object t)
         {
             return t is DBNull;
+        }
+
+        private static string CreateGetParentNodeCondition<T>(string CombineRelationName) where T:class
+        {
+            Type t = typeof(T);
+            string SelectContidtion = string.Empty;
+            var RelationProp = t.GetProperty(CombineRelationName);
+            if (RelationProp.PropertyType == typeof(string))
+            {
+                SelectContidtion = $"{CombineRelationName} IS NULL OR {CombineRelationName}=''";
+            }
+            else
+            {
+                SelectContidtion = $"{CombineRelationName} IS NULL OR {CombineRelationName}=0";
+            }
+            return SelectContidtion;
+        }
+        private static string CreateGetChildrenNodeCondition<T>(T item,string MainName,string CombineRelationName) where T : class
+        {
+            Type t = typeof(T);
+            string SelectContidtion = string.Empty;
+            var MainProp = t.GetProperty(MainName);
+            if (MainProp.PropertyType == typeof(string))
+            {
+                SelectContidtion = $"{CombineRelationName}='{MainProp.GetValue(item)}'";
+            }
+            else
+            {
+                SelectContidtion = $"{CombineRelationName}={MainProp.GetValue(item)}";
+            }
+            return SelectContidtion;
         }
         public static bool IsNumericType(this Type o)
         {

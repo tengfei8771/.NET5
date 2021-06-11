@@ -193,8 +193,8 @@ namespace Services
                 }
                 else
                 {
-                    res.code = (int)ResponseType.Exception;
-                    res.message = "失败,受影响的数据条数为0！";
+                    res.code = (int)ResponseType.OperationFail;
+                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.OperationFail);
                 }
             }
             catch (Exception e)
@@ -226,8 +226,8 @@ namespace Services
                 }
                 else
                 {
-                    res.code = (int)ResponseType.Exception;
-                    res.message = "失败,受影响的数据条数为0！";
+                    res.code = (int)ResponseType.OperationFail;
+                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.OperationFail);
                 }
             }
             catch (Exception e)
@@ -242,9 +242,18 @@ namespace Services
             ResponseModel res = new ResponseModel();
             try
             {
-                bool flag = func.Invoke(p, p1, p2);
-                res.code = (int)ResponseType.OperationSucess;
-                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
+                bool Success = func.Invoke(p, p1, p2);
+                if (Success)
+                {
+                    res.code = (int)ResponseType.OperationSucess;
+                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
+                }
+                else
+                {
+                    res.code = (int)ResponseType.OperationFail;
+                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.OperationFail);
+                }
+               
             }
             catch (Exception e)
             {
