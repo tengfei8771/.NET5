@@ -74,7 +74,7 @@ namespace Repository
                        JoinType.Left, a.ID == b.UserID,
                        JoinType.Left, b.OrgID == c.ID
                        ))
-                .Where(WhereExp)
+                .WhereIF(WhereExp!=null,WhereExp)
                 .GroupBy((a, b, c) => new
                 {
                     a.ID,

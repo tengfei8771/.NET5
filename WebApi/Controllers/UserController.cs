@@ -10,7 +10,7 @@ using WebApi.Common;
 
 namespace WebApi.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     [JwtVerification]
     public class UserController : ControllerBase

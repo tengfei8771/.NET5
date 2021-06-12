@@ -12,7 +12,7 @@ using WebApi.Common;
 namespace WebApi.Controllers
 {
     [JwtVerification]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class MenuController : ControllerBase
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Utils;
 
 namespace SqlSugarAndEntity
 {
@@ -32,6 +32,43 @@ namespace SqlSugarAndEntity
         public static string GroupConcat<T>(T t)
         {
             throw new NotSupportedException("Can only be used in expressions");
+        }
+    }
+    public class SugarCache : ICacheService
+    {
+        public void Add<V>(string key, V value)
+        {
+            CacheHelper.SetValue(key, value);
+        }
+
+        public void Add<V>(string key, V value, int cacheDurationInSeconds)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ContainsKey<V>(string key)
+        {
+            return CacheHelper.Exists(key);
+        }
+
+        public V Get<V>(string key)
+        {
+            return CacheHelper.GetTByKey<V>(key);
+        }
+
+        public IEnumerable<string> GetAllKey<V>()
+        {
+            throw new NotImplementedException();
+        }
+
+        public V GetOrCreate<V>(string cacheKey, Func<V> create, int cacheDurationInSeconds = int.MaxValue)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Remove<V>(string key)
+        {
+            throw new NotImplementedException();
         }
     }
 }

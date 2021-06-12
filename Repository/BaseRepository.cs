@@ -42,30 +42,30 @@ namespace Repository
 
         public List<T> GetInfo(Expression<Func<T, bool>> predicate)
         {       
-            return _baseMethod.Db().Queryable<T>().Where(predicate).ToList();
+            return _baseMethod.Db().Queryable<T>().WhereIF(predicate!=null, predicate).ToList();
         }
 
         public List<T> GetInfoByPage(Expression<Func<T, bool>> predicate, int page, int limit,ref int total)
         {
-            return _baseMethod.Db().Queryable<T>().Where(predicate).ToPageList(page,limit,ref total);
+            return _baseMethod.Db().Queryable<T>().WhereIF(predicate!=null, predicate).ToPageList(page,limit,ref total);
         }
         public List<T> GetOrderbyInfo(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderBy)
         {
-            return _baseMethod.Db().Queryable<T>().Where(predicate).OrderBy(orderBy).ToList();
+            return _baseMethod.Db().Queryable<T>().WhereIF(predicate != null, predicate).OrderBy(orderBy).ToList();
         }
 
         public List<T> GetOrderbyInfoByPage(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderBy, int page, int limit,ref int total)
         {
-            return _baseMethod.Db().Queryable<T>().Where(predicate).PartitionBy(orderBy).ToPageList(page, limit, ref total);
+            return _baseMethod.Db().Queryable<T>().WhereIF(predicate != null, predicate).PartitionBy(orderBy).ToPageList(page, limit, ref total);
         }
 
         public DataTable GetInfoToDataTable(Expression<Func<T, bool>> predicate)
         {
-            return _baseMethod.Db().Queryable<T>().Where(predicate).ToDataTable();
+            return _baseMethod.Db().Queryable<T>().WhereIF(predicate != null, predicate).ToDataTable();
         }
         public DataTable GetInfoToDataTableByPage(Expression<Func<T, bool>> predicate, int page, int limit,ref int total)
         {
-            return _baseMethod.Db().Queryable<T>().Where(predicate).ToDataTablePage(page,limit,ref total);
+            return _baseMethod.Db().Queryable<T>().WhereIF(predicate != null, predicate).ToDataTablePage(page,limit,ref total);
         }
         public bool Insert(T entity)
         {

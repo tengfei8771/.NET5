@@ -44,7 +44,7 @@ namespace Utils
                 Type t = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
                 MethodCallExpression call = Expression.Call(parameter, setter, Expression.Convert(value, t));
                 Expression<Action<T, object>> lambda = Expression.Lambda<Action<T, object>>(call, parameter, value);
-                //此方法非常吃性能，必须缓存起来提高速度
+                //此方法非常吃性能，必须缓存起来提高速度 不用memorycache的原因是因为取数据远没有hash快
                 result = lambda.Compile();
                 Cache.Add(key, result);
             }

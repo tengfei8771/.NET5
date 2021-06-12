@@ -91,7 +91,11 @@ namespace WebApi
                         }
                     });
             });
-            services.AddControllers().AddNewtonsoftJson(options =>
+            services.AddControllers(options=>
+            {
+                options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+            })
+                .AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 // ≤ª π”√Õ’∑Â
