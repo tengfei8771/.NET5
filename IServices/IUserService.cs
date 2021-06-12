@@ -27,5 +27,17 @@ namespace IServices
         /// <param name="request"></param>
         /// <returns></returns>
         ResponseModel RefreshToken(JObject value);
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <param name="UserAccount"></param>
+        /// <param name="UserPhone"></param>
+        /// <param name="IdNumber"></param>
+        /// <param name="OrgName"></param>
+        /// <param name="page"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
+        ResponseModel GetUserInfo(string Name, string UserAccount, string UserPhone, string IdNumber, string OrgName,int page,int limit);
     }
 }

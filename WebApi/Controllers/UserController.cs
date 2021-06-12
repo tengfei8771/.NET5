@@ -39,6 +39,20 @@ namespace WebApi.Controllers
         [AllowAnyJwtVerification]
         [HttpPost("RefreshToken")]
         public IActionResult RefreshToken([FromBody]JObject value) => Ok(userService.RefreshToken(value));
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <param name="Name">用户姓名</param>
+        /// <param name="UserAccount">用户账号</param>
+        /// <param name="UserPhone">用户电话</param>
+        /// <param name="IdNumber">用户ID</param>
+        /// <param name="OrgName">用户组织机构名称</param>
+        /// <param name="page">页码</param>
+        /// <param name="limit">每页条数</param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult GetUserInfo(string Name, string UserAccount, string UserPhone, string IdNumber, string OrgName, int page, int limit)
+            => Ok(userService.GetUserInfo(Name, UserAccount, UserPhone, IdNumber, OrgName, page, limit));
 
     }
 }

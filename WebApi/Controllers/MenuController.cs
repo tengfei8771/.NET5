@@ -66,7 +66,7 @@ namespace WebApi.Controllers
         /// </summary>
         /// <param name="ID"></param>
         /// <returns></returns>
-        [HttpDelete("{ID}")]
+        [HttpDelete]
         public IActionResult DeleteMenu(decimal ID)
             => Ok(menuService.Delete(t => t.ID == ID));
 

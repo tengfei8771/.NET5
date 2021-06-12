@@ -31,6 +31,18 @@ namespace Services
             throw new NotImplementedException();
         }
 
+        public ResponseModel GetUserInfo(string Name, string UserAccount, string UserPhone, string IdNumber, string OrgName, int page, int limit)
+        {
+            int total = 0;
+            Expression<Func<userinfo, usermaporg, orginfo, bool>> OrginExp = null;
+            Expression<Func<userinfo, usermaporg, orginfo, bool>> WhereExp = OrginExp
+                .AndIF(!string.IsNullOrEmpty(Name), (a, b, c) => a.UserName.Contains(Name))
+                .AndIF(!string.IsNullOrEmpty(UserAccount), (a, b, c) => a.UserPhone.Contains(UserPhone))
+                .AndIF(!string.IsNullOrEmpty(IdNumber), (a, b, c) => a.IdNumber.Contains(IdNumber))
+                .AndIF(!string.IsNullOrEmpty(OrgName), (a, b, c) => c.OrgName.Contains(OrgName));
+            return CreateResponseModelByPage(userRepository.GetUserInfo, WhereExp, page, limit, ref total);
+        }
+
         public ResponseModel ImportUserinfo(Stream s)
         {
             throw new NotImplementedException();
@@ -41,7 +53,8 @@ namespace Services
             string RequestKey = GetRequestKey();
             string RefreshKey = GetRefreshKey();
             ResponseModel res = new ResponseModel();
-            var userlist = userRepository.GetUserInfo((a, b, c) => a.UserAccount == account);
+            int total = 0;
+            var userlist = userRepository.GetUserInfo((a, b, c) => a.UserAccount == account,1,10,ref total);
             if (userlist.Count == 0)
             {
                 res.code = (int)ResponseType.AccountNotExists;

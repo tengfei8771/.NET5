@@ -13,7 +13,7 @@ namespace Utils
     public static class ExpressionHelper
     {
         //private static IMemoryCache Cache { get; set; }
-        private static Dictionary<string,object> Cache { get; set; }
+        private static Dictionary<string, object> Cache { get; set; }
         static ExpressionHelper()
         {
             //Cache = new MemoryCache(Options.Create(new MemoryCacheOptions()));
@@ -31,7 +31,7 @@ namespace Utils
             Action<T, object> result = null;
             Type type = typeof(T);
             string key = type.AssemblyQualifiedName + "_set_" + property.Name;
-            if (Cache.TryGetValue(key,out object CacheValue))
+            if (Cache.TryGetValue(key, out object CacheValue))
             {
                 result = CacheValue as Action<T, object>;
             }
@@ -43,7 +43,7 @@ namespace Utils
                 //判断是否可空
                 Type t = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
                 MethodCallExpression call = Expression.Call(parameter, setter, Expression.Convert(value, t));
-                Expression<Action<T,object>> lambda = Expression.Lambda<Action<T, object>>(call, parameter, value);
+                Expression<Action<T, object>> lambda = Expression.Lambda<Action<T, object>>(call, parameter, value);
                 //此方法非常吃性能，必须缓存起来提高速度
                 result = lambda.Compile();
                 Cache.Add(key, result);
@@ -57,7 +57,7 @@ namespace Utils
         /// <typeparam name="T"></typeparam>
         /// <param name="property"></param>
         /// <returns></returns>
-        public static Func<T,object> GetGetter<T>(PropertyInfo property)
+        public static Func<T, object> GetGetter<T>(PropertyInfo property)
         {
             Func<T, object> result = null;
             Type type = typeof(T);
@@ -117,10 +117,10 @@ namespace Utils
         /// <param name="Selector">p=>p.propertyName</param>
         /// <param name="value">等式右值</param>
         /// <returns></returns>
-        public static BinaryExpression CreateWhereConditionBySelector<T>(Expression<Func<T,object>> Selector,object value,ParameterExpression parameter)
+        public static BinaryExpression CreateWhereConditionBySelector<T>(Expression<Func<T, object>> Selector, object value, ParameterExpression parameter)
         {
             string key = typeof(T).AssemblyQualifiedName;
-            string FieldName = GetPropertyName(Selector); 
+            string FieldName = GetPropertyName(Selector);
             MemberExpression member = Expression.PropertyOrField(parameter, FieldName);
             ConstantExpression constant = Expression.Constant(value);//创建常数
             return Expression.Equal(member, constant);
@@ -416,20 +416,166 @@ namespace Utils
         /// <returns></returns>
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> OrginExp, Expression<Func<T, bool>> AndExp)
         {
-            InvocationExpression invoke = Expression.Invoke(AndExp, OrginExp.Parameters.Cast<Expression>());
-            return Expression.Lambda<Func<T, bool>>(Expression.And(OrginExp.Body, invoke), OrginExp.Parameters);
+            if (OrginExp == null)
+            {
+                return AndExp;
+            }
+            return Expression.Lambda<Func<T, bool>>(Expression.And(OrginExp.Body, AndExp.Body), OrginExp.Parameters);
+        }
+        /// <summary>
+        /// 逻辑与方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <param name="OrginExp">源表达式</param>
+        /// <param name="AndExp">拼接的表达式</param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, bool>> And<T, T1>(this Expression<Func<T, T1, bool>> OrginExp, Expression<Func<T, T1, bool>> AndExp)
+        {
+            if (OrginExp == null)
+            {
+                return AndExp;
+            }
+            return Expression.Lambda<Func<T, T1, bool>>(Expression.And(OrginExp.Body, AndExp.Body), OrginExp.Parameters);
+        }
+        /// <summary>
+        /// 逻辑与方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <param name="OrginExp">源表达式</param>
+        /// <param name="AndExp">拼接的表达式</param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, bool>> And<T, T1, T2>(this Expression<Func<T, T1, T2, bool>> OrginExp, Expression<Func<T, T1, T2, bool>> AndExp)
+        {
+            if (OrginExp == null)
+            {
+                return AndExp;
+            }
+            return Expression.Lambda<Func<T, T1, T2, bool>>(Expression.And(OrginExp.Body, AndExp.Body), OrginExp.Parameters);
+        }
+        /// <summary>
+        /// 逻辑与方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <param name="OrginExp">源表达式</param>
+        /// <param name="AndExp">拼接的表达式</param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, T3, bool>> And<T, T1, T2, T3>(this Expression<Func<T, T1, T2, T3, bool>> OrginExp, Expression<Func<T, T1, T2, T3, bool>> AndExp)
+        {
+            if (OrginExp == null)
+            {
+                return AndExp;
+            }
+            return Expression.Lambda<Func<T, T1, T2, T3, bool>>(Expression.And(OrginExp.Body, AndExp.Body), OrginExp.Parameters);
+        }
+        /// <summary>
+        /// 逻辑与方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <typeparam name="T4"></typeparam>
+        /// <param name="OrginExp">源表达式</param>
+        /// <param name="AndExp">拼接的表达式</param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, T3, T4, bool>> And<T, T1, T2, T3, T4>(this Expression<Func<T, T1, T2, T3, T4, bool>> OrginExp, Expression<Func<T, T1, T2, T3, T4, bool>> AndExp)
+        {
+            if (OrginExp == null)
+            {
+                return AndExp;
+            }
+            return Expression.Lambda<Func<T, T1, T2, T3, T4, bool>>(Expression.And(OrginExp.Body, AndExp.Body), OrginExp.Parameters);
         }
         /// <summary>
         /// 最短路径与方法(当表达式中某段表达式可以决定表达式的最终结果就放弃接下来的所有操作)
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="OrginExp"></param>
-        /// <param name="OrExp"></param>
+        /// <param name="OrginExp">源表达式</param>
+        /// <param name="AndExp">拼接的表达式</param>
         /// <returns></returns>
-        public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> OrginExp, Expression<Func<T, bool>> OrExp)
+        public static Expression<Func<T, bool>> AndAlso<T>(this Expression<Func<T, bool>> OrginExp, Expression<Func<T, bool>> AndExp)
         {
-            InvocationExpression invoke = Expression.Invoke(OrExp, OrginExp.Parameters.Cast<Expression>());
-            return Expression.Lambda<Func<T, bool>>(Expression.Or(OrginExp.Body, invoke), OrginExp.Parameters);
+            if (OrginExp == null)
+            {
+                return AndExp;
+            }
+            return Expression.Lambda<Func<T, bool>>(Expression.AndAlso(OrginExp.Body, AndExp.Body), OrginExp.Parameters);
+        }
+        /// <summary>
+        /// 最短路径与方法(当表达式中某段表达式可以决定表达式的最终结果就放弃接下来的所有操作)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, bool>> AndAlso<T, T1>(this Expression<Func<T, T1, bool>> OrginExp, Expression<Func<T, T1, bool>> AndExp)
+        {
+            if (OrginExp == null)
+            {
+                return AndExp;
+            }
+            return Expression.Lambda<Func<T, T1, bool>>(Expression.AndAlso(OrginExp.Body, AndExp.Body), OrginExp.Parameters);
+        }
+        /// <summary>
+        /// 最短路径与方法(当表达式中某段表达式可以决定表达式的最终结果就放弃接下来的所有操作)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, bool>> AndAlso<T, T1, T2>(this Expression<Func<T, T1, T2, bool>> OrginExp, Expression<Func<T, T1, T2, bool>> AndExp)
+        {
+            if (OrginExp == null)
+            {
+                return AndExp;
+            }
+            return Expression.Lambda<Func<T, T1, T2, bool>>(Expression.AndAlso(OrginExp.Body, AndExp.Body), OrginExp.Parameters);
+        }
+        /// <summary>
+        /// 最短路径与方法(当表达式中某段表达式可以决定表达式的最终结果就放弃接下来的所有操作)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, T3, bool>> AndAlso<T, T1, T2, T3>(this Expression<Func<T, T1, T2, T3, bool>> OrginExp, Expression<Func<T, T1, T2, T3, bool>> AndExp)
+        {
+            if (OrginExp == null)
+            {
+                return AndExp;
+            }
+            return Expression.Lambda<Func<T, T1, T2, T3, bool>>(Expression.AndAlso(OrginExp.Body, AndExp.Body), OrginExp.Parameters);
+        }
+        /// <summary>
+        /// 最短路径与方法(当表达式中某段表达式可以决定表达式的最终结果就放弃接下来的所有操作)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <typeparam name="T4"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, T3, T4, bool>> AndAlso<T, T1, T2, T3, T4>(this Expression<Func<T, T1, T2, T3, T4, bool>> OrginExp, Expression<Func<T, T1, T2, T3, T4, bool>> AndExp)
+        {
+            if (OrginExp == null)
+            {
+                return AndExp;
+            }
+            return Expression.Lambda<Func<T, T1, T2, T3, T4, bool>>(Expression.AndAlso(OrginExp.Body, AndExp.Body), OrginExp.Parameters);
         }
         /// <summary>
         /// 逻辑或方法
@@ -438,12 +584,85 @@ namespace Utils
         /// <param name="OrginExp"></param>
         /// <param name="AndExp"></param>
         /// <returns></returns>
-
-        public static Expression<Func<T, bool>> AndAlso<T>(this Expression<Func<T, bool>> OrginExp, Expression<Func<T, bool>> AndExp)
+        public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> OrginExp, Expression<Func<T, bool>> OrExp)
         {
-            InvocationExpression invoke = Expression.Invoke(AndExp, OrginExp.Parameters.Cast<Expression>());
-            return Expression.Lambda<Func<T, bool>>(Expression.AndAlso(OrginExp.Body, invoke), OrginExp.Parameters);
+            if (OrginExp == null)
+            {
+                return OrExp;
+            }
+            return Expression.Lambda<Func<T, bool>>(Expression.Or(OrginExp.Body, OrExp.Body), OrginExp.Parameters);
         }
+        /// <summary>
+        /// 逻辑或方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="OrExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, bool>> Or<T, T1>(this Expression<Func<T, T1, bool>> OrginExp, Expression<Func<T, T1, bool>> OrExp)
+        {
+            if (OrginExp == null)
+            {
+                return OrExp;
+            }
+            return Expression.Lambda<Func<T, T1, bool>>(Expression.Or(OrginExp.Body, OrExp.Body), OrginExp.Parameters);
+        }
+        /// <summary>
+        /// 逻辑或方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="OrExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, bool>> Or<T, T1, T2>(this Expression<Func<T, T1, T2, bool>> OrginExp, Expression<Func<T, T1, T2, bool>> OrExp)
+        {
+            if (OrginExp == null)
+            {
+                return OrExp;
+            }
+            return Expression.Lambda<Func<T, T1, T2, bool>>(Expression.Or(OrginExp.Body, OrExp.Body), OrginExp.Parameters);
+        }
+        /// <summary>
+        /// 逻辑或方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="OrExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, T3, bool>> Or<T, T1, T2, T3>(this Expression<Func<T, T1, T2, T3, bool>> OrginExp, Expression<Func<T, T1, T2, T3, bool>> OrExp)
+        {
+            if (OrginExp == null)
+            {
+                return OrExp;
+            }
+            return Expression.Lambda<Func<T, T1, T2, T3, bool>>(Expression.Or(OrginExp.Body, OrExp.Body), OrginExp.Parameters);
+        }
+        /// <summary>
+        /// 逻辑或方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <typeparam name="T4"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="OrExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, T3, T4, bool>> Or<T, T1, T2, T3, T4>(this Expression<Func<T, T1, T2, T3, T4, bool>> OrginExp, Expression<Func<T, T1, T2, T3, T4, bool>> OrExp)
+        {
+            if (OrginExp == null)
+            {
+                return OrExp;
+            }
+            return Expression.Lambda<Func<T, T1, T2, T3, T4, bool>>(Expression.Or(OrginExp.Body, OrExp.Body), OrginExp.Parameters);
+        }
+
 
         /// <summary>
         /// 最短路径或方法
@@ -454,11 +673,462 @@ namespace Utils
         /// <returns></returns>
         public static Expression<Func<T, bool>> OrElse<T>(this Expression<Func<T, bool>> OrginExp, Expression<Func<T, bool>> OrExp)
         {
-            InvocationExpression invoke = Expression.Invoke(OrExp, OrginExp.Parameters.Cast<Expression>());
-            return Expression.Lambda<Func<T, bool>>(Expression.OrElse(OrginExp.Body, invoke), OrginExp.Parameters);
+            if (OrginExp == null)
+            {
+                return OrExp;
+            }
+            return Expression.Lambda<Func<T, bool>>(Expression.OrElse(OrginExp.Body, OrExp.Body), OrginExp.Parameters);
+        }
+        /// <summary>
+        /// 最短路径或方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="OrExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, bool>> OrElse<T, T1>(this Expression<Func<T, T1, bool>> OrginExp, Expression<Func<T, T1, bool>> OrExp)
+        {
+            if (OrginExp == null)
+            {
+                return OrExp;
+            }
+            return Expression.Lambda<Func<T, T1, bool>>(Expression.OrElse(OrginExp.Body, OrExp.Body), OrginExp.Parameters);
+        }
+        /// <summary>
+        /// 最短路径或方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="OrExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, bool>> OrElse<T, T1, T2>(this Expression<Func<T, T1, T2, bool>> OrginExp, Expression<Func<T, T1, T2, bool>> OrExp)
+        {
+            if (OrginExp == null)
+            {
+                return OrExp;
+            }
+            return Expression.Lambda<Func<T, T1, T2, bool>>(Expression.OrElse(OrginExp.Body, OrExp.Body), OrginExp.Parameters);
+        }
+        /// <summary>
+        /// 最短路径或方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="OrExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, T3, bool>> OrElse<T, T1, T2, T3>(this Expression<Func<T, T1, T2, T3, bool>> OrginExp, Expression<Func<T, T1, T2, T3, bool>> OrExp)
+        {
+            if (OrginExp == null)
+            {
+                return OrExp;
+            }
+            return Expression.Lambda<Func<T, T1, T2, T3, bool>>(Expression.OrElse(OrginExp.Body, OrExp.Body), OrginExp.Parameters);
+        }
+        /// <summary>
+        /// 最短路径或方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <typeparam name="T4"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="OrExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, T3, T4, bool>> OrElse<T, T1, T2, T3, T4>(this Expression<Func<T, T1, T2, T3, T4, bool>> OrginExp, Expression<Func<T, T1, T2, T3, T4, bool>> OrExp)
+        {
+            if (OrginExp == null)
+            {
+                return OrExp;
+            }
+            return Expression.Lambda<Func<T, T1, T2, T3, T4, bool>>(Expression.OrElse(OrginExp.Body, OrExp.Body), OrginExp.Parameters);
+        }
+        /// <summary>
+        /// 有条件的And拼接
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndIF"></param>
+        /// <param name="AndExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, bool>> AndIF<T>(this Expression<Func<T, bool>> OrginExp, bool AndIF, Expression<Func<T, bool>> AndExp)
+        {
+            if (AndIF)
+            {
+                return OrginExp.And(AndExp);
+            }
+            else
+            {
+                return OrginExp;
+            }
+        }
+        public static Expression<Func<T, T1, bool>> AndIF<T, T1>(this Expression<Func<T, T1, bool>> OrginExp, bool AndIF, Expression<Func<T, T1, bool>> AndExp)
+        {
+            if (AndIF)
+            {
+                return OrginExp.And(AndExp);
+            }
+            else
+            {
+                return OrginExp;
+            }
+        }
+        public static Expression<Func<T, T1, T2, bool>> AndIF<T, T1, T2>(this Expression<Func<T, T1, T2, bool>> OrginExp, bool AndIF, Expression<Func<T, T1, T2, bool>> AndExp)
+        {
+            if (AndIF)
+            {
+                return OrginExp.And(AndExp);
+            }
+            else
+            {
+                return OrginExp;
+            }
+        }
+        public static Expression<Func<T, T1, T2, T3, bool>> AndIF<T, T1, T2, T3>(this Expression<Func<T, T1, T2, T3, bool>> OrginExp, bool AndIF, Expression<Func<T, T1, T2, T3, bool>> AndExp)
+        {
+            if (AndIF)
+            {
+                return OrginExp.And(AndExp);
+            }
+            else
+            {
+                return OrginExp;
+            }
+        }
+        public static Expression<Func<T, T1, T2, T3, T4, bool>> AndIF<T, T1, T2, T3, T4>(this Expression<Func<T, T1, T2, T3, T4, bool>> OrginExp, bool AndIF, Expression<Func<T, T1, T2, T3, T4, bool>> AndExp)
+        {
+            if (AndIF)
+            {
+                return OrginExp.And(AndExp);
+            }
+            else
+            {
+                return OrginExp;
+            }
+        }
+        /// <summary>
+        /// 有条件的最短与方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndIF"></param>
+        /// <param name="AndExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, bool>> AndAlsoIF<T>(this Expression<Func<T, bool>> OrginExp, bool AndIF, Expression<Func<T, bool>> AndExp)
+        {
+            if (AndIF)
+            {
+                return OrginExp.AndAlso(AndExp);
+            }
+            else
+            {
+                return OrginExp;
+            }
+        }
+        /// <summary>
+        /// 有条件的最短与方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndIF"></param>
+        /// <param name="AndExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, bool>> AndAlsoIF<T, T1>(this Expression<Func<T, T1, bool>> OrginExp, bool AndIF, Expression<Func<T, T1, bool>> AndExp)
+        {
+            if (AndIF)
+            {
+                return OrginExp.AndAlso(AndExp);
+            }
+            else
+            {
+                return OrginExp;
+            }
+        }
+        /// <summary>
+        /// 有条件的最短与方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndIF"></param>
+        /// <param name="AndExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, bool>> AndAlsoIF<T, T1, T2>(this Expression<Func<T, T1, T2, bool>> OrginExp, bool AndIF, Expression<Func<T, T1, T2, bool>> AndExp)
+        {
+            if (AndIF)
+            {
+                return OrginExp.AndAlso(AndExp);
+            }
+            else
+            {
+                return OrginExp;
+            }
+        }
+        /// <summary>
+        /// 有条件的最短与方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndIF"></param>
+        /// <param name="AndExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, T3, bool>> AndAlsoIF<T, T1, T2, T3>(this Expression<Func<T, T1, T2, T3, bool>> OrginExp, bool AndIF, Expression<Func<T, T1, T2, T3, bool>> AndExp)
+        {
+            if (AndIF)
+            {
+                return OrginExp.AndAlso(AndExp);
+            }
+            else
+            {
+                return OrginExp;
+            }
+        }
+        /// <summary>
+        /// 有条件的最短与方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <typeparam name="T4"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndIF"></param>
+        /// <param name="AndExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, T3, T4, bool>> AndAlsoIF<T, T1, T2, T3, T4>(this Expression<Func<T, T1, T2, T3, T4, bool>> OrginExp, bool AndIF, Expression<Func<T, T1, T2, T3, T4, bool>> AndExp)
+        {
+            if (AndIF)
+            {
+                return OrginExp.AndAlso(AndExp);
+            }
+            else
+            {
+                return OrginExp;
+            }
+        }
+        /// <summary>
+        /// 有条件的或方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndIF"></param>
+        /// <param name="OrExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, bool>> OrIF<T>(this Expression<Func<T, bool>> OrginExp, bool AndIF, Expression<Func<T, bool>> OrExp)
+        {
+            if (AndIF)
+            {
+                return OrginExp.Or(OrExp);
+            }
+            else
+            {
+                return OrginExp;
+            }
+        }
+        /// <summary>
+        /// 有条件的或方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndIF"></param>
+        /// <param name="AndExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, bool>> OrIF<T, T1>(this Expression<Func<T, T1, bool>> OrginExp, bool AndIF, Expression<Func<T, T1, bool>> OrExp)
+        {
+            if (AndIF)
+            {
+                return OrginExp.Or(OrExp);
+            }
+            else
+            {
+                return OrginExp;
+            }
+        }
+        /// <summary>
+        /// 有条件的或方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndIF"></param>
+        /// <param name="AndExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, bool>> OrIF<T, T1, T2>(this Expression<Func<T, T1, T2, bool>> OrginExp, bool AndIF, Expression<Func<T, T1, T2, bool>> OrExp)
+        {
+            if (AndIF)
+            {
+                return OrginExp.Or(OrExp);
+            }
+            else
+            {
+                return OrginExp;
+            }
+        }
+        /// <summary>
+        /// 有条件的或方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndIF"></param>
+        /// <param name="AndExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, T3, bool>> OrIF<T, T1, T2, T3>(this Expression<Func<T, T1, T2, T3, bool>> OrginExp, bool AndIF, Expression<Func<T, T1, T2, T3, bool>> OrExp)
+        {
+            if (AndIF)
+            {
+                return OrginExp.Or(OrExp);
+            }
+            else
+            {
+                return OrginExp;
+            }
+        }
+        /// <summary>
+        /// 有条件的或方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <typeparam name="T4"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndIF"></param>
+        /// <param name="AndExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, T3, T4, bool>> OrIF<T, T1, T2, T3, T4>(this Expression<Func<T, T1, T2, T3, T4, bool>> OrginExp, bool AndIF, Expression<Func<T, T1, T2, T3, T4, bool>> OrExp)
+        {
+            if (AndIF)
+            {
+                return OrginExp.Or(OrExp);
+            }
+            else
+            {
+                return OrginExp;
+            }
+        }
+        /// <summary>
+        /// 有条件的最短路径或方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndIF"></param>
+        /// <param name="OrExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, bool>> OrElseIF<T>(this Expression<Func<T, bool>> OrginExp, bool AndIF, Expression<Func<T, bool>> OrExp)
+        {
+            if (AndIF)
+            {
+                return OrginExp.OrElse(OrExp);
+            }
+            else
+            {
+                return OrginExp;
+            }
+        }
+        /// <summary>
+        /// 有条件的最短路径或方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndIF"></param>
+        /// <param name="AndExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, bool>> OrElseIF<T, T1>(this Expression<Func<T, T1, bool>> OrginExp, bool AndIF, Expression<Func<T, T1, bool>> OrExp)
+        {
+            if (AndIF)
+            {
+                return OrginExp.OrElse(OrExp);
+            }
+            else
+            {
+                return OrginExp;
+            }
+        }
+        /// <summary>
+        /// 有条件的最短路径或方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndIF"></param>
+        /// <param name="AndExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, bool>> OrElseIF<T, T1, T2>(this Expression<Func<T, T1, T2, bool>> OrginExp, bool AndIF, Expression<Func<T, T1, T2, bool>> OrExp)
+        {
+            if (AndIF)
+            {
+                return OrginExp.OrElse(OrExp);
+            }
+            else
+            {
+                return OrginExp;
+            }
+        }
+        /// <summary>
+        /// 有条件的最短路径或方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndIF"></param>
+        /// <param name="AndExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, T3, bool>> OrElseIF<T, T1, T2, T3>(this Expression<Func<T, T1, T2, T3, bool>> OrginExp, bool AndIF, Expression<Func<T, T1, T2, T3, bool>> OrExp)
+        {
+            if (AndIF)
+            {
+                return OrginExp.OrElse(OrExp);
+            }
+            else
+            {
+                return OrginExp;
+            }
+        }
+        /// <summary>
+        /// 有条件的最短路径或方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <typeparam name="T4"></typeparam>
+        /// <param name="OrginExp"></param>
+        /// <param name="AndIF"></param>
+        /// <param name="AndExp"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, T1, T2, T3, T4, bool>> OrElseIF<T, T1, T2, T3, T4>(this Expression<Func<T, T1, T2, T3, T4, bool>> OrginExp, bool AndIF, Expression<Func<T, T1, T2, T3, T4, bool>> OrExp)
+        {
+            if (AndIF)
+            {
+                return OrginExp.OrElse(OrExp);
+            }
+            else
+            {
+                return OrginExp;
+            }
         }
 
-        
+
         /// <summary>
         /// 获取标注的属性名
         /// </summary>
@@ -481,7 +1151,7 @@ namespace Utils
             }
         }
 
-       
+
         private static bool IsDBNull(object t)
         {
             return t is DBNull;

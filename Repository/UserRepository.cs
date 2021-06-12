@@ -66,7 +66,7 @@ namespace Repository
             return list;
         }
 
-        public List<UserinfoBusinessModel> GetUserInfo(Expression<Func<userinfo, usermaporg,orginfo, bool>> WhereExp)
+        public List<UserinfoBusinessModel> GetUserInfo(Expression<Func<userinfo, usermaporg,orginfo, bool>> WhereExp,int page,int limit,ref int total)
         {
             var list = _baseMethod.Db()
                 .Queryable<userinfo, usermaporg, orginfo>((a, b, c)
@@ -116,7 +116,7 @@ namespace Repository
                     });
                     it.OrgList = orginfos.Where(t => mapinfos.Where(y => y.UserID == it.ID && t.ID == y.OrgID).Any()).ToList();
                 })
-                .ToList();
+                .ToPageList(page,limit,ref total);
             return list;
         }
     }

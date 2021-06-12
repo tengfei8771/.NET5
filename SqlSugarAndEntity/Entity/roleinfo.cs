@@ -24,7 +24,7 @@ namespace SqlSugarAndEntity
         /// Default:
         /// Nullable:False
         /// </summary>           
-        [JsonConverter(typeof(ConvertLongToString))]
+        [JsonConverter(typeof(ConvertSturtToString))]
         public decimal ID {get;set;}
 
            /// <summary>

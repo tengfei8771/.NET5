@@ -8,24 +8,30 @@ using System.Threading.Tasks;
 
 namespace Utils
 {
-    public class ConvertLongToString: JsonConverter
+    public class ConvertSturtToString: JsonConverter
     {
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             JToken jt = JToken.ReadFrom(reader);
-
-            return jt.Value<long>();
+            return ConvertObjectToType(jt, objectType);
         }
 
         public override bool CanConvert(Type objectType)
         {
-            
-            return typeof(decimal).Equals(objectType)||typeof(long).Equals(objectType);
+            return objectType.IsValueType;
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             serializer.Serialize(writer, value.ToString());
         }
+
+        private object ConvertObjectToType(JToken jt, Type objectType)
+        {
+            Type t = Nullable.GetUnderlyingType(objectType) ?? objectType;
+            object SafeValue = jt!=null ? Convert.ChangeType(jt, t):null;
+            return SafeValue;
+        }
+        
     }
 }

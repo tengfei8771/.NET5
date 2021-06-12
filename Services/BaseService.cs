@@ -246,7 +246,7 @@ namespace Services
                 if (Success)
                 {
                     res.code = (int)ResponseType.OperationSucess;
-                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
+                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.OperationSucess);
                 }
                 else
                 {
