@@ -10,7 +10,7 @@ namespace IRepository
 {
     public interface IOrgRepository:IBaseRepository<orginfo>
     {
-        List<orginfo> GetLazyOrgTree(int? ParentId,int page=1,int limit=1000,int total=0);
+        List<orginfo> GetLazyOrgTree(decimal? ParentId,int page=1,int limit=1000,int total=0);
 
         DataTable GetOrgTree();
 

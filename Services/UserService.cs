@@ -20,10 +20,22 @@ namespace Services
     {
         private IUserRepository userRepository;
         private IConfiguration Configuration;
-        public UserService(IUserRepository userRepository, IConfiguration Configuration) :base(userRepository)
+        private IOrgService orgService;
+        public UserService(IUserRepository userRepository, IOrgService orgService, IConfiguration Configuration) :base(userRepository)
         {
             this.userRepository = userRepository;
+            this.orgService = orgService;
             this.Configuration = Configuration;
+        }
+
+        public ResponseModel CreateUserInfo(userinfo user, List<usermaporg> map)
+        {
+            return CreateResponseModel(userRepository.InsertMany, user, map);
+        }
+
+        public ResponseModel DeleteUserInfo(Expression<Func<userinfo, bool>> UserExp, Expression<Func<usermaporg, bool>> MapExp)
+        {
+            return CreateResponseModel(userRepository.DeleteUserinfo, UserExp, MapExp);
         }
 
         public ResponseModel ExportUserinfo(Expression<Func<userinfo, bool>> WhereCondition)
@@ -127,6 +139,11 @@ namespace Services
                 res.message = e.Message;
             }
             return res;
+        }
+
+        public ResponseModel UpdateUserInfo(userinfo user, List<usermaporg> map)
+        {
+            return CreateResponseModel(userRepository.UpdateUserInfo, user, map);
         }
     }
 }

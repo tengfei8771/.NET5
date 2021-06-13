@@ -5,6 +5,7 @@ using SqlSugarAndEntity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using static SqlSugarAndEntity.DataTransferObject.role.RoleDTO;
@@ -21,6 +22,12 @@ namespace Services
             this.roleRepository = roleRepository;
             this.userRepository = userRepository;
         }
+
+        public ResponseModel DeleteRole(decimal RoleID)
+        {
+            return CreateResponseModel<Expression<Func<roleinfo, bool>>, Expression<Func<rolemapmenu, bool>>>(roleRepository.DeleteRole, t => t.ID == RoleID, y => y.RoleID == RoleID);
+        }
+
         public ResponseModel GetUserByRoleID(decimal RoleID)
         {
             return CreateResponseModel(userRepository.GetUserByRole, RoleID);
@@ -55,5 +62,6 @@ namespace Services
             }
             return CreateResponseModel(roleRepository.RoleForUser, dto.RoleID, list);
         }
+
     }
 }

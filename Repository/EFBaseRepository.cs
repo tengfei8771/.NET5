@@ -31,7 +31,7 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public void DeleteAll(List<T> list)
+        public void Delete(List<T> list)
         {
             _appDBContext.BulkDelete(list);
         }
@@ -82,7 +82,7 @@ namespace Repository
             return _appDBContext.SaveChanges() > 0;
         }
 
-        public void InsertAll(List<T> list)
+        public void Insert(List<T> list)
         {
             _appDBContext.BulkInsert(list);
         }
@@ -112,12 +112,12 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public void UpdateAll(List<T> list)
+        public void Update(List<T> list)
         {
             throw new NotImplementedException();
         }
 
-        public bool UpdateAll(List<T> list, Expression<Func<T, object>> WhereExp)
+        public bool Update(List<T> list, Expression<Func<T, object>> WhereExp)
         {
             throw new NotImplementedException();
         }
@@ -132,7 +132,7 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        bool IBaseRepository<T>.UpdateAll(List<T> list)
+        bool IBaseRepository<T>.Update(List<T> list)
         {
             throw new NotImplementedException();
         }

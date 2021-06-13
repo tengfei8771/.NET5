@@ -1,4 +1,5 @@
 ﻿using IServices.ResModel;
+using SqlSugarAndEntity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using static SqlSugarAndEntity.DataTransferObject.role.RoleDTO;
 
 namespace IServices
 {
-    public interface IRoleService
+    public interface IRoleService:IBaseService<roleinfo>
     {
         /// <summary>
         /// 给角色赋予菜单权限
@@ -28,5 +29,11 @@ namespace IServices
         /// <param name="RoleID"></param>
         /// <returns></returns>
         ResponseModel GetUserByRoleID(decimal RoleID);
+        /// <summary>
+        /// 删除一个角色
+        /// </summary>
+        /// <param name="RoleID"></param>
+        /// <returns></returns>
+        ResponseModel DeleteRole(decimal RoleID);
     }
 }

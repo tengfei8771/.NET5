@@ -27,9 +27,9 @@ namespace Services
         {
             return CreateResponseModel(baseRepository.Delete, Exp);
         }
-        public ResponseModel DeleteAll(List<T> list)
+        public ResponseModel Delete(List<T> list)
         {
-            return CreateResponseModel(baseRepository.DeleteAll, list);
+            return CreateResponseModel(baseRepository.Delete, list);
         }
 
         public ResponseModel ExecuteSqlCommand(string sql)
@@ -81,9 +81,9 @@ namespace Services
             return CreateResponseModel(baseRepository.Insert, entity);
         }
 
-        public ResponseModel InsertAll(List<T> list)
+        public ResponseModel Insert(List<T> list)
         {
-            return CreateResponseModel(baseRepository.InsertAll, list);
+            return CreateResponseModel(baseRepository.Insert, list);
         }
 
         public ResponseModel InsertMany<T1>(T entityT, T1 eneityT1)
@@ -120,9 +120,9 @@ namespace Services
             return CreateResponseModel(baseRepository.UpdateAppiontColumns, entity, WhereExp, UpdateExpress);
         }
 
-        public ResponseModel UpdateAll(List<T> list)
+        public ResponseModel Update(List<T> list)
         {
-            return CreateResponseModel(baseRepository.UpdateAll, list);
+            return CreateResponseModel(baseRepository.Update, list);
         }
         #region 新增，修改，删除执行委托操作通用方法
         /// <summary>

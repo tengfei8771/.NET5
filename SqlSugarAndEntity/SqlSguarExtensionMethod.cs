@@ -43,7 +43,7 @@ namespace SqlSugarAndEntity
 
         public void Add<V>(string key, V value, int cacheDurationInSeconds)
         {
-            throw new NotImplementedException();
+            CacheHelper.SetValue(key, value, TimeSpan.FromSeconds(cacheDurationInSeconds), true);
         }
 
         public bool ContainsKey<V>(string key)
@@ -58,17 +58,22 @@ namespace SqlSugarAndEntity
 
         public IEnumerable<string> GetAllKey<V>()
         {
-            throw new NotImplementedException();
+            return CacheHelper.GetCacheKeys().Select(t => t.ToString());
         }
 
         public V GetOrCreate<V>(string cacheKey, Func<V> create, int cacheDurationInSeconds = int.MaxValue)
         {
-            throw new NotImplementedException();
+            if (!CacheHelper.Exists(cacheKey))
+            {
+                var result = create.Invoke();
+                CacheHelper.SetValue(cacheKey, result, TimeSpan.FromSeconds(cacheDurationInSeconds), true);
+            }
+            return CacheHelper.GetTByKey<V>(cacheKey);
         }
 
         public void Remove<V>(string key)
         {
-            throw new NotImplementedException();
+            CacheHelper.Remove(key);
         }
     }
 }

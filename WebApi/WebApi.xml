@@ -86,5 +86,26 @@
             <param name="limit">每页条数</param>
             <returns></returns>
         </member>
+        <member name="M:WebApi.Controllers.UserController.CreateUserInfo(SqlSugarAndEntity.DataTransferObject.user.UserDTO)">
+            <summary>
+            创建用户信息
+            </summary>
+            <param name="userDTO"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.UpdateUserInfo(SqlSugarAndEntity.DataTransferObject.user.UserDTO)">
+            <summary>
+            修改用户信息
+            </summary>
+            <param name="userDTO"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.DeleteUserInfo(System.Decimal)">
+            <summary>
+            删除用户信息
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

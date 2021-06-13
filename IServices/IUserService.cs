@@ -39,5 +39,9 @@ namespace IServices
         /// <param name="limit"></param>
         /// <returns></returns>
         ResponseModel GetUserInfo(string Name, string UserAccount, string UserPhone, string IdNumber, string OrgName,int page,int limit);
+
+        ResponseModel CreateUserInfo(userinfo user,List<usermaporg> map);
+        ResponseModel UpdateUserInfo(userinfo user, List<usermaporg> map);
+        ResponseModel DeleteUserInfo(Expression<Func<userinfo,bool>> UserExp, Expression<Func<usermaporg, bool>> MapExp);
     }
 }

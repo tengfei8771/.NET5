@@ -18,6 +18,7 @@ namespace SqlSugarAndEntity.DataTransferObject.role
             public decimal RoleID { get; set; }
             public List<decimal> UserID { get; set; }
         }
+
        
     }
 }

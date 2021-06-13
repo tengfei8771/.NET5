@@ -61,7 +61,8 @@ namespace SqlSugarAndEntity
             //扩展方法
             _config.ConfigureExternalServices = new ConfigureExternalServices()
             {
-                SqlFuncServices = CreateExternal()
+                SqlFuncServices = CreateExternal(),
+                DataInfoCacheService = new SugarCache()
             };
         }
 

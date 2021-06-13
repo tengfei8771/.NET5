@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using PublicWebApi.Common.Validator;
 using SqlSugarAndEntity;
+using SqlSugarAndEntity.AutoMapperConfig;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,6 +21,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using TimedTask;
+using Utils;
 
 namespace WebApi
 {
@@ -103,6 +105,7 @@ namespace WebApi
                 // 设置时间格式
                 options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
             });
+            services.AddAutoMapper();
             //services.AddQuartz(typeof(StandardsJob));
 
             //DiagnosticListener.AllListeners.Subscribe(new CommandListener());//EF监听执行sql和读写分离的注入方法

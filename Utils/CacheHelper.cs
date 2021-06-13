@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -104,6 +106,20 @@ namespace Utils
                 Cache.Remove(key);
             }
             return Exists(key);
+        }
+
+        public static List<object> GetCacheKeys()
+        {
+            const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
+            var entries = Cache.GetType().GetField("_entries", flags).GetValue(Cache);
+            var cacheItems = entries as IDictionary;
+            var keys = new List<object>();
+            if (cacheItems == null) return keys;
+            foreach (DictionaryEntry cacheItem in cacheItems)
+            {
+                keys.Add(cacheItem.Key);
+            }
+            return keys;
         }
         /// <summary>
         /// 获取是否含有key

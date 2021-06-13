@@ -111,19 +111,19 @@ namespace IServices
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        ResponseModel InsertAll(List<T> list);
+        ResponseModel Insert(List<T> list);
         /// <summary>
         /// 批量删除
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        ResponseModel DeleteAll(List<T> list);
+        ResponseModel Delete(List<T> list);
         /// <summary>
         /// 批量修改
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        ResponseModel UpdateAll(List<T> list);
+        ResponseModel Update(List<T> list);
         /// <summary>
         /// 插入多个实体
         /// </summary>

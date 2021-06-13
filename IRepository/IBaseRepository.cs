@@ -108,24 +108,24 @@ namespace IRepository
         /// 批量插入list
         /// </summary>
         /// <param name="list">实体list</param>
-        void InsertAll(List<T> list);
+        void Insert(List<T> list);
         /// <summary>
         /// 批量删除list
         /// </summary>
         /// <param name="list">实体list</param>
-        void DeleteAll(List<T> list);
+        void Delete(List<T> list);
         /// <summary>
         /// 批量更新
         /// </summary>
         /// <param name="list"></param>
-        bool UpdateAll(List<T> list);
+        bool Update(List<T> list);
         /// <summary>
         /// 批量更新 指定更新条件
         /// </summary>
         /// <param name="list">list</param>
         /// <param name="WhereExp">形似t=>new {t.ID}</param>
         /// <returns></returns>
-        bool UpdateAll(List<T> list, Expression<Func<T, object>> WhereExp);
+        bool Update(List<T> list, Expression<Func<T, object>> WhereExp);
         /// <summary>
         /// 批量插入一个实体和另一个实体list
         /// </summary>
