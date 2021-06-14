@@ -88,11 +88,18 @@ namespace Repository
         }
 
         public void InsertMany<T1>(T entityT, T1 eneityT1)
+            where T1 : class, new()
         {
             throw new NotImplementedException();
         }
 
         public void InsertMany<T1>(List<T> listT, List<T1> listT1)
+            where T1 : class, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void InsertMany<T1>(T entityT, List<T1> listT1) where T1 : class, new()
         {
             throw new NotImplementedException();
         }

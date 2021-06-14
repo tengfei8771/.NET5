@@ -16,7 +16,7 @@
             <param name="context">http上下文</param>
             <returns></returns>
         </member>
-        <member name="M:WebApi.Controllers.MenuController.GetMenubyRole(System.Decimal)">
+        <member name="M:WebApi.Controllers.MenuController.GetMenuByUserId(System.Decimal)">
             <summary>
             根据用户ID获取允许用户获得的菜单
             </summary>
@@ -57,6 +57,85 @@
             删除菜单
             </summary>
             <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OrgController.GetLazyOrgTree(System.Nullable{System.Decimal},System.Int32,System.Int32)">
+            <summary>
+            获取懒加载的组织机构树节点
+            </summary>
+            <param name="ParentId"></param>
+            <param name="page"></param>
+            <param name="limit"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OrgController.GetOrgTree">
+            <summary>
+            获取整个组织机构树
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OrgController.CreateOrg(SqlSugarAndEntity.orginfo)">
+            <summary>
+            创建组织机构节点
+            </summary>
+            <param name="orginfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OrgController.UpdateOrg(SqlSugarAndEntity.orginfo)">
+            <summary>
+            修改组织结构节点
+            </summary>
+            <param name="orginfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.OrgController.DeleteOrg(System.Decimal)">
+            <summary>
+            删除组织机构节点
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.RoleController.GetRole(System.Int32,System.Int32)">
+            <summary>
+            获取角色列表
+            </summary>
+            <param name="page"></param>
+            <param name="limit"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.RoleController.CreateRole(SqlSugarAndEntity.roleinfo)">
+            <summary>
+            新增角色
+            </summary>
+            <param name="roleinfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.RoleController.UpdateRole(SqlSugarAndEntity.roleinfo)">
+            <summary>
+            修改角色信息
+            </summary>
+            <param name="roleinfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.RoleController.DeleteRole(System.Decimal)">
+            <summary>
+            删除角色信息
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.RoleController.RoleForMenu(SqlSugarAndEntity.DataTransferObject.role.RoleDTO.RoleForMenu)">
+            <summary>
+            角色赋予菜单
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.RoleController.RoleForUser(SqlSugarAndEntity.DataTransferObject.role.RoleDTO.RoleForUser)">
+            <summary>
+            给用户赋予角色
+            </summary>
+            <param name="dto"></param>
             <returns></returns>
         </member>
         <member name="M:WebApi.Controllers.UserController.Login(System.String,System.String)">

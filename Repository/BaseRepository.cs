@@ -78,13 +78,14 @@ namespace Repository
         }
 
         public virtual void InsertMany<T1>(T entityT, T1 eneityT1)
+            where T1:class,new()
         {
             var db = _baseMethod.Db();
             try
             {
                 db.Ado.BeginTran();
                 db.Insertable(entityT).ExecuteCommand();
-                db.Insertable(entityT).ExecuteCommand();
+                db.Insertable(eneityT1).ExecuteCommand();
                 db.Ado.CommitTran();
             }
             catch(Exception e)
@@ -93,8 +94,26 @@ namespace Repository
                 throw new Exception(e.Message);
             }
         }
+        public virtual void InsertMany<T1>(T entityT, List<T1> listT1)
+            where T1 : class, new()
+        {
+            var db = _baseMethod.Db();
+            try
+            {
+                db.Ado.BeginTran();
+                db.Insertable(entityT).ExecuteCommand();
+                db.Insertable(listT1).ExecuteCommand();
+                db.Ado.CommitTran();
+            }
+            catch (Exception e)
+            {
+                db.Ado.RollbackTran();
+                throw new Exception(e.Message);
+            }
+        }
 
         public virtual void InsertMany<T1>(List<T> listT, List<T1> listT1)
+            where T1 : class, new()
         {
             var db = _baseMethod.Db();
             try

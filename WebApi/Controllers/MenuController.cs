@@ -26,9 +26,13 @@ namespace WebApi.Controllers
         /// </summary>
         /// <param name="userId">用户id</param>
         /// <returns></returns>
-        [HttpGet("GetMenubyRole")]
-        public IActionResult GetMenubyRole(decimal userId)
-            => Ok(menuService.GetMenubyRole(userId));
+        [HttpGet("GetMenuByUserId")]
+        public IActionResult GetMenuByUserId(decimal userId)
+            => Ok(menuService.GetMenuByUserId(userId));
+
+        [HttpGet("GetMenuByRoleId")]
+        public IActionResult GetMenuByRoleId(decimal roleId)
+            => Ok(menuService.GetMenuByRoleId(roleId));
         /// <summary>
         /// 获取完整的菜单树
         /// </summary>

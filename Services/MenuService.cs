@@ -27,9 +27,14 @@ namespace Services
             return CreateResponseModelByPage(menuRepository.GetLazyMenuTreeNode, ParentMenuID,page,limit,ref total);
         }
 
-        public ResponseModel GetMenubyRole(decimal userId)
+        public ResponseModel GetMenuByRoleId(decimal roleId)
         {
-            return CreateResponseModel(menuRepository.GetMenubyRole, userId);
+            return CreateResponseModel(menuRepository.GetMenuByRoleId, roleId);
+        }
+
+        public ResponseModel GetMenuByUserId(decimal userId)
+        {
+            return CreateResponseModel(menuRepository.GetMenuByUserId, userId);
         }
 
         public ResponseModel GetMenuTree()

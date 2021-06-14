@@ -2,6 +2,7 @@
 using IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using SqlSugarAndEntity;
 using SqlSugarAndEntity.DataTransferObject.user;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Utils;
 using WebApi.Common;
 
 namespace WebApi.Controllers
@@ -20,10 +22,12 @@ namespace WebApi.Controllers
     {
         private IUserService userService;
         private readonly IMapper mapper;
-        public UserController(IUserService userService, IMapper mapper)
+        private IConfiguration Configuration;
+        public UserController(IUserService userService, IMapper mapper, IConfiguration Configuration)
         {
             this.userService = userService;
             this.mapper = mapper;
+            this.Configuration = Configuration;
         }
         /// <summary>
         /// 用户登录
@@ -66,16 +70,21 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult CreateUserInfo([FromBody] UserDTO userDTO)
         {
+            string PwdKey = Configuration.GetSection("AESKey").Value;
             List<usermaporg> maps = new List<usermaporg>();
-            foreach(decimal orgid in userDTO.OrgId)
+            var userId= SnowflakeHelper.GetId();
+            foreach (decimal orgid in userDTO.OrgId)
             {
                 usermaporg map = new usermaporg()
                 {
-                    UserID = userDTO.ID,
+                    UserID = userId,
                     OrgID = orgid
                 };
+                maps.Add(map);
             }
             userinfo user= mapper.Map<userinfo>(userDTO);
+            user.ID = userId;
+            user.UserPassWord = AESHelper.AesEncrypt(user.UserPassWord, PwdKey);
             return Ok(userService.CreateUserInfo(user, maps));
         }
         /// <summary>
@@ -86,6 +95,7 @@ namespace WebApi.Controllers
         [HttpPut]
         public IActionResult UpdateUserInfo([FromBody] UserDTO userDTO)
         {
+            string PwdKey = Configuration.GetSection("AESKey").Value;
             List<usermaporg> maps = new List<usermaporg>();
             foreach (decimal orgid in userDTO.OrgId)
             {
@@ -94,8 +104,10 @@ namespace WebApi.Controllers
                     UserID = userDTO.ID,
                     OrgID = orgid
                 };
+                maps.Add(map);
             }
             userinfo user = mapper.Map<userinfo>(userDTO);
+            user.UserPassWord = AESHelper.AesEncrypt(user.UserPassWord, PwdKey);
             return Ok(userService.UpdateUserInfo(user, maps));
         }
         /// <summary>

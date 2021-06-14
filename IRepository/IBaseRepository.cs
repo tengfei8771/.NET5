@@ -132,14 +132,21 @@ namespace IRepository
         /// <typeparam name="T1"></typeparam>
         /// <param name="entityT"></param>
         /// <param name="eneityT1"></param>
-        void InsertMany<T1>(T entityT, T1 eneityT1);
+        void InsertMany<T1>(T entityT, T1 eneityT1) where T1 : class, new();
+        /// <summary>
+        /// 插入一个实体和另一个实体list,一般用于一对多
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <param name="entityT"></param>
+        /// <param name="listT1"></param>
+        void InsertMany<T1>(T entityT, List<T1> listT1) where T1 : class, new();
         /// <summary>
         /// 批量插入一个实体list和另一个实体list,一般用于导入
         /// </summary>
         /// <typeparam name="T1"></typeparam>
         /// <param name="listT"></param>
         /// <param name="listT1"></param>
-        void InsertMany<T1>(List<T> listT, List<T1> listT1);
+        void InsertMany<T1>(List<T> listT, List<T1> listT1) where T1 : class, new();
         /// <summary>
         /// 根据查询表达式获取数据datable
         /// </summary>

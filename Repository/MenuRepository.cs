@@ -8,6 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using static SqlSugarAndEntity.DataTransferObject.role.RoleDTO;
 
 namespace Repository
 {
@@ -56,7 +57,19 @@ namespace Repository
             return list;     
         }
 
-        public List<menuinfo> GetMenubyRole(decimal userId)
+        public RoleForMenu GetMenuByRoleId(decimal roleId)
+        {
+            var list = baseMethod.Db().Queryable<rolemapmenu>().Where(t => t.RoleID == roleId)
+                .Select(t => t.MenuID).ToList();
+            RoleForMenu roleForMenu = new RoleForMenu()
+            {
+                RoleID = roleId,
+                MenuID = list
+            };
+            return roleForMenu;
+        }
+
+        public List<menuinfo> GetMenuByUserId(decimal userId)
         {
             var list = baseMethod.Db().Queryable<userinfo, usermaprole, rolemapmenu, menuinfo>
                 ((a, b, c, d) => new JoinQueryInfos(

@@ -30,6 +30,16 @@ namespace Services
 
         public ResponseModel CreateUserInfo(userinfo user, List<usermaporg> map)
         {
+            int total = 0;
+            if (userRepository.GetUserInfo((a, b, c) => a.UserAccount == user.UserAccount, 1, 10, ref total).FirstOrDefault() != null)
+            {
+                return new ResponseModel()
+                {
+                    code = (int)ResponseType.AccountAlreadyExists,
+                    message = ReflectionConvertHelper.GetEnumDescription(ResponseType.AccountAlreadyExists)
+                };
+            }
+
             return CreateResponseModel(userRepository.InsertMany, user, map);
         }
 
@@ -45,14 +55,35 @@ namespace Services
 
         public ResponseModel GetUserInfo(string Name, string UserAccount, string UserPhone, string IdNumber, string OrgName, int page, int limit)
         {
-            int total = 0;
-            Expression<Func<userinfo, usermaporg, orginfo, bool>> OrginExp = null;
-            Expression<Func<userinfo, usermaporg, orginfo, bool>> WhereExp = OrginExp
-                .AndIF(!string.IsNullOrEmpty(Name), (a, b, c) => a.UserName.Contains(Name))
-                .AndIF(!string.IsNullOrEmpty(UserAccount), (a, b, c) => a.UserPhone.Contains(UserPhone))
-                .AndIF(!string.IsNullOrEmpty(IdNumber), (a, b, c) => a.IdNumber.Contains(IdNumber))
-                .AndIF(!string.IsNullOrEmpty(OrgName), (a, b, c) => c.OrgName.Contains(OrgName));
-            return CreateResponseModelByPage(userRepository.GetUserInfo, WhereExp, page, limit, ref total);
+            string PwdKey = Configuration.GetSection("AESKey").Value;
+            ResponseModel res = new ResponseModel();
+            try
+            {
+                int total = 0;
+                Expression<Func<userinfo, usermaporg, orginfo, bool>> OrginExp = null;
+                Expression<Func<userinfo, usermaporg, orginfo, bool>> WhereExp = OrginExp
+                    .AndIF(!string.IsNullOrEmpty(Name), (a, b, c) => a.UserName.Contains(Name))
+                    .AndIF(!string.IsNullOrEmpty(UserAccount), (a, b, c) => a.UserPhone.Contains(UserPhone))
+                    .AndIF(!string.IsNullOrEmpty(IdNumber), (a, b, c) => a.IdNumber.Contains(IdNumber))
+                    .AndIF(!string.IsNullOrEmpty(OrgName), (a, b, c) => c.OrgName.Contains(OrgName));
+                var list = userRepository.GetUserInfo(WhereExp, page, limit, ref total);
+                list.ForEach(t =>
+                {
+                    //把用户密码解密
+                    t.UserPassWord = AESHelper.AesDecrypt(t.UserPassWord, PwdKey);
+                });
+                res.code = (int)ResponseType.GetInfoSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
+                res.total = total;
+                res.items = list;
+            }
+            catch(Exception e)
+            {
+                res.code= (int)ResponseType.Exception;
+                res.message = e.Message;
+            }
+            return res; 
+            //return CreateResponseModelByPage(userRepository.GetUserInfo, WhereExp, page, limit, ref total);
         }
 
         public ResponseModel ImportUserinfo(Stream s)

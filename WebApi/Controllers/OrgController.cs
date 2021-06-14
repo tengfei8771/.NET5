@@ -20,8 +20,19 @@ namespace WebApi.Controllers
         {
             this.orgService = orgService;
         }
+        /// <summary>
+        /// 获取懒加载的组织机构树节点
+        /// </summary>
+        /// <param name="ParentId"></param>
+        /// <param name="page"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetLazyOrgTree(decimal? ParentId, int page = 1, int limit = 1000) => Ok(orgService.GetLazyOrgTree(ParentId, page, limit));
+        /// <summary>
+        /// 获取整个组织机构树
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("GetOrgTree")]
         public IActionResult GetOrgTree() => Ok(orgService.GetOrgTree());
         /// <summary>

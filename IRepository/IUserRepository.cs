@@ -1,6 +1,5 @@
-﻿
-using SqlSugarAndEntity;
-using SqlSugarAndEntity.BusinessModel;
+﻿using SqlSugarAndEntity;
+using SqlSugarAndEntity.DataTransferObject.user;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -10,9 +9,9 @@ namespace IRepository
 {
     public interface IUserRepository:IBaseRepository<userinfo> 
     {
-        List<UserinfoBusinessModel> GetUserByRole(decimal RoleID);
+        List<UserDTO> GetUserByRole(decimal RoleID);
 
-        List<UserinfoBusinessModel> GetUserInfo(Expression<Func<userinfo, usermaporg,orginfo, bool>> WhereExp,int page,int limit,ref int total);
+        List<UserDTO> GetUserInfo(Expression<Func<userinfo, usermaporg,orginfo, bool>> WhereExp,int page,int limit,ref int total);
 
         void UpdateUserInfo(userinfo user, List<usermaporg> map);
 

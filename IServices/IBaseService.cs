@@ -131,7 +131,7 @@ namespace IServices
         /// <param name="entityT"></param>
         /// <param name="eneityT1"></param>
         /// <returns></returns>
-        ResponseModel InsertMany<T1>(T entityT, T1 eneityT1);
+        ResponseModel InsertMany<T1>(T entityT, T1 eneityT1) where T1 : class, new();
         /// <summary>
         /// 插入多个实体list
         /// </summary>
@@ -139,7 +139,7 @@ namespace IServices
         /// <param name="listT"></param>
         /// <param name="listT1"></param>
         /// <returns></returns>
-        ResponseModel InsertMany<T1>(List<T> listT, List<T1> listT1);
+        ResponseModel InsertMany<T1>(List<T> listT, List<T1> listT1) where T1 : class, new();
         /// <summary>
         /// 根据查询条件获取datatable
         /// </summary>

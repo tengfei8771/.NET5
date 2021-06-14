@@ -10,10 +10,12 @@ namespace IServices
 {
     public interface IMenuService:IBaseService<menuinfo>
     {
-        ResponseModel GetMenubyRole(decimal userId);
+        ResponseModel GetMenuByUserId(decimal userId);
 
         ResponseModel GetLazyMenuTreeNode(decimal? ParentMenuID, int page, int limit);
 
         ResponseModel GetMenuTree();
+
+        ResponseModel GetMenuByRoleId(decimal roleId);
     }
 }

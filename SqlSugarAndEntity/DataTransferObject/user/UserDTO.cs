@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utils;
 
 namespace SqlSugarAndEntity.DataTransferObject.user
 {
@@ -13,6 +15,7 @@ namespace SqlSugarAndEntity.DataTransferObject.user
         /// Default:
         /// Nullable:False
         /// </summary>           
+        [JsonConverter(typeof(ConvertSturtToString))]
         public decimal ID { get; set; }
 
         /// <summary>
@@ -76,8 +79,12 @@ namespace SqlSugarAndEntity.DataTransferObject.user
         /// Default:
         /// Nullable:True
         /// </summary>           
-        public decimal? UserCreateBy { get; set; }
-
+        public decimal? CreateBy { get; set; }
+        [JsonConverter(typeof(ConvertSturtToString))]
         public List<decimal> OrgId { get; set; }
+        
+        public List<orginfo> OrgList { get; set; }
+
+        public string OrgName { get; set; }
     }
 }

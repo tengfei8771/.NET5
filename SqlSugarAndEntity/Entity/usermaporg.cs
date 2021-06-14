@@ -40,7 +40,7 @@ namespace SqlSugarAndEntity
         /// Default:
         /// Nullable:False
         /// </summary>           
-        [JsonConverter(typeof(string))]
+        [JsonConverter(typeof(ConvertSturtToString))]
         public decimal OrgID {get;set;}
 
     }

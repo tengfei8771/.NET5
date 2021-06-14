@@ -86,12 +86,14 @@ namespace Services
             return CreateResponseModel(baseRepository.Insert, list);
         }
 
-        public ResponseModel InsertMany<T1>(T entityT, T1 eneityT1)
+        public ResponseModel InsertMany<T1>(T entityT, T1 eneityT1) 
+            where T1 : class, new()
         {
             return CreateResponseModel(baseRepository.InsertMany, entityT, eneityT1);
         }
 
         public ResponseModel InsertMany<T1>(List<T> listT, List<T1> listT1)
+            where T1 : class, new()
         {
             return CreateResponseModel(baseRepository.InsertMany, listT, listT1);
         }

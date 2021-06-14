@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Utils;
+using static Utils.JwtHelper;
 
 namespace Services
 {
@@ -33,10 +34,10 @@ namespace Services
             try
             {
                 DataTable dt = orgRepository.GetOrgTree();
-                var list = ReflectionConvertHelper.ConvertDatatableToTreeList<orginfo>(dt, "ID", "ParentID");
-                res.code = 2000;
+                var list = ReflectionConvertHelper.ConvertDatatableToTreeList<orginfo>(dt, "ID", "ParentOrgID");
+                res.code = (int)ResponseType.GetInfoSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
                 res.items = list;
-                res.message = "成功";
                 res.total = list.Count;
             }
             catch(Exception e)

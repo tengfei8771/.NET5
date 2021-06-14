@@ -6,9 +6,9 @@ using System.Data;
 using System.Linq;
 using SqlSugar;
 using System.Linq.Expressions;
-using SqlSugarAndEntity.BusinessModel;
 using Microsoft.Extensions.Configuration;
 using Utils;
+using SqlSugarAndEntity.DataTransferObject.user;
 
 namespace Repository
 {
@@ -31,7 +31,7 @@ namespace Repository
             _baseMethod = baseMethod;
         }
 
-        public List<UserinfoBusinessModel> GetUserByRole(decimal RoleID)
+        public List<UserDTO> GetUserByRole(decimal RoleID)
         {
             var list = _baseMethod.Db()
                 .Queryable<userinfo, usermaprole, usermaporg, orginfo>((a, b, c, d)
@@ -53,7 +53,7 @@ namespace Repository
                     a.IdNumber,
                     a.CreateBy
                 })
-                .Select((a, b, c, d) => new UserinfoBusinessModel
+                .Select((a, b, c, d) => new UserDTO
                 {
                     ID = a.ID,
                     UserName = a.UserName,
@@ -63,16 +63,16 @@ namespace Repository
                     UserPhone = a.UserPhone,
                     UserRole=SqlFunc.IF(a.UserRole=="0").Return("管理员").ElseIF(a.UserRole=="1").Return("普通用户").End("未知"),
                     IdNumber = a.IdNumber,
-                    UserCreateBy = a.CreateBy,
+                    CreateBy = a.CreateBy,
                     OrgName = SqlSguarExtensionMethod.GroupConcat(d.OrgName)
                 })
                 .ToList();
             return list;
         }
 
-        public List<UserinfoBusinessModel> GetUserInfo(Expression<Func<userinfo, usermaporg,orginfo, bool>> WhereExp,int page,int limit,ref int total)
+        public List<UserDTO> GetUserInfo(Expression<Func<userinfo, usermaporg,orginfo, bool>> WhereExp,int page,int limit,ref int total)
         {
-            string PwdKey = Configuration.GetSection("AESKey").Value;
+            //string PwdKey = Configuration.GetSection("AESKey").Value;
             var list = _baseMethod.Db()
                 .Queryable<userinfo, usermaporg, orginfo>((a, b, c)
                    => new JoinQueryInfos(
@@ -92,7 +92,7 @@ namespace Repository
                     a.IdNumber,
                     a.CreateBy
                 })
-                .Select((a, b, c) => new UserinfoBusinessModel
+                .Select((a, b, c) => new UserDTO
                 {
                     ID = a.ID,
                     UserName = a.UserName,
@@ -100,14 +100,14 @@ namespace Repository
                     UserPassWord=a.UserPassWord,
                     UserSex = a.UserSex,
                     UserPhone = a.UserPhone,
-                    UserRole = SqlFunc.IF(a.UserRole == "0").Return("管理员").ElseIF(a.UserRole == "1").Return("普通用户").End("未知"),
+                    UserRole = a.UserRole,
                     IdNumber = a.IdNumber,
-                    UserCreateBy = a.CreateBy,
+                    CreateBy = a.CreateBy,
                     OrgName = SqlSguarExtensionMethod.GroupConcat(c.OrgName),
                 })
                 .Mapper((it,cache)=> 
                 {
-                    it.UserPassWord = AESHelper.AesDecrypt(it.UserPassWord, PwdKey);
+                    //it.UserPassWord = AESHelper.AesDecrypt(it.UserPassWord, PwdKey);
                     List<usermaporg> mapinfos = cache.Get(t =>
                     {
                         var ids = t.Select(t => t.ID);
@@ -121,6 +121,7 @@ namespace Repository
                         return orglist;
                     });
                     it.OrgList = orginfos.Where(t => mapinfos.Where(y => y.UserID == it.ID && t.ID == y.OrgID).Any()).ToList();
+                    it.OrgId = it.OrgList.Select(t => t.ID).ToList();
                 })
                 .ToPageList(page,limit,ref total);
             return list;
