@@ -121,7 +121,7 @@ namespace WebApi.Controllers
         /// <summary>
         /// 根据角色ID获取被授权的用户
         /// </summary>
-        /// <param name="roleId"></param>
+        /// <param name="roleId">角色ID</param>
         /// <param name="page"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
@@ -132,7 +132,7 @@ namespace WebApi.Controllers
         /// <summary>
         /// 根据角色ID获取未被授权的用户
         /// </summary>
-        /// <param name="roleId"></param>
+        /// <param name="roleId">角色ID</param>
         /// <param name="page"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
