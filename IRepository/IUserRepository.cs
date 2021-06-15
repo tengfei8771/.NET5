@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace IRepository
 {
@@ -16,5 +17,8 @@ namespace IRepository
         void UpdateUserInfo(userinfo user, List<usermaporg> map);
 
         void DeleteUserinfo(Expression<Func<userinfo, bool>> UserExp, Expression<Func<usermaporg, bool>> MapExp);
+
+        List<userinfo> GetRoleAuthorized(decimal roleId, int page, int limit, ref int total);
+        List<userinfo> GetRoleNotAuthorized(decimal roleId, int page, int limit, ref int total);
     }
 }

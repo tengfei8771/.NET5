@@ -52,7 +52,6 @@ namespace Services
         {
             throw new NotImplementedException();
         }
-
         public ResponseModel GetUserInfo(string Name, string UserAccount, string UserPhone, string IdNumber, string OrgName, int page, int limit)
         {
             string PwdKey = Configuration.GetSection("AESKey").Value;
@@ -175,6 +174,17 @@ namespace Services
         public ResponseModel UpdateUserInfo(userinfo user, List<usermaporg> map)
         {
             return CreateResponseModel(userRepository.UpdateUserInfo, user, map);
+        }
+        public ResponseModel GetRoleAuthorized(decimal roleId, int page, int limit)
+        {
+            int total = 0;
+            return CreateResponseModelByPage(userRepository.GetRoleAuthorized, roleId, page, limit, ref total);
+        }
+
+        public ResponseModel GetRoleNotAuthorized(decimal roleId, int page, int limit)
+        {
+            int total = 0;
+            return CreateResponseModelByPage(userRepository.GetRoleNotAuthorized, roleId, page, limit, ref total);
         }
     }
 }

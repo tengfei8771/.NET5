@@ -9,6 +9,7 @@ using System.Linq.Expressions;
 using Microsoft.Extensions.Configuration;
 using Utils;
 using SqlSugarAndEntity.DataTransferObject.user;
+using System.Threading.Tasks;
 
 namespace Repository
 {
@@ -159,6 +160,22 @@ namespace Repository
                 db.Ado.RollbackTran();
                 throw new Exception(e.Message);
             }
+        }
+
+        public List<userinfo> GetRoleAuthorized(decimal roleId,int page,int limit,ref int total)
+        {
+            var list = _baseMethod.Db().Queryable<userinfo>()
+                .Where(t => SqlFunc.Subqueryable<usermaprole>().Where(a => a.RoleID == roleId).Any())
+                .ToPageList(page, limit, ref total);
+            return list;
+        }
+
+        public List<userinfo> GetRoleNotAuthorized(decimal roleId, int page, int limit, ref int total)
+        {
+            var list = _baseMethod.Db().Queryable<userinfo>()
+                .Where(t => SqlFunc.Subqueryable<usermaprole>().Where(a => a.RoleID == roleId).NotAny())
+                .ToPageList(page, limit, ref total);
+            return list;
         }
     }
 }

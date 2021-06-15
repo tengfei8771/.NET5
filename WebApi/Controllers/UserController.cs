@@ -118,6 +118,27 @@ namespace WebApi.Controllers
         [HttpDelete]
         public IActionResult DeleteUserInfo(decimal userId)
             => Ok(userService.DeleteUserInfo(a=>a.ID==userId,b=>b.UserID==userId));
+        /// <summary>
+        /// 根据角色ID获取被授权的用户
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <param name="page"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
+        [HttpGet("GetRoleAuthorized")]
+        public IActionResult GetRoleAuthorized(decimal roleId, int page, int limit)
+            => Ok(userService.GetRoleAuthorized(roleId, page, limit));
+
+        /// <summary>
+        /// 根据角色ID获取未被授权的用户
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <param name="page"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
+        [HttpGet("GetRoleNotAuthorized")]
+        public IActionResult GetRoleNotAuthorized(decimal roleId, int page, int limit)
+            => Ok(userService.GetRoleNotAuthorized(roleId, page, limit));
 
 
 

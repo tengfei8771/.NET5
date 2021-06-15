@@ -43,5 +43,8 @@ namespace IServices
         ResponseModel CreateUserInfo(userinfo user,List<usermaporg> map);
         ResponseModel UpdateUserInfo(userinfo user, List<usermaporg> map);
         ResponseModel DeleteUserInfo(Expression<Func<userinfo,bool>> UserExp, Expression<Func<usermaporg, bool>> MapExp);
+
+        ResponseModel GetRoleAuthorized(decimal roleId, int page, int limit);
+        ResponseModel GetRoleNotAuthorized(decimal roleId, int page, int limit);
     }
 }
