@@ -1,5 +1,4 @@
-﻿
-using SqlSugarAndEntity;
+﻿using SqlSugarAndEntity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace IRepository
 {
-    public interface ILoginRepository:IBaseRepository<userinfo>
+    public interface IUserMapRoleRepository:IBaseRepository<usermaprole>
     {
-        //List<userinfo> GetLoginUserInfo(string account);
+
     }
 }

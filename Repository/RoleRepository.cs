@@ -40,7 +40,7 @@ namespace Repository
             try
             {
                 db.Ado.BeginTran();
-                db.Deleteable<usermaprole>().Where(t => t.RoleID == RoleId).ExecuteCommand();
+                db.Deleteable<usermaprole>().Where(t => t.RoleID == RoleId&&map.Select(x=>x.UserID).Contains(t.UserID)).ExecuteCommand();
                 db.Insertable(map).ExecuteCommand();
                 db.Ado.CommitTran();
             }

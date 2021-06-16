@@ -138,6 +138,13 @@
             <param name="dto"></param>
             <returns></returns>
         </member>
+        <member name="M:WebApi.Controllers.RoleController.CancelRoleForUser(SqlSugarAndEntity.DataTransferObject.role.RoleDTO.RoleForUser)">
+            <summary>
+            取消用户的角色
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
         <member name="M:WebApi.Controllers.UserController.Login(System.String,System.String)">
             <summary>
             用户登录
@@ -184,6 +191,24 @@
             删除用户信息
             </summary>
             <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.GetRoleAuthorized(System.Decimal,System.Int32,System.Int32)">
+            <summary>
+            根据角色ID获取被授权的用户
+            </summary>
+            <param name="roleId">角色ID</param>
+            <param name="page"></param>
+            <param name="limit"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.GetRoleNotAuthorized(System.Decimal,System.Int32,System.Int32)">
+            <summary>
+            根据角色ID获取未被授权的用户
+            </summary>
+            <param name="roleId">角色ID</param>
+            <param name="page"></param>
+            <param name="limit"></param>
             <returns></returns>
         </member>
     </members>

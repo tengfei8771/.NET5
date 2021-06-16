@@ -16,12 +16,15 @@ namespace Services
     {
         private IRoleRepository roleRepository;
         private IUserRepository userRepository;
+        private IUserMapRoleRepository userMapRoleRepository;
 
-        public RoleService(IRoleRepository roleRepository, IUserRepository userRepository) :base(roleRepository)
+        public RoleService(IRoleRepository roleRepository, IUserRepository userRepository, IUserMapRoleRepository userMapRoleRepository) :base(roleRepository)
         {
             this.roleRepository = roleRepository;
             this.userRepository = userRepository;
+            this.userMapRoleRepository = userMapRoleRepository;
         }
+
 
         public ResponseModel DeleteRole(decimal RoleID)
         {
@@ -51,16 +54,33 @@ namespace Services
         public ResponseModel RoleForUser(RoleForUser dto)
         {
             List<usermaprole> list = new List<usermaprole>();
+            int total = 0;
+            //先获取这个权限下所有的用户信息用来判断传过来的用户ID是否已经被赋权过了
+            var usersHasRoled=userRepository.GetRoleAuthorized(dto.RoleID, 1, 500,ref total);
             foreach (decimal userid in dto.UserID)
             {
-                usermaprole item = new usermaprole()
+                var user = usersHasRoled.Where(t => t.ID == userid).FirstOrDefault();
+                //没赋权过生成实体
+                if (user != null)
                 {
-                    RoleID =dto.RoleID,
-                    UserID= userid
-                };
-                list.Add(item);
+                    continue;
+                }
+                else
+                {
+                    usermaprole item = new usermaprole()
+                    {
+                        RoleID = dto.RoleID,
+                        UserID = userid
+                    };
+                    list.Add(item);
+                    
+                }
             }
             return CreateResponseModel(roleRepository.RoleForUser, dto.RoleID, list);
+        }
+        public ResponseModel CancelRoleForUser(RoleForUser dto)
+        {
+            return CreateResponseModel<Expression<Func<usermaprole,bool>>>(userMapRoleRepository.Delete, t => t.RoleID == dto.RoleID && dto.UserID.Contains(t.UserID));
         }
 
     }

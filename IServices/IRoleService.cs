@@ -24,6 +24,12 @@ namespace IServices
         /// <returns></returns>
         ResponseModel RoleForUser(RoleForUser dto);
         /// <summary>
+        /// 取消赋权
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        ResponseModel CancelRoleForUser(RoleForUser dto);
+        /// <summary>
         /// 根据权限获取权限下的用户
         /// </summary>
         /// <param name="RoleID"></param>

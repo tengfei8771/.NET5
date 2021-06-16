@@ -165,7 +165,7 @@ namespace Repository
         public List<userinfo> GetRoleAuthorized(decimal roleId,int page,int limit,ref int total)
         {
             var list = _baseMethod.Db().Queryable<userinfo>()
-                .Where(t => SqlFunc.Subqueryable<usermaprole>().Where(a => a.RoleID == roleId).Any())
+                .Where(t => SqlFunc.Subqueryable<usermaprole>().Where(a => a.RoleID == roleId&&t.ID==a.UserID).Any())
                 .ToPageList(page, limit, ref total);
             return list;
         }
@@ -173,7 +173,7 @@ namespace Repository
         public List<userinfo> GetRoleNotAuthorized(decimal roleId, int page, int limit, ref int total)
         {
             var list = _baseMethod.Db().Queryable<userinfo>()
-                .Where(t => SqlFunc.Subqueryable<usermaprole>().Where(a => a.RoleID == roleId).NotAny())
+                .Where(t => SqlFunc.Subqueryable<usermaprole>().Where(a => a.RoleID == roleId && t.ID == a.UserID).NotAny())
                 .ToPageList(page, limit, ref total);
             return list;
         }

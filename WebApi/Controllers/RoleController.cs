@@ -64,5 +64,14 @@ namespace WebApi.Controllers
         /// <returns></returns>
         [HttpPost("RoleForUser")]
         public IActionResult RoleForUser([FromBody] RoleForUser dto) => Ok(roleService.RoleForUser(dto));
+
+        /// <summary>
+        /// 取消用户的角色
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        [HttpPost("CancelRoleForUser")]
+        public IActionResult CancelRoleForUser([FromBody] RoleForUser dto) => Ok(roleService.CancelRoleForUser(dto));
+
     }
 }
