@@ -14,6 +14,7 @@ namespace SqlSugarAndEntity
             {
                 string ClassTemplate = @"{using}
 using Utils;
+using Utils.JsonConvertHelper;
 using System.Collections.Generic;
 using SqlSugar;
 namespace {Namespace}

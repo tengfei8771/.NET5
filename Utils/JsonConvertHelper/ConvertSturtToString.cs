@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Utils
+namespace Utils.JsonConvertHelper
 {
     public class ConvertSturtToString: JsonConverter
     {

@@ -35,8 +35,8 @@ namespace Services
             {
                 return new ResponseModel()
                 {
-                    code = (int)ResponseType.AccountAlreadyExists,
-                    message = ReflectionConvertHelper.GetEnumDescription(ResponseType.AccountAlreadyExists)
+                    code = (int)ResponseTypeEnum.AccountAlreadyExists,
+                    message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.AccountAlreadyExists)
                 };
             }
 
@@ -71,14 +71,14 @@ namespace Services
                     //把用户密码解密
                     t.UserPassWord = AESHelper.AesDecrypt(t.UserPassWord, PwdKey);
                 });
-                res.code = (int)ResponseType.GetInfoSucess;
-                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
+                res.code = (int)ResponseTypeEnum.GetInfoSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.GetInfoSucess);
                 res.total = total;
                 res.items = list;
             }
             catch(Exception e)
             {
-                res.code= (int)ResponseType.Exception;
+                res.code= (int)ResponseTypeEnum.Exception;
                 res.message = e.Message;
             }
             return res; 
@@ -99,8 +99,8 @@ namespace Services
             var userlist = userRepository.GetUserInfo((a, b, c) => a.UserAccount == account,1,10,ref total);
             if (userlist.Count == 0)
             {
-                res.code = (int)ResponseType.AccountNotExists;
-                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.AccountNotExists);
+                res.code = (int)ResponseTypeEnum.AccountNotExists;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.AccountNotExists);
             }
             else
             {
@@ -108,8 +108,8 @@ namespace Services
                 var userinfo = userlist.Where(t => t.UserPassWord == AESPwd).FirstOrDefault();
                 if (userinfo != null)
                 {
-                    res.code = (int)ResponseType.LoginSucess;
-                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.LoginSucess);
+                    res.code = (int)ResponseTypeEnum.LoginSucess;
+                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.LoginSucess);
                     var userinfodic = ReflectionConvertHelper.ConvertObjectToDictionary(userinfo);
                     //生成请求token 测试用1分钟
                     string RequestToken = CreateToken(RequestKey, userinfodic,10);
@@ -121,8 +121,8 @@ namespace Services
                 }
                 else
                 {
-                    res.code = (int)ResponseType.PwdError;
-                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.PwdError);
+                    res.code = (int)ResponseTypeEnum.PwdError;
+                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.PwdError);
                 }
             }
             return res;
@@ -137,8 +137,8 @@ namespace Services
                 string RefreshToken = value.Value<string>("refreshToken");
                 if (RefreshToken == null) 
                 {
-                    res.code = (int)ResponseType.NoToken;
-                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.NoToken);
+                    res.code = (int)ResponseTypeEnum.NoToken;
+                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.NoToken);
                     return res;
                 }
                 string RequestKey = GetRequestKey();
@@ -158,14 +158,14 @@ namespace Services
                     var JwtData = GetJwtInfo(RefreshToken);
                     //jwt前两段重新用requestkey加密
                     string RequestToken = CreateEncodedSignature(RequestKey, JwtData.Item1, JwtData.Item2);
-                    res.code = (int)ResponseType.TokenSucess;
-                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.TokenSucess);
+                    res.code = (int)ResponseTypeEnum.TokenSucess;
+                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.TokenSucess);
                     res.items = CreateNewToken(RequestKey, JwtData, 10);
                 }               
             }
             catch(Exception e)
             {
-                res.code = (int)ResponseType.Exception;
+                res.code = (int)ResponseTypeEnum.Exception;
                 res.message = e.Message;
             }
             return res;

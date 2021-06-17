@@ -80,7 +80,7 @@ namespace Utils
         /// 验证的结果code
         /// </para>
         /// </returns>
-        public static Tuple<bool, ResponseType> ValidateJwt(string key,string str)
+        public static Tuple<bool, ResponseTypeEnum> ValidateJwt(string key,string str)
         {
             try
             {
@@ -102,19 +102,19 @@ namespace Utils
                         long exp = JSecond.Value<long>("exp");
                         if (now > exp)
                         {
-                            return Tuple.Create(false, ResponseType.Overdue);
+                            return Tuple.Create(false, ResponseTypeEnum.Overdue);
 
                         }
-                        return Tuple.Create(flag, ResponseType.Success);
+                        return Tuple.Create(flag, ResponseTypeEnum.Success);
                     }
                     else
                     {
-                        return Tuple.Create(flag, ResponseType.IllegalToken);
+                        return Tuple.Create(flag, ResponseTypeEnum.IllegalToken);
                     }
                 }
                 else
                 {
-                    return Tuple.Create(false, ResponseType.UnkonwType);
+                    return Tuple.Create(false, ResponseTypeEnum.UnkonwType);
                 }
                 
             }
@@ -190,38 +190,6 @@ namespace Utils
             Configuration = builder.Build();
             RequestKey = Configuration.GetSection("RequestSecurityKey").Value.Trim();
             RefreshKey= Configuration.GetSection("RefreshSecurityKey").Value.Trim();
-        }
-        public enum ResponseType
-        {
-            [Description("查询数据成功")]
-            GetInfoSucess = 2000,
-            [Description("操作成功")]
-            OperationSucess = 2001,
-            [Description("操作失败")]
-            OperationFail = 2002,
-            [Description("出现异常!")]
-            Exception = -1,
-            [Description("令牌验证通过")]
-            Success,
-            [Description("非读取到令牌")]
-            NoToken= 50014,
-            [Description("非法令牌")]
-            IllegalToken = 50015,
-            [Description("令牌已经过期！")]
-            Overdue = 50016,
-            [Description("未定义的验证类型！")]
-            UnkonwType = 50017,
-            [Description("登录成功")]
-            LoginSucess = 50000,
-            [Description("账号不存在！")]
-            AccountNotExists = 50007,
-            [Description("密码错误")]
-            PwdError = 50008,
-            [Description("账号已经存在")]
-            AccountAlreadyExists = 50009,
-            [Description("获取Token成功")]
-            TokenSucess = 60000,
-
         }
     }
 }

@@ -41,8 +41,8 @@ namespace PublicWebApi.Common.Validator
                 {
                     httpContext.Response.ContentType = "application/json";
                     httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    responseModel.code = (int)ResponseType.NoToken;
-                    responseModel.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.NoToken);
+                    responseModel.code = (int)ResponseTypeEnum.NoToken;
+                    responseModel.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.NoToken);
                     httpContext.Response.WriteAsync(JsonConvert.SerializeObject(responseModel));
                     return Task.FromResult(0);
                 }

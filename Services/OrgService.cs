@@ -35,8 +35,8 @@ namespace Services
             {
                 DataTable dt = orgRepository.GetOrgTree();
                 var list = ReflectionConvertHelper.ConvertDatatableToTreeList<orginfo>(dt, "ID", "ParentOrgID");
-                res.code = (int)ResponseType.GetInfoSucess;
-                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
+                res.code = (int)ResponseTypeEnum.GetInfoSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.GetInfoSucess);
                 res.items = list;
                 res.total = list.Count;
             }

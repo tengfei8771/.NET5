@@ -140,12 +140,12 @@ namespace Services
             try
             {
                 func.Invoke(p);
-                res.code = (int)ResponseType.OperationSucess;
-                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.OperationSucess);
+                res.code = (int)ResponseTypeEnum.OperationSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.OperationSucess);
             }
             catch (Exception e)
             {
-                res.code = (int)ResponseType.Exception;
+                res.code = (int)ResponseTypeEnum.Exception;
                 res.message = e.Message;
             }
             return res;
@@ -165,12 +165,12 @@ namespace Services
             try
             {
                 func.Invoke(p, p1);
-                res.code = (int)ResponseType.OperationSucess;
-                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.OperationSucess);
+                res.code = (int)ResponseTypeEnum.OperationSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.OperationSucess);
             }
             catch (Exception e)
             {
-                res.code = (int)ResponseType.Exception;
+                res.code = (int)ResponseTypeEnum.Exception;
                 res.message = e.Message;
             }
             return res;
@@ -190,18 +190,18 @@ namespace Services
                 bool Success = func.Invoke(p);
                 if (Success)
                 {
-                    res.code = (int)ResponseType.OperationSucess;
-                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.OperationSucess);
+                    res.code = (int)ResponseTypeEnum.OperationSucess;
+                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.OperationSucess);
                 }
                 else
                 {
-                    res.code = (int)ResponseType.OperationFail;
-                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.OperationFail);
+                    res.code = (int)ResponseTypeEnum.OperationFail;
+                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.OperationFail);
                 }
             }
             catch (Exception e)
             {
-                res.code = (int)ResponseType.Exception;
+                res.code = (int)ResponseTypeEnum.Exception;
                 res.message = e.Message;
             }
             return res;
@@ -223,18 +223,18 @@ namespace Services
                 bool Success = func.Invoke(p,p1);
                 if (Success)
                 {
-                    res.code = (int)ResponseType.OperationSucess;
-                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.OperationSucess);
+                    res.code = (int)ResponseTypeEnum.OperationSucess;
+                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.OperationSucess);
                 }
                 else
                 {
-                    res.code = (int)ResponseType.OperationFail;
-                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.OperationFail);
+                    res.code = (int)ResponseTypeEnum.OperationFail;
+                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.OperationFail);
                 }
             }
             catch (Exception e)
             {
-                res.code = (int)ResponseType.Exception;
+                res.code = (int)ResponseTypeEnum.Exception;
                 res.message = e.Message;
             }
             return res;
@@ -247,19 +247,19 @@ namespace Services
                 bool Success = func.Invoke(p, p1, p2);
                 if (Success)
                 {
-                    res.code = (int)ResponseType.OperationSucess;
-                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.OperationSucess);
+                    res.code = (int)ResponseTypeEnum.OperationSucess;
+                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.OperationSucess);
                 }
                 else
                 {
-                    res.code = (int)ResponseType.OperationFail;
-                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.OperationFail);
+                    res.code = (int)ResponseTypeEnum.OperationFail;
+                    res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.OperationFail);
                 }
                
             }
             catch (Exception e)
             {
-                res.code = (int)ResponseType.Exception;
+                res.code = (int)ResponseTypeEnum.Exception;
                 res.message = e.Message;
             }
             return res;
@@ -280,13 +280,13 @@ namespace Services
             try
             {
                 PResult obj = func.Invoke(p);
-                res.code = (int)ResponseType.GetInfoSucess;
-                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
+                res.code = (int)ResponseTypeEnum.GetInfoSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.GetInfoSucess);
                 res.items = obj;
             }
             catch (Exception e)
             {
-                res.code = (int)ResponseType.Exception;
+                res.code = (int)ResponseTypeEnum.Exception;
                 res.message = e.Message;
             }
             return res;
@@ -298,13 +298,13 @@ namespace Services
             try
             {
                 PResult obj = func.Invoke(p, p1);
-                res.code = (int)ResponseType.GetInfoSucess;
-                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
+                res.code = (int)ResponseTypeEnum.GetInfoSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.GetInfoSucess);
                 res.items = obj;
             }
             catch (Exception e)
             {
-                res.code =(int)ResponseType.Exception;
+                res.code =(int)ResponseTypeEnum.Exception;
                 res.message = e.Message;
             }
             return res;
@@ -328,13 +328,13 @@ namespace Services
             try
             {
                 PResult obj = func.Invoke(p, p1, p2);
-                res.code = (int)ResponseType.GetInfoSucess;
-                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
+                res.code = (int)ResponseTypeEnum.GetInfoSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.GetInfoSucess);
                 res.items = obj;
             }
             catch (Exception e)
             {
-                res.code = (int)ResponseType.Exception;
+                res.code = (int)ResponseTypeEnum.Exception;
                 res.message = e.Message;
             }
             return res;
@@ -347,14 +347,14 @@ namespace Services
             try
             {
                 PResult obj = func.Invoke(p, p1, p2, p3);
-                res.code = (int)ResponseType.GetInfoSucess;
-                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
+                res.code = (int)ResponseTypeEnum.GetInfoSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.GetInfoSucess);
                 res.items = obj;
                 
             }
             catch (Exception e)
             {
-                res.code = (int)ResponseType.Exception;
+                res.code = (int)ResponseTypeEnum.Exception;
                 res.message = e.Message;
             }
             return res;
@@ -365,14 +365,14 @@ namespace Services
             try
             {
                 PResult obj = func.Invoke(p, p1, p2, p3, p4);
-                res.code = (int)ResponseType.GetInfoSucess;
-                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
+                res.code = (int)ResponseTypeEnum.GetInfoSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.GetInfoSucess);
                 res.items = obj;
                 
             }
             catch (Exception e)
             {
-                res.code = (int)ResponseType.Exception;
+                res.code = (int)ResponseTypeEnum.Exception;
                 res.message = e.Message;
             }
             return res;
@@ -392,13 +392,13 @@ namespace Services
             {
                 PResult pResult = func.Invoke(p, p1,ref p2);
                 res.items = pResult;
-                res.code = (int)ResponseType.GetInfoSucess;
-                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
+                res.code = (int)ResponseTypeEnum.GetInfoSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.GetInfoSucess);
                 res.total = p2 as int?;
             }
             catch (Exception e)
             {
-                res.code = (int)ResponseType.Exception;
+                res.code = (int)ResponseTypeEnum.Exception;
                 res.message = e.Message;
             }
             return res;
@@ -412,13 +412,13 @@ namespace Services
             {
                 PResult pResult = func.Invoke(p, p1, p2, ref p3);
                 res.items = pResult;
-                res.code = (int)ResponseType.GetInfoSucess;
-                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
+                res.code = (int)ResponseTypeEnum.GetInfoSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.GetInfoSucess);
                 res.total = p3 as int?;
             }
             catch(Exception e)
             {
-                res.code = (int)ResponseType.Exception;
+                res.code = (int)ResponseTypeEnum.Exception;
                 res.message = e.Message;
             }
             return res;
@@ -433,13 +433,13 @@ namespace Services
             {
                 PResult pResult = func.Invoke(p, p1, p2, p3,ref p4);
                 res.items = pResult;
-                res.code = (int)ResponseType.GetInfoSucess;
-                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseType.GetInfoSucess);
+                res.code = (int)ResponseTypeEnum.GetInfoSucess;
+                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.GetInfoSucess);
                 res.total = p4 as int?;
             }
             catch (Exception e)
             {
-                res.code = (int)ResponseType.Exception;
+                res.code = (int)ResponseTypeEnum.Exception;
                 res.message = e.Message;
             }
             return res;

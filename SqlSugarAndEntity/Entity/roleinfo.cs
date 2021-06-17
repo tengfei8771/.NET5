@@ -6,6 +6,7 @@ using Utils;
 using System.Collections.Generic;
 using SqlSugar;
 using Newtonsoft.Json;
+using Utils.JsonConvertHelper;
 
 namespace SqlSugarAndEntity
 {
