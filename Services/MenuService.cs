@@ -44,12 +44,12 @@ namespace Services
             {
                 DataTable dt = menuRepository.GetMenuTree();
                 response.items = ReflectionConvertHelper.ConvertDatatableToTreeList<menuinfo>(dt, "ID", "MenuParentID");
-                response.code = (int)ResponseTypeEnum.GetInfoSucess;
-                response.message= ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.GetInfoSucess);
+                response.code = ResponseTypeEnum.GetInfoSucess;
+                response.message = ResponseTypeEnum.GetInfoSucess;
             }
             catch(Exception e)
             {
-                response.code = (int)ResponseTypeEnum.Exception;
+                response.code = ResponseTypeEnum.Exception;
                 response.message = e.Message;
             }
             return response;
