@@ -13,7 +13,7 @@ namespace WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [JwtVerification]
+    [AllowAnyJwtVerification]
     public class WeatherForecastController : ControllerBase
     {
         private IUserService userService;
