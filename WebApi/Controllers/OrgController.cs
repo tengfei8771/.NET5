@@ -13,6 +13,7 @@ namespace WebApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [JwtVerification]
+    [ApiExplorerSettings(GroupName = "base_api")]
     public class OrgController : ControllerBase
     {
         private IOrgService orgService;

@@ -14,6 +14,7 @@ namespace WebApi.Controllers
     [Route("api/[controller]")]
     [JwtVerification]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "base_api")]
     public class RoleController : ControllerBase
     {
         private IRoleService roleService;

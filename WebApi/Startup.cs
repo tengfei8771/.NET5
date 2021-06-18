@@ -14,6 +14,7 @@ using Newtonsoft.Json.Serialization;
 using PublicWebApi.Common.Validator;
 using SqlSugarAndEntity;
 using SqlSugarAndEntity.AutoMapperConfig;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -67,10 +68,33 @@ namespace WebApi
             services.AddSwaggerGen(options =>
             {
                 // 添加文档信息
-                options.SwaggerDoc("WebApi", new OpenApiInfo { Title = "WebApi", Version = "v1" });
+                options.SwaggerDoc("base_api", new OpenApiInfo { Title = "基础框架API", Version = "v1" });
+                options.SwaggerDoc("app_api", new OpenApiInfo { Title = "业务API", Version = "v2" });
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 // 获取xml文件路径
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.DocInclusionPredicate((docName, apiDesc) =>
+                {
+                    if(!apiDesc.TryGetMethodInfo(out MethodInfo methodInfo))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        var version = methodInfo.DeclaringType.GetCustomAttributes(true).OfType<ApiExplorerSettingsAttribute>().Select(t => t.GroupName).FirstOrDefault();
+                        if(docName.ToLower()== "app_api" && version == null)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return version == docName.ToLower();
+                        }
+                        
+                    }
+                    
+
+                });
                 // 添加控制器层注释，true表示显示控制器注释
                 options.IncludeXmlComments(xmlPath, true);
                 options.AddSecurityDefinition("Bear", new OpenApiSecurityScheme()
@@ -119,8 +143,15 @@ namespace WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/WebApi/swagger.json", "WebApi v1"));
+                app.UseSwagger(c =>
+                {
+                    c.RouteTemplate = "swagger/{documentName}/swagger.json";
+                });
+                app.UseSwaggerUI(c => 
+                {
+                    c.SwaggerEndpoint("/swagger/app_api/swagger.json", "业务api");
+                    c.SwaggerEndpoint("/swagger/base_api/swagger.json", "基础框架api");
+                });
             }
             app.UseCors("any");
             //app.UseConsul();

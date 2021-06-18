@@ -13,6 +13,7 @@ namespace WebApi.Controllers
 {
     [JwtVerification]
     [Route("api/[controller]")]
+    [ApiExplorerSettings(GroupName = "base_api")]
     [ApiController]
     public class MenuController : ControllerBase
     {
