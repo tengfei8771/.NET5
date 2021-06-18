@@ -76,6 +76,7 @@ namespace SqlSugarAndEntity
                 MethodValue = (expInfo, dbType, expContext) =>
                 {
                     if (dbType == DbType.MySql)
+                    {
                         if (expInfo.Args.Count == 1)
                         {
                             return string.Format("group_concat({0})", expInfo.Args[0].MemberName);
@@ -84,8 +85,34 @@ namespace SqlSugarAndEntity
                         {
                             throw new Exception("未实现");
                         }
+                    }
+                    else if (dbType == DbType.SqlServer)
+                    {
+                        if (expInfo.Args.Count == 1)
+                        {
+                            return string.Format("string_agg({0},',')", expInfo.Args[0].MemberName);
+                        }
+                        else
+                        {
+                            throw new Exception("未实现");
+                        }
+                    }
+                    else if (dbType == DbType.Oracle)
+                    {
+                        if (expInfo.Args.Count == 1)
+                        {
+                            return string.Format("wm_concat({0})", expInfo.Args[0].MemberName);
+                        }
+                        else
+                        {
+                            throw new Exception("未实现");
+                        }
+                    }
                     else
+                    {
                         throw new Exception("未实现");
+                    }
+                       
                 }
             };
             expMethods.Add(GroupConcat);
