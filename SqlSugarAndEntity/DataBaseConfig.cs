@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
+using Serilog;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -54,7 +55,8 @@ namespace SqlSugarAndEntity
             {
                 OnLogExecuting = (sql, p) =>
                 {
-                    Console.WriteLine(SqlSguarExtensionMethod.LookSQL(sql, p));
+                    Log.Logger.Information(SqlSguarExtensionMethod.LookSQL(sql, p));
+                    //Console.WriteLine(SqlSguarExtensionMethod.LookSQL(sql, p));
                 }
             };
 

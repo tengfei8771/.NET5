@@ -1,4 +1,5 @@
-﻿using SqlSugar;
+﻿using Serilog;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,8 @@ namespace SqlSugarAndEntity
             SqlSugarClient db = new SqlSugarClient(DataBaseConfig._config);
             db.Aop.OnLogExecuted = (sql, p) =>
             {
-                Console.WriteLine($"SqlExecuteTime:[{db.Ado.SqlExecutionTime}]------------------");
+                Log.Logger.Information($"SqlExecuteTime:[{db.Ado.SqlExecutionTime}]------------------");
+                //Console.WriteLine($"SqlExecuteTime:[{db.Ado.SqlExecutionTime}]------------------");
             };
             return db;
         } 

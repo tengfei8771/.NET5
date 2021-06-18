@@ -23,6 +23,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using TimedTask;
 using Utils;
+using Utils.SerilogConfig;
 
 namespace WebApi
 {
@@ -153,6 +154,7 @@ namespace WebApi
                     c.SwaggerEndpoint("/swagger/base_api/swagger.json", "»ù´¡¿ò¼Üapi");
                 });
             }
+            //app.UseSerilogRequestLoggings();
             app.UseCors("any");
             //app.UseConsul();
             //QuartzServices.StartJobs<StandardsJob>();
