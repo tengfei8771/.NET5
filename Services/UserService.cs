@@ -56,31 +56,21 @@ namespace Services
         {
             string PwdKey = Configuration.GetSection("AESKey").Value;
             ResponseModel res = new ResponseModel();
-            try
+            int total = 0;
+            Expression<Func<userinfo, usermaporg, orginfo, bool>> OrginExp = null;
+            Expression<Func<userinfo, usermaporg, orginfo, bool>> WhereExp = OrginExp
+                .AndIF(!string.IsNullOrEmpty(Name), (a, b, c) => a.UserName.Contains(Name))
+                .AndIF(!string.IsNullOrEmpty(UserAccount), (a, b, c) => a.UserPhone.Contains(UserPhone))
+                .AndIF(!string.IsNullOrEmpty(IdNumber), (a, b, c) => a.IdNumber.Contains(IdNumber))
+                .AndIF(!string.IsNullOrEmpty(OrgName), (a, b, c) => c.OrgName.Contains(OrgName));
+            var list = userRepository.GetUserInfo(WhereExp, page, limit, ref total);
+            list.ForEach(t =>
             {
-                int total = 0;
-                Expression<Func<userinfo, usermaporg, orginfo, bool>> OrginExp = null;
-                Expression<Func<userinfo, usermaporg, orginfo, bool>> WhereExp = OrginExp
-                    .AndIF(!string.IsNullOrEmpty(Name), (a, b, c) => a.UserName.Contains(Name))
-                    .AndIF(!string.IsNullOrEmpty(UserAccount), (a, b, c) => a.UserPhone.Contains(UserPhone))
-                    .AndIF(!string.IsNullOrEmpty(IdNumber), (a, b, c) => a.IdNumber.Contains(IdNumber))
-                    .AndIF(!string.IsNullOrEmpty(OrgName), (a, b, c) => c.OrgName.Contains(OrgName));
-                var list = userRepository.GetUserInfo(WhereExp, page, limit, ref total);
-                list.ForEach(t =>
-                {
-                    //把用户密码解密
-                    t.UserPassWord = AESHelper.AesDecrypt(t.UserPassWord, PwdKey);
-                });
-                res.code = ResponseTypeEnum.GetInfoSucess;
-                res.message = ResponseTypeEnum.GetInfoSucess;
-                res.total = total;
-                res.items = list;
-            }
-            catch(Exception e)
-            {
-                res.code= ResponseTypeEnum.Exception;
-                res.message = e.Message;
-            }
+                //把用户密码解密
+                t.UserPassWord = AESHelper.AesDecrypt(t.UserPassWord, PwdKey);
+            });
+            res.total = total;
+            res.items = list;
             return res; 
             //return CreateResponseModelByPage(userRepository.GetUserInfo, WhereExp, page, limit, ref total);
         }
@@ -132,41 +122,33 @@ namespace Services
         public ResponseModel RefreshToken(JObject value)
         {
             ResponseModel res = new ResponseModel();
-            try
+            string RefreshToken = value.Value<string>("refreshToken");
+            if (RefreshToken == null)
             {
-                string RefreshToken = value.Value<string>("refreshToken");
-                if (RefreshToken == null) 
-                {
-                    res.code = ResponseTypeEnum.NoToken;
-                    res.message = ResponseTypeEnum.NoToken;
-                    return res;
-                }
-                string RequestKey = GetRequestKey();
-                string RefreshKey = GetRefreshKey();
-                //验证token有效性
-                var ValidateData = ValidateJwt(RefreshKey, RefreshToken);
-                //验证失败
-                if (!ValidateData.Item1)
-                {
-                    res.code = ValidateData.Item2;
-                    res.message = ValidateData.Item2;
-                }
-                else
-                {
-                    //验证成功
-                    //jwt先拆成3段
-                    var JwtData = GetJwtInfo(RefreshToken);
-                    //jwt前两段重新用requestkey加密
-                    string RequestToken = CreateEncodedSignature(RequestKey, JwtData.Item1, JwtData.Item2);
-                    res.code = ResponseTypeEnum.TokenSucess;
-                    res.message = ResponseTypeEnum.TokenSucess;
-                    res.items = CreateNewToken(RequestKey, JwtData, 10);
-                }               
+                res.code = ResponseTypeEnum.NoToken;
+                res.message = ResponseTypeEnum.NoToken;
+                return res;
             }
-            catch(Exception e)
+            string RequestKey = GetRequestKey();
+            string RefreshKey = GetRefreshKey();
+            //验证token有效性
+            var ValidateData = ValidateJwt(RefreshKey, RefreshToken);
+            //验证失败
+            if (!ValidateData.Item1)
             {
-                res.code = ResponseTypeEnum.Exception;
-                res.message = e.Message;
+                res.code = ValidateData.Item2;
+                res.message = ValidateData.Item2;
+            }
+            else
+            {
+                //验证成功
+                //jwt先拆成3段
+                var JwtData = GetJwtInfo(RefreshToken);
+                //jwt前两段重新用requestkey加密
+                string RequestToken = CreateEncodedSignature(RequestKey, JwtData.Item1, JwtData.Item2);
+                res.code = ResponseTypeEnum.TokenSucess;
+                res.message = ResponseTypeEnum.TokenSucess;
+                res.items = CreateNewToken(RequestKey, JwtData, 10);
             }
             return res;
         }

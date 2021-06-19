@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +25,7 @@ using System.Threading.Tasks;
 using TimedTask;
 using Utils;
 using Utils.SerilogConfig;
+using WebApi.ApiFilter;
 
 namespace WebApi
 {
@@ -82,8 +84,10 @@ namespace WebApi
                     }
                     else
                     {
+#pragma warning disable CS8602 // 解引用可能出现空引用。
                         var version = methodInfo.DeclaringType.GetCustomAttributes(true).OfType<ApiExplorerSettingsAttribute>().Select(t => t.GroupName).FirstOrDefault();
-                        if(docName.ToLower()== "app_api" && version == null)
+#pragma warning restore CS8602 // 解引用可能出现空引用。
+                        if (docName.ToLower()== "app_api" && version == null)
                         {
                             return true;
                         }
@@ -93,8 +97,6 @@ namespace WebApi
                         }
                         
                     }
-                    
-
                 });
                 // 添加控制器层注释，true表示显示控制器注释
                 options.IncludeXmlComments(xmlPath, true);
@@ -121,6 +123,8 @@ namespace WebApi
             services.AddControllers(options=>
             {
                 options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+                options.Filters.AddService(typeof(ApiResultFilterAttribute));
+                options.Filters.AddService(typeof(ApiExceptionAttribute));
             })
                 .AddNewtonsoftJson(options =>
             {
@@ -174,6 +178,10 @@ namespace WebApi
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
+            builder.RegisterAssemblyTypes(Assembly.Load("WebApi")).Where(r => !r.IsAbstract &&
+            (typeof(IAuthorizationFilter).IsAssignableFrom(r)) || typeof(IActionFilter).IsAssignableFrom(r)).PropertiesAutowired();
+            builder.RegisterAssemblyTypes(Assembly.Load("WebApi")).Where(r => !r.IsAbstract &&
+            typeof(IExceptionFilter).IsAssignableFrom(r)).PropertiesAutowired();
             builder.RegisterAssemblyTypes(Assembly.Load("Repository"))
                 .Where(x => x.Name.EndsWith("Repository", StringComparison.OrdinalIgnoreCase)).AsImplementedInterfaces();
             builder.RegisterAssemblyTypes(Assembly.Load("Services"))//注册服务层所有的服务类和其对应的接口

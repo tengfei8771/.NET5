@@ -40,18 +40,8 @@ namespace Services
         public ResponseModel GetMenuTree()
         {
             ResponseModel response = new ResponseModel();
-            try
-            {
-                DataTable dt = menuRepository.GetMenuTree();
-                response.items = ReflectionConvertHelper.ConvertDatatableToTreeList<menuinfo>(dt, "ID", "MenuParentID");
-                response.code = ResponseTypeEnum.GetInfoSucess;
-                response.message = ResponseTypeEnum.GetInfoSucess;
-            }
-            catch(Exception e)
-            {
-                response.code = ResponseTypeEnum.Exception;
-                response.message = e.Message;
-            }
+            DataTable dt = menuRepository.GetMenuTree();
+            response.items = ReflectionConvertHelper.ConvertDatatableToTreeList<menuinfo>(dt, "ID", "MenuParentID");
             return response;
         }
     }

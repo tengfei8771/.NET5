@@ -4,6 +4,11 @@
         <name>WebApi</name>
     </assembly>
     <members>
+        <member name="T:WebApi.ApiFilter.ApiIgnoreAttribute">
+            <summary>
+            包装结果忽略特性,标记此特性，不对返回值做包装
+            </summary>
+        </member>
         <member name="T:WebApi.Common.Verification">
             <summary>
             验证类,判断控制器权限是否需要jwt验证

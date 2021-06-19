@@ -33,8 +33,8 @@ namespace PublicWebApi.Common.Validator
                     string[] StrArr = apiKeyHeaderValues.ToString().Split('.');
                     string Second = Base64UrlEncoder.Decode(StrArr[1]);
                     JObject JSecond = JObject.Parse(Second);
-                    var str = JSecond.Value<string>("sub");
-                    string userdomain = JObject.Parse(str).Value<string>("usercode");
+                    //var str = JSecond.Value<string>("sub");
+                    //string userdomain = JObject.Parse(str).Value<string>("usercode");
                     //if (userhelp.GetUserInfo(userdomain, out string json))
                     //{
                     //    if (!httpContext.Session.TryGetValue(userdomain, out byte[] data))

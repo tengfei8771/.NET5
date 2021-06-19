@@ -31,20 +31,12 @@ namespace Services
         public ResponseModel GetOrgTree()
         {
             ResponseModel res = new ResponseModel();
-            try
-            {
-                DataTable dt = orgRepository.GetOrgTree();
-                var list = ReflectionConvertHelper.ConvertDatatableToTreeList<orginfo>(dt, "ID", "ParentOrgID");
-                res.code = ResponseTypeEnum.GetInfoSucess;
-                res.message = ResponseTypeEnum.GetInfoSucess;
-                res.items = list;
-                res.total = list.Count;
-            }
-            catch(Exception e)
-            {
-                res.code = ResponseTypeEnum.Exception;
-                res.message = e.Message;
-            }
+            DataTable dt = orgRepository.GetOrgTree();
+            var list = ReflectionConvertHelper.ConvertDatatableToTreeList<orginfo>(dt, "ID", "ParentOrgID");
+            res.code = ResponseTypeEnum.GetInfoSucess;
+            res.message = ResponseTypeEnum.GetInfoSucess;
+            res.items = list;
+            res.total = list.Count;
             return res;  
         }
         public List<decimal> GetOrgChildrenByID(decimal ParentId)

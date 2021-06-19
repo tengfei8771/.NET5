@@ -137,17 +137,9 @@ namespace Services
         protected ResponseModel CreateResponseModel<P>(Action<P> func, P p)
         {
             ResponseModel res = new ResponseModel();
-            try
-            {
-                func.Invoke(p);
-                res.code = ResponseTypeEnum.OperationSucess;
-                res.message = ResponseTypeEnum.OperationSucess;
-            }
-            catch (Exception e)
-            {
-                res.code = ResponseTypeEnum.Exception;
-                res.message = e.Message;
-            }
+            func.Invoke(p);
+            res.code = ResponseTypeEnum.OperationSucess;
+            res.message = ResponseTypeEnum.OperationSucess;
             return res;
         }
         /// <summary>
@@ -162,17 +154,9 @@ namespace Services
         protected ResponseModel CreateResponseModel<P, P1>(Action<P, P1> func, P p, P1 p1)
         {
             ResponseModel res = new ResponseModel();
-            try
-            {
-                func.Invoke(p, p1);
-                res.code = ResponseTypeEnum.OperationSucess;
-                res.message = ResponseTypeEnum.OperationSucess;
-            }
-            catch (Exception e)
-            {
-                res.code = ResponseTypeEnum.Exception;
-                res.message = e.Message;
-            }
+            func.Invoke(p, p1);
+            res.code = ResponseTypeEnum.OperationSucess;
+            res.message = ResponseTypeEnum.OperationSucess;
             return res;
         }
         /// <summary>
@@ -185,24 +169,16 @@ namespace Services
         protected ResponseModel CreateResponseModel<P>(Func<P, bool> func, P p)
         {
             ResponseModel res = new ResponseModel();
-            try
+            bool Success = func.Invoke(p);
+            if (Success)
             {
-                bool Success = func.Invoke(p);
-                if (Success)
-                {
-                    res.code = ResponseTypeEnum.OperationSucess;
-                    res.message = ResponseTypeEnum.OperationSucess;
-                }
-                else
-                {
-                    res.code = ResponseTypeEnum.OperationFail;
-                    res.message = ResponseTypeEnum.OperationFail;
-                }
+                res.code = ResponseTypeEnum.OperationSucess;
+                res.message = ResponseTypeEnum.OperationSucess;
             }
-            catch (Exception e)
+            else
             {
-                res.code = ResponseTypeEnum.Exception;
-                res.message = e.Message;
+                res.code = ResponseTypeEnum.OperationFail;
+                res.message = ResponseTypeEnum.OperationFail;
             }
             return res;
         }
@@ -218,49 +194,32 @@ namespace Services
         protected ResponseModel CreateResponseModel<P,P1>(Func<P,P1, bool> func, P p,P1 p1)
         {
             ResponseModel res = new ResponseModel();
-            try
+            bool Success = func.Invoke(p, p1);
+            if (Success)
             {
-                bool Success = func.Invoke(p,p1);
-                if (Success)
-                {
-                    res.code = ResponseTypeEnum.OperationSucess;
-                    res.message = ResponseTypeEnum.OperationSucess;
-                }
-                else
-                {
-                    res.code = ResponseTypeEnum.OperationFail;
-                    res.message = ResponseTypeEnum.OperationFail;
-                }
+                res.code = ResponseTypeEnum.OperationSucess;
+                res.message = ResponseTypeEnum.OperationSucess;
             }
-            catch (Exception e)
+            else
             {
-                res.code = ResponseTypeEnum.Exception;
-                res.message = e.Message;
+                res.code = ResponseTypeEnum.OperationFail;
+                res.message = ResponseTypeEnum.OperationFail;
             }
             return res;
         }
         protected ResponseModel CreateResponseModel<P, P1, P2>(Func<P, P1, P2, bool> func, P p, P1 p1, P2 p2)
         {
             ResponseModel res = new ResponseModel();
-            try
+            bool Success = func.Invoke(p, p1, p2);
+            if (Success)
             {
-                bool Success = func.Invoke(p, p1, p2);
-                if (Success)
-                {
-                    res.code = ResponseTypeEnum.OperationSucess;
-                    res.message = ResponseTypeEnum.OperationSucess;
-                }
-                else
-                {
-                    res.code = ResponseTypeEnum.OperationFail;
-                    res.message = ResponseTypeEnum.OperationFail;
-                }
-               
+                res.code = ResponseTypeEnum.OperationSucess;
+                res.message = ResponseTypeEnum.OperationSucess;
             }
-            catch (Exception e)
+            else
             {
-                res.code = ResponseTypeEnum.Exception;
-                res.message = e.Message;
+                res.code = ResponseTypeEnum.OperationFail;
+                res.message = ResponseTypeEnum.OperationFail;
             }
             return res;
         }
@@ -277,36 +236,20 @@ namespace Services
         protected ResponseModel CreateResponseModel<P, PResult>(Func<P, PResult> func, P p)
         {
             ResponseModel res = new ResponseModel();
-            try
-            {
-                PResult obj = func.Invoke(p);
-                res.code = ResponseTypeEnum.GetInfoSucess;
-                res.message = ResponseTypeEnum.GetInfoSucess;
-                res.items = obj;
-            }
-            catch (Exception e)
-            {
-                res.code = ResponseTypeEnum.Exception;
-                res.message = e.Message;
-            }
+            PResult obj = func.Invoke(p);
+            res.code = ResponseTypeEnum.GetInfoSucess;
+            res.message = ResponseTypeEnum.GetInfoSucess;
+            res.items = obj;
             return res;
         }
 
         protected ResponseModel CreateResponseModel<P, P1, PResult>(Func<P, P1, PResult> func, P p, P1 p1)
         {
             ResponseModel res = new ResponseModel();
-            try
-            {
-                PResult obj = func.Invoke(p, p1);
-                res.code = ResponseTypeEnum.GetInfoSucess;
-                res.message = ResponseTypeEnum.GetInfoSucess;
-                res.items = obj;
-            }
-            catch (Exception e)
-            {
-                res.code =ResponseTypeEnum.Exception;
-                res.message = e.Message;
-            }
+            PResult obj = func.Invoke(p, p1);
+            res.code = ResponseTypeEnum.GetInfoSucess;
+            res.message = ResponseTypeEnum.GetInfoSucess;
+            res.items = obj;
             return res;
         }
 
@@ -325,18 +268,10 @@ namespace Services
         protected ResponseModel CreateResponseModel<P, P1, P2, PResult>(Func<P, P1, P2, PResult> func, P p, P1 p1, P2 p2)
         {
             ResponseModel res = new ResponseModel();
-            try
-            {
-                PResult obj = func.Invoke(p, p1, p2);
-                res.code = ResponseTypeEnum.GetInfoSucess;
-                res.message = ResponseTypeEnum.GetInfoSucess;
-                res.items = obj;
-            }
-            catch (Exception e)
-            {
-                res.code = ResponseTypeEnum.Exception;
-                res.message = e.Message;
-            }
+            PResult obj = func.Invoke(p, p1, p2);
+            res.code = ResponseTypeEnum.GetInfoSucess;
+            res.message = ResponseTypeEnum.GetInfoSucess;
+            res.items = obj;
             return res;
         }
 
@@ -344,37 +279,19 @@ namespace Services
         protected ResponseModel CreateResponseModel<P, P1, P2, P3, PResult>(Func<P, P1, P2, P3, PResult> func, P p, P1 p1, P2 p2, P3 p3)
         {
             ResponseModel res = new ResponseModel();
-            try
-            {
-                PResult obj = func.Invoke(p, p1, p2, p3);
-                res.code = ResponseTypeEnum.GetInfoSucess;
-                res.message = ResponseTypeEnum.GetInfoSucess;
-                res.items = obj;
-                
-            }
-            catch (Exception e)
-            {
-                res.code = ResponseTypeEnum.Exception;
-                res.message = e.Message;
-            }
+            PResult obj = func.Invoke(p, p1, p2, p3);
+            res.code = ResponseTypeEnum.GetInfoSucess;
+            res.message = ResponseTypeEnum.GetInfoSucess;
+            res.items = obj;
             return res;
         }
         protected ResponseModel CreateResponseModel<P, P1, P2, P3, P4, PResult>(Func<P, P1, P2, P3, P4, PResult> func, P p, P1 p1, P2 p2, P3 p3, P4 p4)
         {
             ResponseModel res = new ResponseModel();
-            try
-            {
-                PResult obj = func.Invoke(p, p1, p2, p3, p4);
-                res.code = ResponseTypeEnum.GetInfoSucess;
-                res.message = ResponseTypeEnum.GetInfoSucess;
-                res.items = obj;
-                
-            }
-            catch (Exception e)
-            {
-                res.code = ResponseTypeEnum.Exception;
-                res.message = e.Message;
-            }
+            PResult obj = func.Invoke(p, p1, p2, p3, p4);
+            res.code = ResponseTypeEnum.GetInfoSucess;
+            res.message = ResponseTypeEnum.GetInfoSucess;
+            res.items = obj;
             return res;
         }
         #endregion
@@ -388,19 +305,11 @@ namespace Services
             where P2 : struct
         {
             ResponseModel res = new ResponseModel();
-            try
-            {
-                PResult pResult = func.Invoke(p, p1,ref p2);
-                res.items = pResult;
-                res.code = ResponseTypeEnum.GetInfoSucess;
-                res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.GetInfoSucess);
-                res.total = p2 as int?;
-            }
-            catch (Exception e)
-            {
-                res.code = ResponseTypeEnum.Exception;
-                res.message = e.Message;
-            }
+            PResult pResult = func.Invoke(p, p1, ref p2);
+            res.items = pResult;
+            res.code = ResponseTypeEnum.GetInfoSucess;
+            res.message = ReflectionConvertHelper.GetEnumDescription(ResponseTypeEnum.GetInfoSucess);
+            res.total = p2 as int?;
             return res;
         }
         protected ResponseModel CreateResponseModelByPage<PResult, P, P1, P2, P3>
@@ -408,19 +317,11 @@ namespace Services
             where P3 :struct
         {
             ResponseModel res = new ResponseModel();
-            try
-            {
-                PResult pResult = func.Invoke(p, p1, p2, ref p3);
-                res.items = pResult;
-                res.code = ResponseTypeEnum.GetInfoSucess;
-                res.message = ResponseTypeEnum.GetInfoSucess;
-                res.total = p3 as int?;
-            }
-            catch(Exception e)
-            {
-                res.code = ResponseTypeEnum.Exception;
-                res.message = e.Message;
-            }
+            PResult pResult = func.Invoke(p, p1, p2, ref p3);
+            res.items = pResult;
+            res.code = ResponseTypeEnum.GetInfoSucess;
+            res.message = ResponseTypeEnum.GetInfoSucess;
+            res.total = p3 as int?;
             return res;
         }
 
@@ -429,19 +330,11 @@ namespace Services
             where P3 : struct
         {
             ResponseModel res = new ResponseModel();
-            try
-            {
-                PResult pResult = func.Invoke(p, p1, p2, p3,ref p4);
-                res.items = pResult;
-                res.code = ResponseTypeEnum.GetInfoSucess;
-                res.message = ResponseTypeEnum.GetInfoSucess;
-                res.total = p4 as int?;
-            }
-            catch (Exception e)
-            {
-                res.code = ResponseTypeEnum.Exception;
-                res.message = e.Message;
-            }
+            PResult pResult = func.Invoke(p, p1, p2, p3, ref p4);
+            res.items = pResult;
+            res.code = ResponseTypeEnum.GetInfoSucess;
+            res.message = ResponseTypeEnum.GetInfoSucess;
+            res.total = p4 as int?;
             return res;
         }
 

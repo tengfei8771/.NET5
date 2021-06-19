@@ -9,6 +9,8 @@ namespace Utils
 {
     public enum ResponseTypeEnum
     {
+        [Description("默认值")]
+        NotSetValue = 0,
         [Description("查询数据成功")]
         GetInfoSucess = 2000,
         [Description("操作成功")]
@@ -18,7 +20,7 @@ namespace Utils
         [Description("出现异常!")]
         Exception = -1,
         [Description("令牌验证通过")]
-        Success,
+        Success=1,
         [Description("非读取到令牌")]
         NoToken = 50014,
         [Description("非法令牌")]
