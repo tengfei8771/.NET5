@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-
 using Utils;
 using System.Collections.Generic;
 using SqlSugar;
@@ -17,7 +16,7 @@ namespace SqlSugarAndEntity
     {
         public dictionary()
         {
-            this.ID = SnowflakeHelper.GetId();
+            this.ID = IDHelper.GetId();
 
         }
         /// <summary>

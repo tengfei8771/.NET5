@@ -17,7 +17,7 @@ namespace SqlSugarAndEntity
     {
         public usermaporg()
         {
-            this.ID = SnowflakeHelper.GetId();
+            this.ID = IDHelper.GetId();
 
         }
         /// <summary>

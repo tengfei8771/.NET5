@@ -46,6 +46,7 @@ namespace Repository
                     CreateBy = t.CreateBy,
                     hasChildren = SqlFunc.Subqueryable<menuinfo>().Where(a => a.MenuParentID == t.ID).Any()
                 })
+                .OrderBy(t => new {t.MenuSortNo})
                 .Mapper(it =>
                 {
                     if (it.hasChildren)
@@ -79,6 +80,7 @@ namespace Repository
                     ))
                 .Distinct()
                 .Where((a,b,c,d)=>a.ID==userId)
+                .OrderBy((a, b, c, d) => new {d.MenuSortNo})
                 .Select((a, b, c, d) => d)
                 .ToList();
             return list;

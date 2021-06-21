@@ -15,7 +15,7 @@ namespace SqlSugarAndEntity
                 string ClassTemplate = @"{using}
 using Utils;
 using Utils.JsonConvertHelper;
-using System.Collections.Generic;
+using Yitter.IdGenerator;
 using SqlSugar;
 namespace {Namespace}
 {
@@ -24,7 +24,7 @@ namespace {Namespace}
     {
            public {ClassName}()
            {
-                this.ID = SnowflakeHelper.GetId();
+                this.ID = IDHelper.GetId();
                 {Constructor}
            }
 {PropertyName}
@@ -41,7 +41,7 @@ namespace {Namespace}
     {
         public {ClassName}()
         {
-           this.ID = SnowflakeHelper.GetId();
+           this.ID = IDHelper.GetId();
           {Constructor}
         }
 {PropertyName}

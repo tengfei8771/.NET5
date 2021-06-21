@@ -74,7 +74,7 @@ namespace WebApi.Controllers
         {
             string PwdKey = Configuration.GetSection("AESKey").Value;
             List<usermaporg> maps = new List<usermaporg>();
-            var userId= SnowflakeHelper.GetId();
+            var userId= IDHelper.GetId();
             foreach (decimal orgid in userDTO.OrgId)
             {
                 usermaporg map = new usermaporg()

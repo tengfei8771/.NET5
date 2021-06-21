@@ -16,7 +16,7 @@ namespace SqlSugarAndEntity
     {
         public menuinfo()
         {
-            this.ID = SnowflakeHelper.GetId();
+            this.ID = IDHelper.GetId();
 
         }
         /// <summary>
