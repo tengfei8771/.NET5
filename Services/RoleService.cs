@@ -1,4 +1,4 @@
-﻿using IRepository;
+﻿using IBaseRepository;
 using IServices;
 using IServices.ResModel;
 using SqlSugarAndEntity;
@@ -16,9 +16,9 @@ namespace Services
     {
         private IRoleRepository roleRepository;
         private IUserRepository userRepository;
-        private IUserMapRoleRepository userMapRoleRepository;
+        private IBaseRepository<usermaprole> userMapRoleRepository;
 
-        public RoleService(IRoleRepository roleRepository, IUserRepository userRepository, IUserMapRoleRepository userMapRoleRepository) :base(roleRepository)
+        public RoleService(IRoleRepository roleRepository, IUserRepository userRepository, IBaseRepository<usermaprole> userMapRoleRepository) :base(roleRepository)
         {
             this.roleRepository = roleRepository;
             this.userRepository = userRepository;

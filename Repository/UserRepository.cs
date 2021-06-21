@@ -1,5 +1,5 @@
 ﻿using System;
-using IRepository;
+using IBaseRepository;
 using SqlSugarAndEntity;
 using System.Collections.Generic;
 using System.Data;

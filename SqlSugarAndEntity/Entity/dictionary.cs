@@ -25,7 +25,7 @@ namespace SqlSugarAndEntity
         /// Default:
         /// Nullable:False
         /// </summary>           
-        [JsonConverter(typeof(ConvertSturtToString))]
+        
         public decimal ID { get; set; }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace SqlSugarAndEntity
         /// Default:
         /// Nullable:True
         /// </summary>           
-        [JsonConverter(typeof(ConvertSturtToString))]
+        
         public decimal? ParentID { get; set; }
 
         /// <summary>

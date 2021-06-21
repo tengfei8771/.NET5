@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static SqlSugarAndEntity.DataTransferObject.role.RoleDTO;
 
-namespace IRepository
+namespace IBaseRepository
 {
     public interface IMenuRepository:IBaseRepository<menuinfo>
     {

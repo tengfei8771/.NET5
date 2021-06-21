@@ -11,9 +11,9 @@ namespace SqlSugarAndEntity.DataTransferObject.menu
 {
     public class MenuDTO
     {
-        [JsonConverter(typeof(ConvertSturtToString))]
+        
         public decimal RoleID { get; set; }
-        [JsonConverter(typeof(ConvertSturtToString))]
+        
         public List<string> menuID { get; set; }
     }
 }

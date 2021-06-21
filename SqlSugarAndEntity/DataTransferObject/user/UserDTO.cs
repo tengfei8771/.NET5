@@ -16,7 +16,7 @@ namespace SqlSugarAndEntity.DataTransferObject.user
         /// Default:
         /// Nullable:False
         /// </summary>           
-        [JsonConverter(typeof(ConvertSturtToString))]
+        
         public decimal ID { get; set; }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace SqlSugarAndEntity.DataTransferObject.user
         /// Nullable:True
         /// </summary>           
         public decimal? CreateBy { get; set; }
-        [JsonConverter(typeof(ConvertSturtToString))]
+        
         public List<decimal> OrgId { get; set; }
         
         public List<orginfo> OrgList { get; set; }

@@ -1,4 +1,4 @@
-﻿using IRepository;
+﻿using IBaseRepository;
 using IServices;
 using IServices.ResModel;
 using System;

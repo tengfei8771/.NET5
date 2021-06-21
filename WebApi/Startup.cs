@@ -1,4 +1,6 @@
 using Autofac;
+using IBaseRepository;
+using IServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -13,6 +15,8 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using PublicWebApi.Common.Validator;
+using Repository;
+using Services;
 using SqlSugarAndEntity;
 using SqlSugarAndEntity.AutoMapperConfig;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -135,6 +139,10 @@ namespace WebApi
                 options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
             });
             services.AddAutoMapper();
+            #region 注册两个基类接口
+            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
+            #endregion
             //services.AddQuartz(typeof(StandardsJob));
 
             //DiagnosticListener.AllListeners.Subscribe(new CommandListener());//EF监听执行sql和读写分离的注入方法

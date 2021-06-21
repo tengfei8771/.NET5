@@ -1,6 +1,6 @@
 ﻿using EFCore.BulkExtensions;
 using Entity.Models;
-using IRepository;
+using IBaseRepository;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

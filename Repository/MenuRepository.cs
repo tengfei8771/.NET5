@@ -1,4 +1,4 @@
-﻿using IRepository;
+﻿using IBaseRepository;
 using SqlSugar;
 using SqlSugarAndEntity;
 using System;

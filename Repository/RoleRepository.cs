@@ -1,4 +1,4 @@
-﻿using IRepository;
+﻿using IBaseRepository;
 using SqlSugarAndEntity;
 using System;
 using System.Collections.Generic;

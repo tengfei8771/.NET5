@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IRepository
+namespace IBaseRepository
 {
     public interface IRoleRepository:IBaseRepository<roleinfo>
     {

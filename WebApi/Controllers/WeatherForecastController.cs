@@ -1,4 +1,4 @@
-﻿using IRepository;
+﻿using IBaseRepository;
 using IServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
