@@ -18,15 +18,44 @@ namespace SqlSugarAndEntity
         /// <returns></returns>
         public static string LookSQL(string sql, SugarParameter[] pars)
         {
-            if (pars == null || pars.Length == 0) return sql;
-
-            StringBuilder sb_sql = new StringBuilder(sql);
-            var tempOrderPars = pars.Where(p => p.Value != null).OrderByDescending(p => p.ParameterName.Length).ToList();//防止 @par1错误替换@par12
-            for (var index = 0; index < tempOrderPars.Count; index++)
+            for (var i = pars.Length - 1; i >= 0; i--)
             {
-                sb_sql.Replace(tempOrderPars[index].ParameterName, "'" + tempOrderPars[index].Value.ToString() + "'");
+                if (pars[i].DbType == System.Data.DbType.String
+                    || pars[i].DbType == System.Data.DbType.DateTime
+                    || pars[i].DbType == System.Data.DbType.Date
+                    || pars[i].DbType == System.Data.DbType.Time
+                    || pars[i].DbType == System.Data.DbType.DateTime2
+                    || pars[i].DbType == System.Data.DbType.DateTimeOffset
+                    || pars[i].DbType == System.Data.DbType.Guid
+                    || pars[i].DbType == System.Data.DbType.VarNumeric
+                    || pars[i].DbType == System.Data.DbType.AnsiStringFixedLength
+                    || pars[i].DbType == System.Data.DbType.AnsiString
+                    || pars[i].DbType == System.Data.DbType.StringFixedLength)
+                {
+                    sql = sql.Replace(pars[i].ParameterName, "'" + pars[i].Value?.ToString() + "'");
+                }
+                else if (pars[i].DbType == System.Data.DbType.Boolean)
+                {
+                    sql = sql.Replace(pars[i].ParameterName, Convert.ToBoolean(pars[i].Value) ? "1" : "0");
+                }
+                else
+                {
+                    sql = sql.Replace(pars[i].ParameterName, pars[i].Value?.ToString());
+                }
             }
-            return sb_sql.ToString();
+
+            return sql;
+        }
+        /// <summary>
+        /// 格式化参数拼接成完整的SQL语句
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="pars"></param>
+        /// <returns></returns>
+        public static string ParameterFormat(string sql, object pars)
+        {
+            var param = (SugarParameter[])pars;
+            return ParameterFormat(sql, param);
         }
 
         public static string GroupConcat<T>(T t)
